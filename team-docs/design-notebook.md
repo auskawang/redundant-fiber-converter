@@ -72,7 +72,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Completed architecture milestone. Initial Draw.io artifacts are recorded as sbd/photon.drawio and sbd/photon_copy.drawio.
 
-![Figure 1 — Two-board system architecture](../../sbd/photon_copy-two_brd.drawio.png)
+![Figure 1 — Two-board system architecture](assets/design-notebook/figure-01-two-board-architecture.png)
 
 *Figure 1. Refined system-level architecture showing two identical converter boards, two laptop endpoints, primary and backup full-duplex fiber paths, and in-band management. This later export documents the architecture initiated on September 2.*
 
@@ -128,7 +128,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Library work completed and visually reviewed; final stackup/fabrication and mapping checks remain.
 
-![Figure 4 — LAN96455F footprint top view](../../project_context/images/2026-09-10/windows-altium-lan96455f-footprint-top.png)
+![Figure 4 — LAN96455F footprint top view](assets/design-notebook/figure-04-lan96455f-footprint.png)
 
 *Figure 4. Altium top view of the LAN96455F footprint. The image documents perimeter pads, the exposed-pad paste pattern, thermal-via array, pin-1 marking, and component outlines; it is review evidence rather than fabrication release approval.*
 
@@ -158,11 +158,11 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Library components completed and visually reviewed; front-panel and assembled-PCB clearance remain open.
 
-![Figure 5 — Molex 74441-0010 receptacle footprint and 3D model](../../project_context/images/2026-09-11/windows-altium-molex-74441-0010-3d.png)
+![Figure 5 — Molex 74441-0010 receptacle footprint and 3D model](assets/design-notebook/figure-05-sfp-receptacle.png)
 
 *Figure 5. Molex 74441-0010 SFP receptacle aligned with its PCB footprint and manufacturer 3D model.*
 
-![Figure 6 — Molex 74737-0010 cage mechanical footprint](../../project_context/images/2026-09-11/windows-altium-molex-74737-0010-mechanical-review.png)
+![Figure 6 — Molex 74737-0010 cage mechanical footprint](assets/design-notebook/figure-06-sfp-cage.png)
 
 *Figure 6. Separate cage footprint and mechanical envelope used at the same component datum as the receptacle.*
 
@@ -193,7 +193,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Completed proposal-development milestone. See the proposal, slides, QFD, and exported diagrams.
 
-![Figure 2 — Single-board functional architecture](../../sbd/photon_copy-one_brd.drawio.png)
+![Figure 2 — Single-board functional architecture](assets/design-notebook/figure-02-single-board-architecture.png)
 
 *Figure 2. Single-board architecture used to partition Ethernet switching, STM32 management, optical telemetry, storage, power, and external interfaces.*
 
@@ -224,7 +224,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Power topology and working components defined; calculations, sequencing, and schematic approval remain open.
 
-![Figure 3 — Preliminary per-board power distribution](../../sbd/photon_copy-pdn_v2.drawio.png)
+![Figure 3 — Preliminary per-board power distribution](assets/design-notebook/figure-03-power-distribution.png)
 
 *Figure 3. Preliminary power-distribution view. Current calculations and later decisions in POWER_TREE.md supersede any conflicting value or connection shown in this diagram.*
 
@@ -281,11 +281,11 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Configuration sheet substantially developed through reviewed screenshots; native connectivity, ERC, EEPROM contents, and complete boot behavior remain open.
 
-![Figure 7 — RGMII0 shared-strap draft](../../project_context/images/2026-09-16/windows-altium-rgmii0-strap-draft.png)
+![Figure 7 — RGMII0 shared-strap draft](assets/design-notebook/figure-07-rgmii-straps.png)
 
 *Figure 7. Draft RGMII0 interface showing reset-sampled strap networks that remain electrically connected to runtime transmit signals.*
 
-![Figure 8 — Revised 24CSM01 switch EEPROM circuit](../../project_context/images/2026-09-16/windows-eeprom-revised-switched-rail-50c480e1.png)
+![Figure 8 — Revised 24CSM01 switch EEPROM circuit](assets/design-notebook/figure-08-switch-eeprom.png)
 
 *Figure 8. Revised switch-configuration EEPROM draft on the switched VDD_IO_A domain with I²C pull-ups and optional address populations. Native connectivity and programming sequence still require validation.*
 
@@ -315,7 +315,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Electrical review and proposed mapping complete; final population/routing are not frozen.
 
-![Figure 9 — Switchable strap divider](../../project_context/images/2026-09-17/windows-switchable-strap-divider-d0c18c0c.png)
+![Figure 9 — Switchable strap divider](assets/design-notebook/figure-09-strap-divider.png)
 
 *Figure 9. Reviewed 1 kΩ/10 kΩ switchable strap network. The image records the working implementation and voltage-margin review, not a final population release.*
 
@@ -346,7 +346,7 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Major control architecture reviewed but not released; native connectivity, designators, variants, and ERC remain.
 
-![Figure 10 — LAN96455F configuration-sheet checkpoint](../../project_context/images/2026-09-18/windows-altium-control-sheet-session-close-5e9c8b78.png)
+![Figure 10 — LAN96455F configuration-sheet checkpoint](assets/design-notebook/figure-10-switch-config-sheet.png)
 
 *Figure 10. Full-sheet checkpoint containing boot and management tables, selectable straps, RGMII/SPI labels, EEPROM/programming circuitry, and GPIO symbol groups. Off-sheet alternatives and unresolved assignments remained in progress.*
 
@@ -401,11 +401,11 @@ System integration and bring-up are collaborative team activities.
 
 **Status/evidence:** Configuration GPIO circuitry is substantially captured and visually reviewed. The email remained a draft; native netlist/ERC and final ownership remain open.
 
-![Figure 11 — Updated GPIO straps and inter-sheet ports](../../project_context/images/2026-09-20/windows-progress-gpio-straps-ports-d3f4f5b0.png)
+![Figure 11 — Updated GPIO straps and inter-sheet ports](assets/design-notebook/figure-11-gpio-straps.png)
 
 *Figure 11. Updated GPIO and strap groups with horizontal state tables and inter-sheet ports. Orange notes identify unresolved runtime assignments.*
 
-![Figure 12 — Updated main straps and RGMII ports](../../project_context/images/2026-09-20/windows-progress-main-straps-rgmii-5681207f.png)
+![Figure 12 — Updated main straps and RGMII ports](assets/design-notebook/figure-12-main-straps-rgmii.png)
 
 *Figure 12. Updated main boot/management straps and RGMII interface ports after label and switch-table cleanup.*
 
