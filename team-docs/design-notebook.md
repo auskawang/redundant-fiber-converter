@@ -27,7 +27,6 @@ System integration and bring-up are collaborative team activities.
 
 - Entries are chronological team milestones rather than four isolated personal logs.
 - **Completed** means an artifact or recorded review supports the statement. **In progress** and **planned** identify unfinished implementation or validation.
-- Entries through September 20 were reconstructed from the proposal, slides, saved artifacts, and chronological personal engineering log. Individual work is only attributed where those records support it.
 - The proposal and slides define group scope and roles; project_context supplies the technical chronology and current design state.
 - Datasheets and native design files remain authoritative. Screenshots document progress but do not prove saved connectivity, ERC success, or released hardware.
 
