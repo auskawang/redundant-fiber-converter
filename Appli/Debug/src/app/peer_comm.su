@@ -1,0 +1,5 @@
+../src/app/peer_comm.c:18:6:peer_comm_init	8	static
+../src/app/peer_comm.c:26:6:peer_comm_process	24	static
+../src/app/peer_comm.c:60:6:peer_comm_notify_cutover	32	static
+../src/app/peer_comm.c:72:6:peer_comm_is_peer_alive	4	static
+../src/app/peer_comm.c:77:6:peer_comm_rx_callback	16	static

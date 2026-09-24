@@ -1,0 +1,4 @@
+../src/app/path_manager.c:14:6:path_manager_init	1
+../src/app/path_manager.c:20:6:path_manager_process	2
+../src/app/path_manager.c:50:6:path_manager_trigger_event	6
+../src/app/path_manager.c:80:14:path_manager_get_state	1

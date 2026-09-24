@@ -1,0 +1,4 @@
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1407:22:LL_AHB4_GRP1_EnableClock	1
+../src/platform/bxp_gpio.c:12:6:bxp_gpio_init	1
+../src/platform/bxp_gpio.c:82:6:HAL_GPIO_EXTI_Rising_Callback	2
+../src/platform/bxp_gpio.c:90:6:HAL_GPIO_EXTI_Falling_Callback	3

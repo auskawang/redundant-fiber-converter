@@ -1,0 +1,2 @@
+../src/drivers/xswitch/lan96455_irq.c:12:5:lan96455_irq_enable	8	static
+../src/drivers/xswitch/lan96455_irq.c:18:6:lan96455_irq_handler_callback	16	static

@@ -1,0 +1,3 @@
+../src/drivers/net/eth_rgmii.c:10:5:eth_rgmii_init	1
+../src/drivers/net/eth_rgmii.c:16:5:eth_rgmii_send_frame	4
+../src/drivers/net/eth_rgmii.c:26:5:eth_rgmii_receive_frame	3
