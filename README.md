@@ -8,4 +8,4 @@ Although optical fiber improves network speed and efficiency, an optical link ca
 2. Open the Project Explorer tab (Window -> Show View -> Project Explorer)
 3. File -> Import -> General -> Existing Projects into Workspace. Select the "Select root directory" option and input the root directory where the cloned repo is stored, check the box next to the name of the repo in the Projects results box, then click Finish. The project will appear in the Project Explorer.
 4. Select the project in Project Explorer on left hand side.
-5. Build
+5. Build, if error occurs try clean and build again
