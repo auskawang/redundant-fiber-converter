@@ -1,3 +1,0 @@
-../src/platform/bxp_spi.c:10:6:bxp_spi_init	4	static
-../src/platform/bxp_spi.c:15:5:bxp_spi_read_reg	16	static
-../src/platform/bxp_spi.c:32:5:bxp_spi_write_reg	16	static

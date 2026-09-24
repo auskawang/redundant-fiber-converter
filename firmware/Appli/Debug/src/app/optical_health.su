@@ -1,4 +1,0 @@
-../src/app/optical_health.c:16:6:optical_health_init	8	static
-../src/app/optical_health.c:23:6:optical_health_process	16	static
-../src/app/optical_health.c:75:6:optical_health_get_latest	24	static
-../src/app/optical_health.c:83:18:optical_health_get_status	4	static

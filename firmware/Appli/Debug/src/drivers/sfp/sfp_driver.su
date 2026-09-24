@@ -1,4 +1,0 @@
-../src/drivers/sfp/sfp_driver.c:12:6:sfp_driver_init	4	static
-../src/drivers/sfp/sfp_driver.c:17:6:sfp_driver_is_present	8	static
-../src/drivers/sfp/sfp_driver.c:22:5:sfp_driver_read_ddm	40	static
-../src/drivers/sfp/sfp_driver.c:52:5:sfp_driver_read_id	16	static
