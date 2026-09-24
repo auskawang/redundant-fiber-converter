@@ -1,0 +1,4 @@
+../src/app/diagnostics.c:16:6:diagnostics_init	8	static
+../src/app/diagnostics.c:24:6:diagnostics_process	16	static
+../src/app/diagnostics.c:34:6:diagnostics_log_event	24	static
+../src/app/diagnostics.c:47:6:diagnostics_get_stats	16	static

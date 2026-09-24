@@ -1,0 +1,2 @@
+../src/drivers/net/mgmt_frame.c:24:5:mgmt_frame_send_peer_heartbeat	88	static
+../src/drivers/net/mgmt_frame.c:48:5:mgmt_frame_parse	32	static

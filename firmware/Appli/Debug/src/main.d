@@ -1,0 +1,71 @@
+src/main.o: ../src/main.c \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
+ ../Core/Inc/stm32n6xx_hal_conf.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
+ ../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
+ ../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h \
+ ../../Drivers/CMSIS/Include/core_cm55.h \
+ ../../Drivers/CMSIS/Include/cmsis_version.h \
+ ../../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../../Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../../Drivers/CMSIS/Include/m-profile/armv8m_mpu.h \
+ ../../Drivers/CMSIS/Include/m-profile/armv8m_pmu.h \
+ ../../Drivers/CMSIS/Include/m-profile/armv7m_cachel1.h \
+ ../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_rcc.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc_ex.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_gpio.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_gpio_ex.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma_ex.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cortex.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_exti.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_pwr.h \
+ ../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_pwr_ex.h \
+ ../include/app_config.h ../include/board_pins.h \
+ ../src/platform/bxp_clock.h ../src/platform/bxp_gpio.h \
+ ../src/platform/bxp_spi.h ../src/platform/bxp_i2c.h \
+ ../src/app/app_init.h ../src/app/path_manager.h ../src/app/peer_comm.h \
+ ../src/app/optical_health.h ../src/drivers/sfp/sfp_driver.h \
+ ../src/app/diagnostics.h
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
+../Core/Inc/stm32n6xx_hal_conf.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h:
+../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h:
+../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h:
+../../Drivers/CMSIS/Include/core_cm55.h:
+../../Drivers/CMSIS/Include/cmsis_version.h:
+../../Drivers/CMSIS/Include/cmsis_compiler.h:
+../../Drivers/CMSIS/Include/cmsis_gcc.h:
+../../Drivers/CMSIS/Include/m-profile/armv8m_mpu.h:
+../../Drivers/CMSIS/Include/m-profile/armv8m_pmu.h:
+../../Drivers/CMSIS/Include/m-profile/armv7m_cachel1.h:
+../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_rcc.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc_ex.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_gpio.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_gpio_ex.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma_ex.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cortex.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_exti.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_pwr.h:
+../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_pwr_ex.h:
+../include/app_config.h:
+../include/board_pins.h:
+../src/platform/bxp_clock.h:
+../src/platform/bxp_gpio.h:
+../src/platform/bxp_spi.h:
+../src/platform/bxp_i2c.h:
+../src/app/app_init.h:
+../src/app/path_manager.h:
+../src/app/peer_comm.h:
+../src/app/optical_health.h:
+../src/drivers/sfp/sfp_driver.h:
+../src/app/diagnostics.h:
