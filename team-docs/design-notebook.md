@@ -465,7 +465,7 @@ System integration and bring-up are collaborative team activities.
 
 ---
 
-## Monday, September 28, 2026 — Hardware progress and firmware skeleton checkpoint
+## Friday, September 25, 2026 — Hardware progress and firmware skeleton checkpoint
 
 **Objective:** Debrief hardware schematic progress, review the completed firmware skeleton, and align on blocking issues regarding budget and Microchip support.
 
@@ -517,9 +517,7 @@ System integration and bring-up are collaborative team activities.
 
 ---
 
-## Current project snapshot — September 21, 2026
-
-*Table 2. Consolidated project status at the September 21 architecture review.*
+## Current project snapshot — September 25, 2026
 
 | Workstream | Status | Immediate gate |
 |---|---|---|
