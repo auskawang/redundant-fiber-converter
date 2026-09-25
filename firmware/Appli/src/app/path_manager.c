@@ -13,8 +13,8 @@ static path_state_t current_state = PATH_STATE_INIT;
 
 void path_manager_init(void)
 {
-    current_state = PATH_STATE_PRIMARY_ACTIVE;
-    diagnostics_log_event(DIAG_SEV_INFO, "PathManager: Initialized to PRIMARY_ACTIVE");
+    current_state = PATH_STATE_INIT;
+    diagnostics_log_event(DIAG_SEV_WARNING, "PathManager: UNAVAILABLE - switch protocol pending");
 }
 
 void path_manager_process(void)

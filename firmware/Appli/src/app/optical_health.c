@@ -1,3 +1,4 @@
+#include <stddef.h>
 /**
  * @file optical_health.c
  * @brief Optical DDM evaluation and health monitoring implementation.
@@ -7,28 +8,31 @@
 #include "app_config.h"
 #include "path_manager.h"
 #include "diagnostics.h"
-#include "stm32n6xx_hal.h"
+#include "bxp_time.h"
+#include "bxp_gpio.h"
+#include "bxp_i2c.h"
 
 static sfp_ddm_data_t latest_ddm;
-static optical_status_t current_status = OPTICAL_STATUS_OK;
+static optical_status_t current_status = OPTICAL_STATUS_UNAVAILABLE;
 static uint32_t last_poll_tick = 0;
 
 void optical_health_init(void)
 {
-    last_poll_tick = HAL_GetTick();
-    current_status = OPTICAL_STATUS_OK;
+    last_poll_tick = bxp_time_ms();
+    current_status = OPTICAL_STATUS_UNAVAILABLE;
     diagnostics_log_event(DIAG_SEV_INFO, "OpticalHealth: Initialized");
 }
 
 void optical_health_process(void)
 {
-    uint32_t now = HAL_GetTick();
+    uint32_t now = bxp_time_ms();
     if ((now - last_poll_tick) < DDM_POLL_INTERVAL_MS)
     {
         return;
     }
     last_poll_tick = now;
 
+    if (!bxp_gpio_is_ready() || !bxp_i2c_is_ready()) { current_status=OPTICAL_STATUS_UNAVAILABLE; return; }
     if (!sfp_driver_is_present())
     {
         if (current_status != OPTICAL_STATUS_DISCONNECTED)
@@ -42,34 +46,13 @@ void optical_health_process(void)
 
     if (sfp_driver_read_ddm(&latest_ddm) == 0)
     {
-        /* Evaluate RSSI */
-        if (latest_ddm.rx_power_dbm_tenths < SFP_RSSI_MIN_DBM_MV)
-        {
-            if (current_status != OPTICAL_STATUS_WARN_LOW_POWER)
-            {
-                current_status = OPTICAL_STATUS_WARN_LOW_POWER;
-                diagnostics_log_event(DIAG_SEV_WARNING, "OpticalHealth: Low optical RX power warning");
-                path_manager_trigger_event(PATH_EVENT_OPTICAL_DEGRADED);
-            }
-        }
-        /* Evaluate Temperature */
-        else if (latest_ddm.temperature_millicelsius > SFP_TEMP_MAX_MILLICELSIUS)
-        {
-            if (current_status != OPTICAL_STATUS_WARN_HIGH_TEMP)
-            {
-                current_status = OPTICAL_STATUS_WARN_HIGH_TEMP;
-                diagnostics_log_event(DIAG_SEV_WARNING, "OpticalHealth: High SFP temperature warning");
-            }
-        }
-        else
-        {
-            if (current_status != OPTICAL_STATUS_OK)
-            {
-                current_status = OPTICAL_STATUS_OK;
-                diagnostics_log_event(DIAG_SEV_INFO, "OpticalHealth: Optical telemetry normalized");
-            }
-        }
+        /* TODO: raw optical power conversion/calibration is not validated.
+         * Do not evaluate raw counts against dBm thresholds. */
+        current_status = OPTICAL_STATUS_UNAVAILABLE;
+        return;
+
     }
+    else { current_status=OPTICAL_STATUS_UNAVAILABLE; }
 }
 
 void optical_health_get_latest(sfp_ddm_data_t *ddm)
