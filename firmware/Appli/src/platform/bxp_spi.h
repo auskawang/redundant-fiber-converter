@@ -17,6 +17,7 @@ extern "C" {
  * @brief Initializes SPI peripheral for communication with the LAN96455 switch.
  */
 void bxp_spi_init(void);
+int bxp_spi_transfer(const uint8_t *tx, uint8_t *rx, uint16_t len);
 
 /**
  * @brief Performs a 32-bit register read over SPI.

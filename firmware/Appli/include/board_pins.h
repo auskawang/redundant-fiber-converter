@@ -7,6 +7,10 @@
 #define BOARD_PINS_H
 
 #include <stdint.h>
+/* Existing repository mappings: enable only after schematic review. */
+#ifndef BXP_BOARD_PINS_CONFIRMED
+#define BXP_BOARD_PINS_CONFIRMED 0
+#endif
 
 #ifdef __cplusplus
 extern "C" {
