@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/STMicroelectronics/stm32n6xx-hal-driver",
+  "tag": "v1.4.0",
+  "commit": "d88071ed0adc1991a5daed6f20ab311f80bb33b7",
+  "existing_files_checked": 32,
+  "comparison": "Existing Inc/Src files match v1.4.0 after newline normalization. Added files copied verbatim.",
+  "sha256": {
+    "Inc/stm32n6xx_hal_i2c.h": "45e70eee8fd3f0b5ff4bb47e7b76407e5d19967afd2ac47d465af7eee8c9d1ce",
+    "Src/stm32n6xx_hal_i2c.c": "e04409e038619d98c62e7a9502168df2c54ab954108cf4f916efa5891d70d76d",
+    "Inc/stm32n6xx_hal_i2c_ex.h": "ff5f4328b1add29a6d8bd5d259019b53efd4b81439a48259ef55c6368f4369f9",
+    "Src/stm32n6xx_hal_i2c_ex.c": "d2bb00025650fe7629d70cb74779c86b41d7be78d0fc309a916ad8e2573632e7",
+    "Inc/stm32n6xx_hal_spi.h": "01b0cc8c5143102af2b5a96caf2c42f9e06a7665d7e5c1e13c8f2a0446ce9057",
+    "Src/stm32n6xx_hal_spi.c": "785aecf4f6d80cc0df79c31474e662cfdc6464aaceed0b4227c824b9c1e96d35",
+    "Inc/stm32n6xx_hal_spi_ex.h": "cced4bf53fb2766c107fb4c79a91a5b5b1107fe6387aad900447c25307ff5ed1",
+    "Src/stm32n6xx_hal_spi_ex.c": "3b15ddb885705b11d0921bf4f103f3f6aabff52f880e7578b93b1d19445c3524",
+    "Inc/stm32n6xx_hal_uart.h": "11283d253bec34c6af694a23e850f653ef866c28e12b821caca29ba919639f78",
+    "Src/stm32n6xx_hal_uart.c": "b87f0ffa950f98be29a3d24c2d5ff040d7ea709fdbbcd8bb226097168d90a39b",
+    "Inc/stm32n6xx_hal_uart_ex.h": "8e8488c2f13a508f9da61e2856aae8f0afd64371c95e64776db025d590784f88",
+    "Src/stm32n6xx_hal_uart_ex.c": "4338766e04d0474217041eb2031caa0165c647e8498536910b4897966f5f546a",
+    "LICENSE.md": "192dc391477e56a923cbe90646594bae3012ae46e029ac8b4d6eb5ff3df49984"
+  }
+}
