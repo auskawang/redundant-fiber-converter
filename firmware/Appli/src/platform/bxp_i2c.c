@@ -1,35 +1,26 @@
-/**
- * @file bxp_i2c.c
- * @brief STM32N6 I2C master driver implementation for SFP telemetry.
- */
-
 #include "bxp_i2c.h"
-#include "board_pins.h"
-#include "stm32n6xx_hal.h"
-
-void bxp_i2c_init(void)
-{
-    /* I2C peripheral init stub (Standard mode 100kHz or Fast mode 400kHz) */
+#include "bxp_board.h"
+#include "bxp_status.h"
+#ifdef HAL_I2C_MODULE_ENABLED
+static I2C_HandleTypeDef *bus;
+void bxp_i2c_bind(I2C_HandleTypeDef *h) { bus=h; }
+void bxp_i2c_init(void) { /* Configuration belongs to bxp_board_init. */ }
+bool bxp_i2c_is_ready(void) { return bus && bus->State != HAL_I2C_STATE_RESET; }
+static int result(HAL_StatusTypeDef s) { return s==HAL_OK?BXP_OK:s==HAL_TIMEOUT?BXP_TIMEOUT:s==HAL_BUSY?BXP_BUSY:BXP_ERROR; }
+int bxp_i2c_read(uint16_t addr,uint8_t reg,uint8_t *data,uint16_t len) {
+ if (!data || !len || addr>0xfe || (addr&1)) return BXP_INVALID;
+ if (!bxp_i2c_is_ready()) return BXP_UNAVAILABLE;
+ return result(HAL_I2C_Mem_Read(bus,addr,reg,I2C_MEMADD_SIZE_8BIT,data,len,100));
 }
-
-int bxp_i2c_read(uint16_t dev_addr, uint8_t mem_addr, uint8_t *buffer, uint16_t length)
-{
-    if (buffer == NULL || length == 0)
-    {
-        return -1;
-    }
-
-    /* Emulate reading or wrap HAL_I2C_Mem_Read(&hi2c1, dev_addr, mem_addr, I2C_MEMADD_SIZE_8BIT, buffer, length, 100) */
-    return 0;
+int bxp_i2c_write(uint16_t addr,uint8_t reg,const uint8_t *data,uint16_t len) {
+ if (!data || !len || addr>0xfe || (addr&1)) return BXP_INVALID;
+ if (!bxp_i2c_is_ready()) return BXP_UNAVAILABLE;
+ return result(HAL_I2C_Mem_Write(bus,addr,reg,I2C_MEMADD_SIZE_8BIT,(uint8_t *)data,len,100));
 }
-
-int bxp_i2c_write(uint16_t dev_addr, uint8_t mem_addr, const uint8_t *data, uint16_t length)
-{
-    if (data == NULL || length == 0)
-    {
-        return -1;
-    }
-
-    /* Wrap HAL_I2C_Mem_Write */
-    return 0;
-}
+#else
+/* This ZIP omits the optional HAL bus driver. */
+void bxp_i2c_init(void) {}
+bool bxp_i2c_is_ready(void) { return false; }
+int bxp_i2c_read(uint16_t a,uint8_t m,uint8_t *b,uint16_t n) { (void)m; return !b||!n||a>0xfe||(a&1)?BXP_INVALID:BXP_UNAVAILABLE; }
+int bxp_i2c_write(uint16_t a,uint8_t m,const uint8_t *b,uint16_t n) { (void)m; return !b||!n||a>0xfe||(a&1)?BXP_INVALID:BXP_UNAVAILABLE; }
+#endif

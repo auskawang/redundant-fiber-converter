@@ -17,6 +17,7 @@ extern "C" {
  * @brief Initializes I2C peripheral for SFP DDM/EEPROM communication.
  */
 void bxp_i2c_init(void);
+bool bxp_i2c_is_ready(void);
 
 /**
  * @brief Reads data from an I2C device with an 8-bit memory/register offset.

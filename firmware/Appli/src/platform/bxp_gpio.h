@@ -5,6 +5,13 @@
 
 #ifndef BXP_GPIO_H
 #define BXP_GPIO_H
+#include <stdbool.h>
+void bxp_gpio_process(void);
+bool bxp_gpio_is_ready(void);
+void bxp_gpio_peer_toggle(void);
+void bxp_gpio_power_sequence(void);
+void bxp_gpio_reset_switch(void);
+void bxp_gpio_reset_phys(void);
 
 #ifdef __cplusplus
 extern "C" {

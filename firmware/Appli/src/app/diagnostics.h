@@ -55,6 +55,9 @@ void diagnostics_log_event(diag_severity_t severity, const char *message);
  * @brief Returns current aggregated statistics.
  */
 void diagnostics_get_stats(diag_stats_t *stats);
+uint16_t diagnostics_log_count(void);
+int diagnostics_get_log(uint16_t index, diag_log_entry_t *entry);
+/* Messages passed to log_event must have static lifetime; main-loop only. */
 
 #ifdef __cplusplus
 }

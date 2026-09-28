@@ -42,6 +42,7 @@ void peer_comm_notify_cutover(bool backup_active);
  * @return True if peer heartbeat is within timeout threshold.
  */
 bool peer_comm_is_peer_alive(void);
+void peer_comm_rx_callback(const peer_msg_t *msg);
 
 #ifdef __cplusplus
 }

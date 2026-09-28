@@ -15,6 +15,9 @@
 #include "bxp_gpio.h"
 #include "bxp_spi.h"
 #include "bxp_i2c.h"
+#include "bxp_board.h"
+#include "bxp_uart.h"
+#include "cli.h"
 
 /* Application Modules */
 #include "app_init.h"
@@ -36,15 +39,18 @@ int main(void)
     bxp_clock_init();
 
     /* 3. Initialize Board Support Package (GPIOs, SPI, I2C) */
+    diagnostics_init();
+    bxp_board_init();
     bxp_gpio_init();
     bxp_spi_init();
     bxp_i2c_init();
+    bxp_uart_init();
 
     /* 4. Power Sequencing & Hardware Reset of Switch/PHYs */
     app_init_power_sequence();
 
-    /* 5. Initialize Diagnostics & Logging */
-    diagnostics_init();
+    /* Diagnostics already initialized before power-sequence logging. */
+    cli_init();
 
     /* 6. Initialize State Machines & Communication */
     peer_comm_init();
@@ -54,6 +60,8 @@ int main(void)
     /* Main Application Loop / Cooperative Scheduler */
     while (1)
     {
+        bxp_gpio_process();
+        cli_process();
         /* Process peer heartbeats and communication state */
         peer_comm_process();
 
