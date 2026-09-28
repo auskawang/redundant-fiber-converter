@@ -36,11 +36,13 @@ CLI 不决定是否切换，也不选择 UART 引脚。应用层现在通过 bxp
 
 ## 为什么现在接串口不会立刻有输出
 
-上传 ZIP 只有部分 STM32N6 HAL 文件，缺少 I2C、SPI、UART 头文件和实现。因此默认构建使用明确返回 UNAVAILABLE 的分支。HAL 后端代码已经写入，但本次无法在这份缺依赖的 ZIP 上编译这些启用分支，也未做板上验证。
+已补齐 ST 官方 STM32N6 HAL v1.4.0 的 I2C/SPI/UART 主驱动、扩展驱动与头文件（12 个文件），加入 CubeIDE 构建并启用对应模块。现有 32 个 HAL 文件与该版本内容一致，来源、提交号和 SHA-256 记录在 Drivers/STM32N6xx_HAL_Driver/HAL_DEPENDENCIES.json。
+
+真正的 HAL 后端已编译通过，但 bxp_board_init() 仍未配置或绑定外设句柄，所以运行时仍返回 UNAVAILABLE；不能据此认定硬件收发正常。
 
 下一步需要：
 
-1. 从与项目匹配的 STM32CubeN6 包补齐 I2C/SPI/UART 及其依赖，加入 CubeIDE 构建，再启用 hal_conf.h 对应模块。
+1. HAL 驱动补齐和启用分支编译已完成；下一步先确认板级配置。
 2. 在板级文件里覆盖弱函数 bxp_board_init()，配置确认过的时钟、引脚复用、I2C timing、SPI mode、UART baud；初始化静态 HAL 句柄后调用 bxp_i2c_bind / bxp_uart_bind / bxp_spi_bind。应用和 CLI 不需要 HAL 句柄。
 3. 核对 board_pins.h 中已有映射、初始电平、上电时序及 EXTI IRQ 后，再启用 BXP_BOARD_PINS_CONFIRMED。更改 EXTI 引脚时同步修改 IRQ 入口，不能只改宏。
 4. 确认交换机准确型号、SPI 命令格式、字节序、寄存器表、芯片 ID 校验，再实现寄存器适配和初始化状态 API。
@@ -50,9 +52,9 @@ CLI 不决定是否切换，也不选择 UART 引脚。应用层现在通过 bxp
 
 ## 构建结果与复现
 
-使用电脑已安装的 GNU Arm 14.3.1，针对 Cortex-M55 / STM32N657xx，从源代码编译并链接了 38 个文件。C 编译没有警告；链接成功，有一条 LOAD segment RWX 警告，需在后续检查现有链接脚本的段权限。
+使用电脑已安装的 GNU Arm 14.3.1，针对 Cortex-M55 / STM32N657xx，从源代码编译并链接了 44 个文件。C 编译没有警告；链接成功，有一条 LOAD segment RWX 警告，需在后续检查现有链接脚本的段权限。
 
-本次没有硬件运行、没有 CLI 动态测试、没有 FSBL 重建，也没有验证启用 HAL 总线后的分支。不要将 ZIP 原有 Debug 二进制当成本次构建结果；交付包已排除旧 Debug/Release 构建目录。
+本次没有硬件运行、没有 CLI 动态测试、没有 FSBL 重建，已编译启用 HAL 总线后的分支，但尚未进行动态测试。不要将 ZIP 原有 Debug 二进制当成本次构建结果；交付包已排除旧 Debug/Release 构建目录。
 
 仓库内 tools/check_build.py 可复现独立构建：
 
