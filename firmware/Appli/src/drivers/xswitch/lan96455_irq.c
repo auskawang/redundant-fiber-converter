@@ -12,17 +12,17 @@
 int lan96455_irq_enable(void)
 {
     /* Enable link change and fatal error interrupt masks */
-    return lan96455_write_reg(LAN96455_REG_INT_MASK, 0xFFFFFFFFU);
+    //return lan96455_write_reg(LAN96455_REG_INT_MASK, 0xFFFFFFFFU);
 }
 
 void lan96455_irq_handler_callback(void)
 {
-    uint32_t status = 0;
-    if (lan96455_read_reg(LAN96455_REG_INT_STATUS, &status) == 0)
-    {
-        /* Clear pending interrupt */
-        lan96455_write_reg(LAN96455_REG_INT_STATUS, status);
-
-        diagnostics_log_event(DIAG_SEV_WARNING, "Switch: Hardware IRQ triggered");
-    }
+//    uint32_t status = 0;
+//    if (lan96455_read_reg(LAN96455_REG_INT_STATUS, &status) == 0)
+//    {
+//        /* Clear pending interrupt */
+//        lan96455_write_reg(LAN96455_REG_INT_STATUS, status);
+//
+//        diagnostics_log_event(DIAG_SEV_WARNING, "Switch: Hardware IRQ triggered");
+//    }
 }

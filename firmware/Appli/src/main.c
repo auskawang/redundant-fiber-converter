@@ -18,6 +18,7 @@
 
 /* Application Modules */
 #include "app_init.h"
+#include "lan96455_driver.h"
 #include "path_manager.h"
 #include "peer_comm.h"
 #include "optical_health.h"
@@ -40,10 +41,13 @@ int main(void)
     bxp_spi_init();
     bxp_i2c_init();
 
-    /* 4. Power Sequencing & Hardware Reset of Switch/PHYs */
+    /* 4. Power Sequencing & Hardware Reset of Switch (Phase 1) */
     app_init_power_sequence();
 
-    /* 5. Initialize Diagnostics & Logging */
+    /* 5. Initialize LAN96455 Managed Switch (Phases 2-4) */
+    lan96455_init();
+
+    /* 6. Initialize Diagnostics & Logging */
     diagnostics_init();
 
     /* 6. Initialize State Machines & Communication */

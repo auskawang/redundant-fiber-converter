@@ -13,11 +13,11 @@ extern "C" {
 #endif
 
 /* Power Sequencing & Reset Pins */
-#define PIN_POWER_SEQ_EN_PORT       GPIOD
-#define PIN_POWER_SEQ_EN_PIN        GPIO_PIN_0
+#define STM_ETH_SW_LS_EN_PORT       GPIOD
+#define STM_ETH_SW_LS_EN_PIN        GPIO_PIN_5
 
-#define PIN_SWITCH_RESET_N_PORT     GPIOD
-#define PIN_SWITCH_RESET_N_PIN      GPIO_PIN_1
+#define ETH_SW_RESET_N_PORT     GPIOB
+#define ETH_SW_RESET_N_PIN      GPIO_PIN_6
 
 #define PIN_PHY_RESET_N_PORT        GPIOD
 #define PIN_PHY_RESET_N_PIN         GPIO_PIN_2

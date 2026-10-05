@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "lan96455_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,12 +20,20 @@ extern "C" {
 void bxp_spi_init(void);
 
 /**
- * @brief Performs a 32-bit register read over SPI.
+ * @brief Performs a 32-bit register read over SPI using operational padding bytes.
  * @param reg_addr 32-bit address.
  * @param[out] value Pointer to store result.
  * @return 0 on success, negative on error.
  */
 int bxp_spi_read_reg(uint32_t reg_addr, uint32_t *value);
+
+/**
+ * @brief Performs a 32-bit register read over SPI using post-reset default padding bytes.
+ * @param reg_addr 32-bit address.
+ * @param[out] value Pointer to store result.
+ * @return 0 on success, negative on error.
+ */
+int bxp_spi_read_reg_default_padding(uint32_t reg_addr, uint32_t *value);
 
 /**
  * @brief Performs a 32-bit register write over SPI.

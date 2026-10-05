@@ -21,14 +21,14 @@ void bxp_gpio_init(void)
     __HAL_RCC_GPIOE_CLK_ENABLE();
 
     /* 1. Power sequencing & reset outputs (Active HIGH/LOW) */
-    GPIO_InitStruct.Pin = PIN_POWER_SEQ_EN_PIN;
+    GPIO_InitStruct.Pin = STM_ETH_SW_LS_EN_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(PIN_POWER_SEQ_EN_PORT, &GPIO_InitStruct);
+    HAL_GPIO_Init(STM_ETH_SW_LS_EN_PORT, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PIN_SWITCH_RESET_N_PIN;
-    HAL_GPIO_Init(PIN_SWITCH_RESET_N_PORT, &GPIO_InitStruct);
+    GPIO_InitStruct.Pin = ETH_SW_RESET_N_PIN;
+    HAL_GPIO_Init(ETH_SW_RESET_N_PORT, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = PIN_PHY_RESET_N_PIN;
     HAL_GPIO_Init(PIN_PHY_RESET_N_PORT, &GPIO_InitStruct);
