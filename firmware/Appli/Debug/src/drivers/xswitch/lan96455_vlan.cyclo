@@ -1,3 +1,0 @@
-../src/drivers/xswitch/lan96455_vlan.c:11:5:lan96455_vlan_apply_primary_path	1
-../src/drivers/xswitch/lan96455_vlan.c:23:5:lan96455_vlan_apply_backup_path	1
-../src/drivers/xswitch/lan96455_vlan.c:35:5:lan96455_vlan_set_port_mask	2

@@ -1,4 +1,0 @@
-../src/drivers/xswitch/lan96455_driver.c:11:5:lan96455_init	16	static
-../src/drivers/xswitch/lan96455_driver.c:24:5:lan96455_read_reg	16	static
-../src/drivers/xswitch/lan96455_driver.c:33:5:lan96455_write_reg	16	static
-../src/drivers/xswitch/lan96455_driver.c:38:5:lan96455_flush_mac_table	8	static

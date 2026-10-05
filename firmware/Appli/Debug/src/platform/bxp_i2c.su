@@ -1,3 +1,0 @@
-../src/platform/bxp_i2c.c:10:6:bxp_i2c_init	4	static
-../src/platform/bxp_i2c.c:15:5:bxp_i2c_read	24	static
-../src/platform/bxp_i2c.c:26:5:bxp_i2c_write	24	static

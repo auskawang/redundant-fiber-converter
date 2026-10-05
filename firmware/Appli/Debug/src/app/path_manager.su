@@ -1,4 +1,0 @@
-../src/app/path_manager.c:14:6:path_manager_init	8	static
-../src/app/path_manager.c:20:6:path_manager_process	8	static
-../src/app/path_manager.c:50:6:path_manager_trigger_event	16	static
-../src/app/path_manager.c:80:14:path_manager_get_state	4	static
