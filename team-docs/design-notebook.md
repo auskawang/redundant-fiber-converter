@@ -465,9 +465,129 @@ System integration and bring-up are collaborative team activities.
 
 ---
 
-## Current project snapshot — September 21, 2026
+## Friday, September 25, 2026 — Hardware progress and firmware skeleton checkpoint
 
-*Table 2. Consolidated project status at the September 21 architecture review.*
+**Objective:** Debrief hardware schematic progress, review the completed firmware skeleton, and align on blocking issues regarding budget and Microchip support.
+
+### Team highlights
+
+| Team member | Highlight |
+| --- | --- |
+| Madhawi | Completed the SFP schematic sheet, simulations, and Ethernet switch power design. |
+| Ethan | Completed the Ethernet crystal implementation and STM reset configuration. |
+| Auska | Finalized the firmware file layout, uploaded it to GitHub, and continued investigating Linux SPI register access. |
+| Yichi | Finished the review of the firmware file layout and skeleton code. |
+
+### Technical outcomes
+
+* Finished SFP schematic sheet, simulations, Ethernet switch power, and Ethernet crystal designs.
+* Completed STM Reset configuration.
+* Finalized and reviewed the firmware file layout; uploaded the skeleton code to GitHub.
+* Continued investigating SPI register access from the Linux implementation.
+* Identified current project friction points: delayed communication from Microchip support, budget limitations requiring a structured backup plan, and general Ethernet switch hardware configuration complexity.
+
+**Status/evidence:** Hardware schematics are advancing through power and SFP stages; the firmware skeleton is complete and pushed to GitHub, though further switch implementation is pending Microchip support.
+
+### Next actions
+
+#### Firmware — Auska and Yichi
+
+* [ ] Determine pin-wise behavior after the switch nRESET releases, specifically focusing on unmanaged SPI.
+* [ ] Define the interface for flashing the EEPROM with the config tool (evaluate utilizing USB-C like the eval board).
+* [ ] Confirm the power sequencing requirements of the Ethernet switch.
+* [ ] Define the exact procedure for flashing the STM32 external flash.
+* [ ] Finalize the platform and complete CLI commands.
+* [ ] Develop optical health monitoring and the basic failover logic.
+* [ ] Review SFP datasheets and relevant materials for optical health status definitions.
+* [ ] Define peer communication and implement the basic protocol.
+
+#### Hardware — Ethan and Madhawi
+
+* [ ] Finish RJ45 implementation.
+* [ ] Work on power sequencing and the system shutdown sequence.
+* [ ] Review Ethernet switch GPIO configuration.
+* [ ] Conduct schematic reviews and begin building the Bill of Materials (BOM).
+* [ ] Finish hierarchical design implementation and align on schematic infrastructure.
+
+#### Team integration
+
+* [ ] Follow up on the delayed Microchip support response.
+* [ ] Organize a backup plan to address current budget limitations.
+* [ ] Collaboratively address and document the Ethernet switch hardware configuration complexity.
+
+---
+
+## Monday, September 28, 2026 — PHOTON Weekly Update
+
+**Objective:** Debrief schematic design progress, verify firmware skeleton integration, track team task completion against prior action items, and establish ownership across hardware and firmware workstreams.
+
+### Current Status
+
+#### Schematic Design
+* Finished SFP schematic sheet and verified simulations.
+* Completed Ethernet switch power supply topology.
+* Finalized Ethernet reference crystal implementation.
+* Completed STM32 reset configuration circuit.
+* Finished RJ45 connector schematic page.
+
+#### Firmware Design
+* Finalized directory structure, architectural file layout, and skeleton code.
+* Pushed baseline repository layout to GitHub.
+* Actively blocked on register-level driver details pending Microchip support escalation.
+
+#### Friction Points & Risks
+* **Microchip Support Lag:** Delayed communication on Ethernet switch register maps and unmanaged SPI pin-state behaviors.
+* **Budget Limitations:** Tightly constrained project budget requiring structured sourcing contingencies and an immediate BOM cost rollout.
+* **Switch Configuration Complexity:** Managing bootstrap strap pins, strapping resistor tolerances, and GPIO multiplexing on the Ethernet switch IC.
+
+---
+
+### Task Status: Actions on Prior Commitments
+* **Debrief hardware schematic progress:** Completed across SFP, power rails, reset, and RJ45 subsections.
+* **Review file layout and skeleton code:** Completed; repository merged and verified by Auska and Yichi.
+* **Linux SPI register mapping:** Ongoing reverse-engineering of the upstream Linux driver implementation to identify functional switch offsets.
+
+---
+
+### Planned Tasks: Upcoming Week Action Items
+
+#### Auska
+
+* [ ] Define and document the flashing workflow for the STM32 external flash memory.
+* [ ] Implement the Ethernet switch initialization sequence and baseline register read/write access functions.
+* [ ] Map high-level switch register names to physical hexadecimal addresses using the Linux driver reference.
+* [ ] Format and submit targeted technical inquiries to Microchip support regarding unconfirmed register offsets.
+* [ ] Implement a software mock/stub layer for switch register access once interface definitions are complete.
+
+#### Madhawi
+
+* [ ] Complete hierarchical design implementation across all schematic sheets.
+* [ ] Model power sequencing logic and validate the active system shutdown sequence.
+* [ ] Integrate voltage sense circuits across critical switch and MCU power rails.
+* [ ] Execute a full schematic peer review.
+* [ ] Initiate PCB layer stackup design and generate controlled-impedance routing profiles (diff pairs and single-ended).
+* [ ] Finalize the complete Bill of Materials (BOM) and release components for purchasing.
+
+#### Yichi
+
+* [ ] Configure STM32 core peripherals, alternative function registers, and board-level pin assignments.
+* [ ] Implement remaining CLI command handlers and validate module boundaries.
+* [ ] Define SFP optical diagnostic parameters (RSSI, bias current, temperature) and operational health states.
+* [ ] Implement the initial health evaluation engine using mock SFP telemetry buffers.
+* [ ] Define exact optical failover trigger criteria, hysteresis limits, and state transition logic.
+
+#### Ethan
+
+* [ ] Audit Ethernet switch GPIO assignments, incorporating strapping modularity and diagnostic test point redundancy.
+* [ ] Add Zener transient/clamping diodes on sensitive supply lines for localized rail regulation and protection.
+* [ ] Align schematic block structure, global net names, and sheet infrastructure with Madhawi.
+* [ ] Complete hierarchical sheet linking and off-page connector rules.
+* [ ] Lead internal schematic cross-reviews.
+* [ ] Co-develop and audit the project BOM.
+
+---
+
+## Current project snapshot — September 28, 2026
 
 | Workstream | Status | Immediate gate |
 |---|---|---|
