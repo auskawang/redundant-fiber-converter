@@ -15,35 +15,31 @@ extern "C" {
 #endif
 
 /**
- * @brief Orchestrates the complete 4-phase startup and initialization sequence.
- * @return 0 on success, negative error code on failure.
+ * @brief Forwarding path selection mode for port connections and failover.
+ */
+typedef enum {
+    LAN96455_PATH_PRIMARY = 0,   /**< Route user & management traffic to Primary SFP (Port 5) */
+    LAN96455_PATH_FALLBACK = 1   /**< Route user & management traffic to Backup SFP (Port 6) */
+} lan96455_path_mode_t;
+
+/**
+ * @brief Complete single-function startup initialization for the Ethernet switch.
+ * @return 0 on success, negative error code (-1) on failure or timeout.
  */
 int lan96455_init(void);
 
 /**
- * @brief Side function: Verifies bidirectional SPI communication with the switch via write-and-readback.
- * @note Standalone diagnostic check; not part of the active startup sequence.
- * @return 0 on success, negative error code on failure.
+ * @brief Flushes internal packet queues and allows in-flight frames to drain.
+ * @return 0 on success, negative error code (-1) on failure.
  */
-int lan96455_verify_spi_comm(void);
+int lan96455_flush_queues(void);
 
 /**
- * @brief Phase 2: Issues a soft switch core reset, polls until completed, and sets operational padding.
- * @return 0 on success, negative error code on failure.
+ * @brief Configures port forwarding connections based on the selected path mode.
+ * @param mode Path selection (LAN96455_PATH_PRIMARY or LAN96455_PATH_FALLBACK).
+ * @return 0 on success, negative error code (-1) on failure.
  */
-int lan96455_soft_reset(void);
-
-/**
- * @brief Phase 3: Disables core, triggers internal SRAM BIST/init, polls for ready, and re-enables core.
- * @return 0 on success, negative error code on failure.
- */
-int lan96455_ram_init(void);
-
-/**
- * @brief Phase 4: Configures interrupts, TCAM, queue flushing, and port routing.
- * @return 0 on success, negative error code on failure.
- */
-int lan96455_subsystem_init(void);
+int lan96455_set_port_connections(lan96455_path_mode_t mode);
 
 /**
  * @brief Reads a 32-bit register from the switch via SPI with operational padding bytes.
@@ -60,6 +56,12 @@ int lan96455_read_reg(uint32_t reg_addr, uint32_t *value);
  * @return 0 on success, negative error code on failure.
  */
 int lan96455_write_reg(uint32_t reg_addr, uint32_t value);
+
+/**
+ * @brief Verifies bidirectional SPI communication with the switch via write-and-readback.
+ * @return 0 on success, negative error code on failure.
+ */
+int lan96455_verify_spi_comm(void);
 
 #ifdef __cplusplus
 }

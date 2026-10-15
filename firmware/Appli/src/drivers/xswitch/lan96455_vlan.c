@@ -11,11 +11,11 @@
 
 int lan96455_vlan_apply_primary_path(void)
 {
-
+    return lan96455_set_port_connections(LAN96455_PATH_PRIMARY);
 }
 
 int lan96455_vlan_apply_backup_path(void)
 {
-
+    return lan96455_set_port_connections(LAN96455_PATH_FALLBACK);
 }
 /* USER CODE END */

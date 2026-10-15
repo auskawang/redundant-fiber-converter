@@ -1,13 +1,13 @@
 /* USER CODE BEGIN */
 /**
  * @file lan96455_regs.h
- * @brief LAN9646 / LAN9645x Ethernet switch register address definitions and bitmasks.
+ * @brief LAN96455 Ethernet switch register address definitions and bitmasks.
  *
- * Mapped according to the Linux MFD and DSA driver architecture (lan9645x-spi / lan9645x_main).
+ * Organized by hardware component / subsystem.
  */
 
-#ifndef LAN96455_REGS_H
-#define LAN96455_REGS_H
+#ifndef _LAN96455_REGISTER_H_
+#define _LAN96455_REGISTER_H_
 
 #include <stdint.h>
 
@@ -15,79 +15,183 @@
 extern "C" {
 #endif
 
-/* ========================================================================== */
-/* DEVCPU_GCB (General Configuration Block) Register Map                       */
-/* ========================================================================== */
-#define DEVCPU_GCB_BASE                     0x00004000U
+/* =========================================================================
+ * 1. Target Base Addresses
+ * ========================================================================= */
+#define TARGET_DEVCPU_GCB_BASE              0x000000U
+#define TARGET_DEV_BASE                     0x010000U
+#define TARGET_QS_BASE                      0x020000U
+#define TARGET_HSIO_BASE                    0x030000U
+#define TARGET_SYS_BASE                     0x040000U
+#define TARGET_ANA_BASE                     0x050000U
+#define TARGET_QSYS_BASE                    0x060000U
+#define TARGET_REW_BASE                     0x070000U
 
-/* Chip Identification and Reset */
-#define DEVCPU_GCB_CHIP_ID                  (DEVCPU_GCB_BASE + 0x0000U)
-#define DEVCPU_GCB_SOFT_RST                 (DEVCPU_GCB_BASE + 0x0010U)
+/* =========================================================================
+ * 2. Port Definitions & Bitmasks
+ * ========================================================================= */
+#define PORT_PC                             0
+#define PORT_STM32_RGMII                    4
+#define PORT_SFP_PRIMARY                    5
+#define PORT_SFP_BACKUP                     6
 
-/* DEVCPU_GCB:CHIP_REGS:SOFT_RST bitmasks */
-#define SOFT_CHIP_RST                       (1U << 0)   /**< Full chip reset */
-#define SOFT_SWC_RST                        (1U << 1)   /**< Soft switch core reset */
+#define PORT_MASK_PC                        (1U << PORT_PC)
+#define PORT_MASK_STM32                     (1U << PORT_STM32_RGMII)
+#define PORT_MASK_SFP_PRIMARY               (1U << PORT_SFP_PRIMARY)
+#define PORT_MASK_SFP_BACKUP                (1U << PORT_SFP_BACKUP)
 
-/* Serial Interface (SI / SPI) Control and Configuration */
-#define DEVCPU_GCB_IF_CTRL                  (DEVCPU_GCB_BASE + 0x001CU)
-#define DEVCPU_GCB_IF_CFGSTAT               (DEVCPU_GCB_BASE + 0x0020U)
+#define ALL_PORTS_MASK                      0x1FFU  /* Ports 0 through 8 */
+#define ALL_PHYS_PORTS_MASK                 0x1FFU
 
-/* IF_CTRL bit definitions */
-#define IF_CTRL_BIG_ENDIAN                  (0U)        /**< Hardware default: Big-Endian byte order */
-#define IF_CTRL_LITTLE_ENDIAN               (1U << 0)
-#define IF_CTRL_MSB_FIRST                   (0U)        /**< Hardware default: MSB-first bit order */
+/* =========================================================================
+ * 3. DEVCPU_GCB Component (General Configuration Block / Interface Control)
+ * ========================================================================= */
+#define DEVCPU_GCB_IF_CTRL                  (TARGET_DEVCPU_GCB_BASE + 0x0000U)
+#define DEVCPU_GCB_IF_CFGSTAT               (TARGET_DEVCPU_GCB_BASE + 0x0004U)
 
-/* IF_CFGSTAT bitmasks & constants */
-#define IF_CFGSTAT_PADDING_MASK             0x0000000FU
-#define IF_CFGSTAT_PADDING_SHIFT            0U
-#define LAN9645X_SPI_DEFAULT_PADDING        15U         /**< Power-up / post-reset default dummy bytes */
-#define LAN9645X_SPI_OPERATIONAL_PADDING    2U          /**< Operational dummy bytes at target SPI clock */
+#define DEVCPU_GCB_IF_CTRL_LITTLE_ENDIAN    0x00000000U
+#define DEVCPU_GCB_IF_CFGSTAT_DUMMY_BYTES   0x00000001U
 
-/* ========================================================================== */
-/* SYS (System & Switch Core) Register Map                                   */
-/* ========================================================================== */
-#define SYS_BASE                            0x00010000U
+/* =========================================================================
+ * 4. SYS Component (System, Core Reset, Memory BIST, Buffer Watermarks, Aging)
+ * ========================================================================= */
+#define SYS_RESET_CFG                       (TARGET_SYS_BASE + 0x0114U)
+#define SYS_RAM_INIT                        (TARGET_SYS_BASE + 0x0274U)
+#define SYS_FRM_AGING                       (TARGET_SYS_BASE + 0x0174U)
+#define SYS_ATOP_BASE                       (TARGET_SYS_BASE + 0x0180U)
+#define SYS_ATOP_PORT(p)                    (SYS_ATOP_BASE + ((uint32_t)(p) << 2))
 
-#define SYS_RESET_CFG                       (SYS_BASE + 0x0000U)
-#define SYS_RAM_INIT                        (SYS_BASE + 0x0004U)
+#define SYS_ATOP_PORT0                      SYS_ATOP_PORT(0)
+#define SYS_ATOP_PORT4                      SYS_ATOP_PORT(4)
+#define SYS_ATOP_PORT5                      SYS_ATOP_PORT(5)
+#define SYS_ATOP_PORT6                      SYS_ATOP_PORT(6)
 
-/* SYS:RESET_CFG bitmasks */
-#define SYS_RESET_CFG_CORE_ENA              (1U << 0)   /**< Switch packet engine core enable */
+#define SYS_ATOP_TOT_CFG                    (TARGET_SYS_BASE + 0x01ACU)
 
-/* SYS:RAM_INIT bitmasks */
-#define SYS_RAM_INIT_RAM_INIT               (1U << 0)   /**< Start internal SRAM initialization / BIST */
+#define SYS_RESET_CFG_CORE_DIS              0x00000000U
+#define SYS_RESET_CFG_CORE_ENA              0x00000001U
+#define SYS_RAM_INIT_START                  0x00000001U
+#define SYS_RAM_INIT_BUSY                   0x00000001U
+#define SYS_FRM_AGING_2SEC                  0x00000002U
 
-/* ========================================================================== */
-/* QS (Queue System) Register Map                                             */
-/* ========================================================================== */
-#define QS_BASE                             0x00020000U
-#define QS_XTR_FLUSH                        (QS_BASE + 0x0004U)
-#define QS_XTR_FLUSH_DRAIN                  (1U << 0)
+#define TAIL_DROP_PER_PORT                  (1700U / 64U)
+#define TAIL_DROP_TOTAL_BUF                 (128U * 1024U / 64U)
 
-/* ========================================================================== */
-/* Port Configuration Registers                                               */
-/* ========================================================================== */
-#define LAN96455_PORT_BASE(p)               (0x00030000U + ((uint32_t)(p) * 0x0100U))
-#define LAN96455_REG_PORT_CTRL(p)           (LAN96455_PORT_BASE(p) + 0x00U)
-#define LAN96455_REG_PORT_STATUS(p)         (LAN96455_PORT_BASE(p) + 0x04U)
-#define LAN96455_REG_PORT_FWD_MASK(p)       (LAN96455_PORT_BASE(p) + 0x08U)
-#define LAN96455_REG_PORT_VLAN(p)           (LAN96455_PORT_BASE(p) + 0x0CU)
+/* =========================================================================
+ * 5. ANA Component (Analyzer, MAC/VLAN Table, Port Drops, Aging, PGID Routing)
+ * ========================================================================= */
+#define ANA_MACACCESS                       (TARGET_ANA_BASE + 0x061CU)
+#define ANA_MACACCESS_CMD_IDLE              0x00000000U
+#define ANA_MACACCESS_CMD_INIT              0x00000005U
+#define ANA_MACACCESS_CMD_MASK              0x0000000FU
 
-#define LAN96455_PORT_ENABLE                (1U << 0)
-#define LAN96455_PORT_LINK_UP               (1U << 1)
+#define ANA_VLANACCESS                      (TARGET_ANA_BASE + 0x0670U)
+#define ANA_VLANMASK                        (TARGET_ANA_BASE + 0x02A8U)
+#define ANA_VLANACCESS_CMD_INIT             0x00000000U
+#define ANA_VLANACCESS_CMD_MASK             0x00000003U
 
-/* ========================================================================== */
-/* Timing and Timeout Thresholds                                              */
-/* ========================================================================== */
-#define LAN9645X_RESET_HOLD_MS              10U
-#define LAN9645X_STABILIZATION_DELAY_MS     15U
-#define LAN9645X_GCB_RST_TIMEOUT_MS         100U
-#define LAN9645X_RAM_INIT_TIMEOUT_MS        100U
-#define LAN9645X_POLL_INTERVAL_MS           1U
+#define ANA_AUTOAGE                         (TARGET_ANA_BASE + 0x0280U)
+#define ANA_ADVLEARN                        (TARGET_ANA_BASE + 0x02A4U)
+#define ANA_AUTOAGE_PERIOD_1SEC             0x00000001U
+#define ANA_ADVLEARN_VLAN_CHK_DIS           0x00000001U
+
+#define ANA_DROP_CFG_BASE                   (TARGET_ANA_BASE + 0x0260U)
+#define ANA_DROP_CFG_PORT(p)                (ANA_DROP_CFG_BASE + ((uint32_t)(p) << 2))
+#define ANA_DROP_CFG_DROP_MC_SMAC           0x00000001U
+
+#define ANA_PORT_CFG_BASE                   (TARGET_ANA_BASE + 0x0700U)
+#define ANA_PORT_CFG_PORT(p)                (ANA_PORT_CFG_BASE + ((uint32_t)(p) << 2))
+#define ANA_PORT_CFG_VAL(port)              ((1U << 4) | (0U << 3) | (((uint32_t)(port)) & 0x7U))
+
+#define ANA_PGID_BASE                       (TARGET_ANA_BASE + 0x6C00U)
+#define PGID_ENTRIES_COUNT                  92U
+#define ANA_PGID_ENTRY(i)                   (ANA_PGID_BASE + (((uint32_t)(i)) << 3))
+#define ANA_PGID_CFG_ENTRY(i)               (ANA_PGID_BASE + (((uint32_t)(i)) << 3) + 4U)
+#define ANA_PGID_CFG_OBEY_VLAN_DIS          0x00000000U
+
+/* PGID Index Constants */
+#define PGID_MC_INDEX                       64U
+#define PGID_MCIPV4_INDEX                   65U
+#define PGID_MCIPV6_INDEX                   66U
+#define PGID_SRC_BASE_INDEX                 80U
+#define PGID_UC_INDEX                       82U
+#define PGID_BC_INDEX                       83U
+
+/* Flooding PGID Registers */
+#define ANA_PGID_MC                         (ANA_PGID_BASE + (PGID_MC_INDEX << 3))
+#define ANA_PGID_MCIPV4                     (ANA_PGID_BASE + (PGID_MCIPV4_INDEX << 3))
+#define ANA_PGID_MCIPV6                     (ANA_PGID_BASE + (PGID_MCIPV6_INDEX << 3))
+#define ANA_PGID_UC                         (ANA_PGID_BASE + (PGID_UC_INDEX << 3))
+#define ANA_PGID_BC                         (ANA_PGID_BASE + (PGID_BC_INDEX << 3))
+
+/* Ingress Source Port Mask Registers (PGID_SRC: 80-88) */
+#define ANA_PGID_SRC_PORT0                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 0U) << 3))
+#define ANA_PGID_SRC_PORT4                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 4U) << 3))
+#define ANA_PGID_SRC_PORT5                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 5U) << 3))
+#define ANA_PGID_SRC_PORT6                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 6U) << 3))
+
+/* =========================================================================
+ * 6. REW Component (Rewriter & Tagging Configuration)
+ * ========================================================================= */
+#define REW_PORT_VLAN_CFG_BASE              (TARGET_REW_BASE + 0x0000U)
+#define REW_TAG_CFG_BASE                    (TARGET_REW_BASE + 0x0004U)
+
+#define REW_PORT_VLAN_CFG(p)                (REW_PORT_VLAN_CFG_BASE + (((uint32_t)(p)) << 4))
+#define REW_TAG_CFG(p)                      (REW_TAG_CFG_BASE + (((uint32_t)(p)) << 4))
+
+#define REW_PORT_VLAN_CFG_PORT0             REW_PORT_VLAN_CFG(0)
+#define REW_PORT_VLAN_CFG_PORT4             REW_PORT_VLAN_CFG(4)
+#define REW_PORT_VLAN_CFG_PORT5             REW_PORT_VLAN_CFG(5)
+#define REW_PORT_VLAN_CFG_PORT6             REW_PORT_VLAN_CFG(6)
+
+#define REW_TAG_CFG_PORT0                   REW_TAG_CFG(0)
+#define REW_TAG_CFG_PORT4                   REW_TAG_CFG(4)
+#define REW_TAG_CFG_PORT5                   REW_TAG_CFG(5)
+#define REW_TAG_CFG_PORT6                   REW_TAG_CFG(6)
+
+#define REW_TAG_CFG_DISABLED                0x00000000U
+
+/* =========================================================================
+ * 7. QS Component (Queue System / Buffer Flushing)
+ * ========================================================================= */
+#define QS_XTR_FLUSH                        (TARGET_QS_BASE + 0x003CU)
+#define QS_XTR_FLUSH_ALL                    0x00000003U
+#define QS_XTR_FLUSH_NORMAL                 0x00000000U
+
+/* =========================================================================
+ * 8. QSYS Component (Queue System Resource Configuration & Misc Setup)
+ * ========================================================================= */
+#define QSYS_RES_CFG_BASE                   (TARGET_QSYS_BASE + 0x0000U)
+#define QSYS_Q_RSRV_COUNT                   215U
+
+#define QSYS_RES_CFG_EGRESS(i)              (QSYS_RES_CFG_BASE + (((uint32_t)(i)) << 2))
+#define QSYS_RES_CFG_INGRESS(i)             (QSYS_RES_CFG_BASE + (((512U + (uint32_t)(i))) << 2))
+#define BUFFER_RESERVE_1700B                (1700U / 64U)
+
+#define QSYS_MISC_CFG                       (TARGET_QSYS_BASE + 0x0118U)
+#define QSYS_MISC_CFG_DEV4_RGMII_ENA        0x00000001U
+
+/* =========================================================================
+ * 9. DEV Component (Device / Port Clocks & Frame Length)
+ * ========================================================================= */
+#define DEV_CLOCK_CFG_BASE                  (TARGET_DEV_BASE + 0x0000U)
+#define DEV_MAC_MAXLEN_CFG_BASE             (TARGET_DEV_BASE + 0x0020U)
+
+#define DEV_CLOCK_CFG_PORT(p)               (DEV_CLOCK_CFG_BASE + (((uint32_t)(p)) << 6))
+#define DEV_MAC_MAXLEN_CFG_PORT(p)          (DEV_MAC_MAXLEN_CFG_BASE + (((uint32_t)(p)) << 6))
+
+#define DEV_CLOCK_CFG_PCS_RUN               0x00000000U
+#define MAC_MAXLEN_1518                     0x000005EEU
+
+/* =========================================================================
+ * 10. HSIO Component (High Speed I/O Configuration)
+ * ========================================================================= */
+#define HSIO_HW_CFG                         (TARGET_HSIO_BASE + 0x0000U)
+#define HSIO_HW_CFG_RGMII_PORT4_ENA         ((1U << 4) | (1U << 0))
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LAN96455_REGS_H */
+#endif /* _LAN96455_REGISTER_H_ */
 /* USER CODE END */

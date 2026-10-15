@@ -45,8 +45,11 @@ int main(void)
     /* 4. Power Sequencing & Hardware Reset of Switch (Phase 1) */
     app_init_power_sequence();
 
-    /* 5. Initialize LAN96455 Managed Switch (Phases 2-4) */
-    lan96455_init();
+    /* 5. Initialize LAN96455 Managed Switch */
+    if (lan96455_init() == -1)
+    {
+        /* Leave blank for now */
+    }
 
     /* 6. Initialize Diagnostics & Logging */
     diagnostics_init();
