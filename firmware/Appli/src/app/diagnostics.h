@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file diagnostics.h
  * @brief Diagnostic event logging, link statistics, and error ring buffer.
@@ -61,3 +62,4 @@ void diagnostics_get_stats(diag_stats_t *stats);
 #endif
 
 #endif /* DIAGNOSTICS_H */
+/* USER CODE END */

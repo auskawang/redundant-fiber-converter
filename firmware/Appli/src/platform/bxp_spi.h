@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_spi.h
  * @brief STM32N6 SPI peripheral initialization and low-level register transfer routines.
@@ -48,3 +49,4 @@ int bxp_spi_write_reg(uint32_t reg_addr, uint32_t value);
 #endif
 
 #endif /* BXP_SPI_H */
+/* USER CODE END */

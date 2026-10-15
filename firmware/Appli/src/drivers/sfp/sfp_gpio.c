@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file sfp_gpio.c
  * @brief Implementation of SFP discrete pin controls.
@@ -46,3 +47,4 @@ void sfp_gpio_los_isr_callback(void)
         path_manager_trigger_event(PATH_EVENT_RESTORE);
     }
 }
+/* USER CODE END */

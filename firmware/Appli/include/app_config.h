@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file app_config.h
  * @brief Global build flags, feature toggles, and system operational thresholds.
@@ -42,3 +43,4 @@ extern "C" {
 #endif
 
 #endif /* APP_CONFIG_H */
+/* USER CODE END */

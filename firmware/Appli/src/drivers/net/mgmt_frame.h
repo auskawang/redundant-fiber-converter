@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file mgmt_frame.h
  * @brief Proprietary Layer-2 management frame formatting and serialization for peer sync.
@@ -37,3 +38,4 @@ int mgmt_frame_parse(const uint8_t *frame, uint16_t length, peer_msg_t *msg);
 #endif
 
 #endif /* MGMT_FRAME_H */
+/* USER CODE END */

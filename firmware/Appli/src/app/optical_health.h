@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file optical_health.h
  * @brief Optical telemetry (DDM) monitoring: RSSI, temperature, voltage, and bias current.
@@ -48,3 +49,4 @@ optical_status_t optical_health_get_status(void);
 #endif
 
 #endif /* OPTICAL_HEALTH_H */
+/* USER CODE END */

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_driver.h
  * @brief LAN9646 / LAN9645x SPI communication and core register access.
@@ -65,3 +66,4 @@ int lan96455_write_reg(uint32_t reg_addr, uint32_t value);
 #endif
 
 #endif /* LAN96455_DRIVER_H */
+/* USER CODE END */

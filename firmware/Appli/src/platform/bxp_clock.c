@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_clock.c
  * @brief STM32N6 system clock configuration implementation.
@@ -45,3 +46,4 @@ void bxp_clock_init(void)
         while (1);
     }
 }
+/* USER CODE END */

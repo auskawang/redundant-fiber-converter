@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_gpio.c
  * @brief STM32N6 GPIO configuration and EXTI ISR routing implementation.
@@ -98,3 +99,4 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
         lan96455_irq_handler_callback();
     }
 }
+/* USER CODE END */

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file eth_rgmii.c
  * @brief Ethernet RGMII driver implementation.
@@ -33,3 +34,4 @@ int eth_rgmii_receive_frame(uint8_t *buffer, uint16_t *length)
     *length = 0;
     return -2; /* No frame available */
 }
+/* USER CODE END */

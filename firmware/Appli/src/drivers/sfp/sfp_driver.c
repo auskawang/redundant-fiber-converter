@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file sfp_driver.c
  * @brief SFP I2C driver implementation for DDM reading.
@@ -57,3 +58,4 @@ int sfp_driver_read_id(uint8_t *buffer, uint16_t length)
     }
     return bxp_i2c_read(SFP_I2C_ADDR_A0, 0, buffer, length);
 }
+/* USER CODE END */

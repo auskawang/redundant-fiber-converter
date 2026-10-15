@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file peer_comm.h
  * @brief Inter-STM32 heartbeat protocol and failover synchronization.
@@ -48,3 +49,4 @@ bool peer_comm_is_peer_alive(void);
 #endif
 
 #endif /* PEER_COMM_H */
+/* USER CODE END */

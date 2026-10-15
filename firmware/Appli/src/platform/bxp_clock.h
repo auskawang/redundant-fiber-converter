@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_clock.h
  * @brief STM32N6 clock tree configuration and power scaling.
@@ -20,3 +21,4 @@ void bxp_clock_init(void);
 #endif
 
 #endif /* BXP_CLOCK_H */
+/* USER CODE END */

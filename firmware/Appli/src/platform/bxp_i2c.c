@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_i2c.c
  * @brief STM32N6 I2C master driver implementation for SFP telemetry.
@@ -33,3 +34,4 @@ int bxp_i2c_write(uint16_t dev_addr, uint8_t mem_addr, const uint8_t *data, uint
     /* Wrap HAL_I2C_Mem_Write */
     return 0;
 }
+/* USER CODE END */

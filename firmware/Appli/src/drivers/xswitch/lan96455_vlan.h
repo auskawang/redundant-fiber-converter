@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_vlan.h
  * @brief Port forwarding masks, VLAN isolation, and failover path redirection.
@@ -30,3 +31,4 @@ int lan96455_vlan_apply_backup_path(void);
 #endif
 
 #endif /* LAN96455_VLAN_H */
+/* USER CODE END */

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_driver.c
  * @brief Switch driver implementation using SPI peripheral.
@@ -184,3 +185,4 @@ int lan96455_init(void)
 
     return 0;
 }
+/* USER CODE END */

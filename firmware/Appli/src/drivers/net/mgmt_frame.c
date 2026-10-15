@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file mgmt_frame.c
  * @brief Management frame serialization implementation.
@@ -66,3 +67,4 @@ int mgmt_frame_parse(const uint8_t *frame, uint16_t length, peer_msg_t *msg)
 
     return 0;
 }
+/* USER CODE END */

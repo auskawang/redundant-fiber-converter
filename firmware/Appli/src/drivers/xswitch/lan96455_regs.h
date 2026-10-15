@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_regs.h
  * @brief LAN9646 / LAN9645x Ethernet switch register address definitions and bitmasks.
@@ -89,3 +90,4 @@ extern "C" {
 #endif
 
 #endif /* LAN96455_REGS_H */
+/* USER CODE END */

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file diagnostics.c
  * @brief Diagnostic ring buffer and statistics tracking implementation.
@@ -51,3 +52,4 @@ void diagnostics_get_stats(diag_stats_t *stats)
         *stats = system_stats;
     }
 }
+/* USER CODE END */

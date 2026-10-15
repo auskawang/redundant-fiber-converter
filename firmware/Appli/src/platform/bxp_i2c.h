@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_i2c.h
  * @brief STM32N6 I2C peripheral initialization and master transfer routines for SFP.
@@ -43,3 +44,4 @@ int bxp_i2c_write(uint16_t dev_addr, uint8_t mem_addr, const uint8_t *data, uint
 #endif
 
 #endif /* BXP_I2C_H */
+/* USER CODE END */

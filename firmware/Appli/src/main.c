@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file main.c
  * @brief Application entry point: system boot, peripheral init, and task scheduling.
@@ -84,3 +85,4 @@ void Error_Handler(void)
     {
     }
 }
+/* USER CODE END */

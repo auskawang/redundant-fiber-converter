@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file sfp_driver.h
  * @brief SFP optical transceiver I2C communication (SFF-8472 DDM & SFF-8074 EEPROM).
@@ -55,3 +56,4 @@ int sfp_driver_read_id(uint8_t *buffer, uint16_t length);
 #endif
 
 #endif /* SFP_DRIVER_H */
+/* USER CODE END */

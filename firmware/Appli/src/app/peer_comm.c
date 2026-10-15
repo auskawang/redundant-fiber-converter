@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file peer_comm.c
  * @brief Inter-STM32 heartbeat and sync implementation.
@@ -82,3 +83,4 @@ void peer_comm_rx_callback(const peer_msg_t *msg)
         peer_alive = true;
     }
 }
+/* USER CODE END */

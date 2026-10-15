@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file optical_health.c
  * @brief Optical DDM evaluation and health monitoring implementation.
@@ -84,3 +85,4 @@ optical_status_t optical_health_get_status(void)
 {
     return current_status;
 }
+/* USER CODE END */

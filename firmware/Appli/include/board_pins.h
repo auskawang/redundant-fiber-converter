@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file board_pins.h
  * @brief Board-level pin definitions, GPIO ports, and hardware interface mappings.
@@ -71,3 +72,4 @@ extern "C" {
 #endif
 
 #endif /* BOARD_PINS_H */
+/* USER CODE END */

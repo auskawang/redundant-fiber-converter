@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_irq.h
  * @brief LAN9646 / LAN96455 interrupt service routines and port change notifications.
@@ -29,3 +30,4 @@ void lan96455_irq_handler_callback(void);
 #endif
 
 #endif /* LAN96455_IRQ_H */
+/* USER CODE END */

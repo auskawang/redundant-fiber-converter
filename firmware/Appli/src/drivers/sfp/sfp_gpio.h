@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file sfp_gpio.h
  * @brief SFP control and status discrete pins (TX_DISABLE, LOS IRQs, MOD_ABS).
@@ -47,3 +48,4 @@ void sfp_gpio_los_isr_callback(void);
 #endif
 
 #endif /* SFP_GPIO_H */
+/* USER CODE END */

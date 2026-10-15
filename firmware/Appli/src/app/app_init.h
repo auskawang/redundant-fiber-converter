@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file app_init.h
  * @brief Board power sequencing and peripheral hardware RESET_N control.
@@ -33,3 +34,4 @@ void app_init_reset_phys(void);
 #endif
 
 #endif /* APP_INIT_H */
+/* USER CODE END */

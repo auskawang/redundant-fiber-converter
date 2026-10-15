@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_gpio.h
  * @brief STM32N6 GPIO clocking, pin configuration, and EXTI interrupt routing.
@@ -20,3 +21,4 @@ void bxp_gpio_init(void);
 #endif
 
 #endif /* BXP_GPIO_H */
+/* USER CODE END */

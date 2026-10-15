@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file eth_rgmii.h
  * @brief STM32N6 Ethernet MAC and RGMII interface frame transmission and reception.
@@ -42,3 +43,4 @@ int eth_rgmii_receive_frame(uint8_t *buffer, uint16_t *length);
 #endif
 
 #endif /* ETH_RGMII_H */
+/* USER CODE END */

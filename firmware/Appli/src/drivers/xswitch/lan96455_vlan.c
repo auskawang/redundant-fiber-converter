@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_vlan.c
  * @brief Port forwarding masks and VLAN path steering implementation.
@@ -17,3 +18,4 @@ int lan96455_vlan_apply_backup_path(void)
 {
 
 }
+/* USER CODE END */

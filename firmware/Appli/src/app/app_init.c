@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file app_init.c
  * @brief Power sequencing and reset line control implementation.
@@ -27,3 +28,4 @@ void app_init_reset_switch(void)
 
     HAL_Delay(15);  //TODO: replace with required time for switch PLL and clock to be ready
 }
+/* USER CODE END */

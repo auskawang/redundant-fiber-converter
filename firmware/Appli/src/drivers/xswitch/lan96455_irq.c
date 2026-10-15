@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file lan96455_irq.c
  * @brief Switch interrupt handling and status decoding implementation.
@@ -26,3 +27,4 @@ void lan96455_irq_handler_callback(void)
 //        diagnostics_log_event(DIAG_SEV_WARNING, "Switch: Hardware IRQ triggered");
 //    }
 }
+/* USER CODE END */

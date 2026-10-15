@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file bxp_spi.c
  * @brief STM32N6 SPI bus driver implementation for switch control.
@@ -127,3 +128,4 @@ int bxp_spi_write_reg(uint32_t reg_addr, uint32_t value)
     HAL_GPIO_WritePin(PIN_SWITCH_CS_N_PORT, PIN_SWITCH_CS_N_PIN, GPIO_PIN_SET);
     return 0;
 }
+/* USER CODE END */

@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file path_manager.c
  * @brief Primary/backup failover state machine implementation.
@@ -81,3 +82,4 @@ path_state_t path_manager_get_state(void)
 {
 //    return current_state;
 }
+/* USER CODE END */

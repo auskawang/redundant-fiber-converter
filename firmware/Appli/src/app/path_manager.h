@@ -1,3 +1,4 @@
+/* USER CODE BEGIN */
 /**
  * @file path_manager.h
  * @brief Primary/backup failover state machine and path switching logic.
@@ -58,3 +59,4 @@ path_state_t path_manager_get_state(void);
 #endif
 
 #endif /* PATH_MANAGER_H */
+/* USER CODE END */
