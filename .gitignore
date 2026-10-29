@@ -6,15 +6,16 @@
 # Build Directories & Managed Build Output
 # ------------------------------------------------------------------------------
 # Ignore Debug and Release build directories anywhere in the repository
-Debug/
-Release/
-[Dd]ebug/
-[Rr]elease/
 **/Debug/
 **/Release/
+**/build/
+**/build-migration-*/
 
-# Managed build generated makefiles and lists
-makefile
+AGENTS.md
+GEMINI.md
+
+# Managed build lists (generated makefiles are inside ignored build directories).
+# Keep hand-written Makefiles versioned.
 objects.mk
 sources.mk
 subdir.mk
@@ -38,6 +39,7 @@ objects.list
 *.hex
 *.srec
 *.axf
+*.stldr
 
 # Linker memory map & assembly listing files
 *.map
@@ -49,6 +51,9 @@ objects.list
 # ------------------------------------------------------------------------------
 # Eclipse workspace metadata (created if workspace is set in or near repo root)
 .metadata/
+
+# Keep .project, .cproject, .mxproject, .ioc, linker scripts, and shared
+# .settings files versioned so CubeIDE projects can be imported and rebuilt.
 
 # STM32CubeIDE project preferences (contains volatile file/IOC checksums updated on every build)
 stm32cubeide.project.prefs

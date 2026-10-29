@@ -51,6 +51,8 @@ extern "C" {
 
 #define DEVCPU_GCB_IF_CTRL_LITTLE_ENDIAN    0x00000000U
 #define DEVCPU_GCB_IF_CFGSTAT_DUMMY_BYTES   0x00000001U
+#define LAN9645X_SPI_DEFAULT_PADDING        15U         /**< Power-up / post-reset default dummy bytes */
+#define LAN9645X_SPI_OPERATIONAL_PADDING    2U          /**< Operational dummy bytes at target SPI clock */
 
 /* =========================================================================
  * 4. SYS Component (System, Core Reset, Memory BIST, Buffer Watermarks, Aging)
