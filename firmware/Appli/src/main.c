@@ -206,7 +206,7 @@ static void MX_ETH1_Init(void)
     heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
     heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
   }
-  heth1.Init.RxBuffLen = 8;
+  heth1.Init.RxBuffLen = 64;
 
   /* USER CODE BEGIN MACADDRESS */
 
@@ -249,6 +249,9 @@ static void MX_ETH1_Init(void)
   HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &RIMC_master);
 
   /* RIF-Aware IPs Config */
+
+  /* set up PWR configuration */
+  HAL_PWR_ConfigAttributes(PWR_ITEM_0,PWR_SEC_NPRIV);
 
   /* set up GPIO configuration */
   HAL_GPIO_ConfigPinAttributes(GPIOD,GPIO_PIN_1,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
