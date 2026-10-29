@@ -587,28 +587,220 @@ System integration and bring-up are collaborative team activities.
 
 ---
 
-## Current project snapshot — September 28, 2026
+## Monday, October 5, 2026 — PHOTON Weekly Update
+
+**Objective:** Debrief completion of full schematic peer review, verify transition into PCB layout and stackup definition, track progress on switch register extraction and power sequencing, and align hardware purchasing with firmware bring-up planning.
+
+### Current Status
+
+#### Schematic Design
+
+* Completed schematic design across all functional blocks.
+* Finished full internal schematic peer review.
+
+#### PCB Layout
+
+* Defined layer stackup configuration.
+* Calculated and finalized controlled-impedance routing profiles (differential pairs and single-ended nets).
+
+#### Firmware Design
+
+* Finalized repository directory structure and architectural file layout.
+* Outlined power sequencing and hardware initialization routine for the Ethernet switch IC.
+* Actively gathering and cross-referencing required register offsets and addresses for switch initialization and runtime path switching.
+* Awaiting official technical clarification from Microchip support.
+
+#### Friction Points & Risks
+
+* **Microchip Support Lag:** Ongoing delays in direct communication regarding unconfirmed register offsets, strapping behaviors, and SPI interface quirks.
+* **Budget Limitations & Contingency Planning:** Constrained project capital requiring tight BOM cost tracking and structured sourcing contingencies across vendors.
+
+---
+
+### Task Status: Actions on Prior Commitments
+
+* **Execute full schematic peer review:** Completed; design verified across all functional subsections.
+* **Consolidate Bill of Materials (BOM):** Completed initial BOM audit and component pricing rollup.
+* **Define PCB stackup & impedance:** Completed; layer count and transmission line profiles finalized.
+* **Initiate board layout:** Completed preliminaries; transitioning directly into component placement.
+
+---
+
+### Planned Tasks: Upcoming Week Action Items
+
+#### Auska
+
+* Research and finalize STM32 external NOR flash memory interface architecture and flashing workflow.
+* Isolate and verify the exact switch register set required for dynamic optical path switching.
+
+#### Madhawi
+
+* Execute critical component placement on the PCB layout.
+* Route critical nets and complete approximately 80% of board layout routing.
+
+#### Yichi
+
+* Configure STM32 core peripherals, alternate function mapping, and pin assignments.
+* Finalize remaining CLI command handlers and verify module interface boundaries.
+* Define SFP optical diagnostic telemetry parameters (RSSI, bias current, temperature) and operational health thresholds.
+* Implement initial optical health evaluation logic using mock SFP telemetry buffers.
+* Define precise failover trigger criteria, hysteresis margins, and state transition logic.
+
+#### Ethan
+
+* Finalize and split consolidated BOM into order streams:
+* Procure personal/direct-purchase parts.
+* Submit requisition for auxiliary components through the ECE Shop.
+* Outline hardware bring-up and board validation test plan.
+* Initiate Senior Design Expo project documentation and presentation assets.
+
+---
+
+## Monday, October 12, 2026 — PHOTON Weekly Update
+
+**Objective:** Finalize component placement across dense MCU passives, track progression toward complete board routing, consolidate individual firmware modules, and validate Ethernet switch registers and DMA infrastructure against project deadlines.
+
+### Current Status
+
+#### Schematic Design
+
+* Finalized complete schematic design across all subsections.
+
+#### PCB Layout
+
+* Completed local component placement for main functional sheets.
+* Actively executing component placement for STM32 GPIO-associated passive components and decoupling networks.
+
+#### Firmware Design
+
+* Finalizing implementation and unit testing across individual firmware modules.
+* Pre-integrating peripheral drivers with baseline architectural skeletons.
+
+#### Friction Points & Risks
+
+* **Ethernet Switch Hardware Configuration Complexity:** Managing dense strap pin definitions, impedance tolerances, and peripheral routing overhead under strict space constraints.
+* **PCB Layout Schedule Compression:** Tightly compressed timeline to finish routing, verify design rules (DRC), and release files for fabrication.
+* **Microchip Support Communication & Documentation Access:** Continued friction obtaining complete register-level documentation and prompt technical feedback on edge-case switch behaviors.
+
+---
+
+### Task Status: Actions on Prior Commitments
+
+* **Execute PCB component placement:** Completed ~70% of total component placement across major functional blocks.
+* **Isolate path-switching registers:** Identified and documented the specific Ethernet switch register set required for runtime optical path switching.
+* **Define external memory execution workflow:** Generalized and documented the complete toolchain process for flashing and executing code from external NOR flash on the STM32.
+
+---
+
+### Planned Tasks: Upcoming Week Action Items
+
+#### Auska
+
+* Configure and implement DMA-driven Ethernet frame transmission routines.
+* Cross-reference and verify switch initialization sequence and register offsets directly against upstream Linux driver source.
+
+#### Madhawi
+
+* Complete remaining PCB component placement and finalize 100% of board routing.
+* Execute full design rule check (DRC) and release the finalized BOM for procurement.
+
+#### Yichi
+
+* Finalize precise optical failover threshold values, hysteresis margins, and transition rules.
+* Update and refine the core failover decision algorithm.
+* Execute automated integration tests of the failover state machine using synthetic SFP telemetry buffers.
+
+#### Ethan
+
+* Audit and synthesize Microchip technical support feedback regarding schematic review points and firmware driver feasibility.
+* Consolidate and execute procurement streams across the project BOM:
+* Place orders for direct personal/team-purchased components.
+* Submit official requisition orders for auxiliary components via the ECE Shop.
+
+
+* Continue outlining the post-assembly hardware bring-up and verification plan.
+* Draft initial Senior Design Expo presentation assets and project documentation.
+
+---
+
+## Monday, October 19, 2026 — PHOTON Weekly Update
+
+**Objective:** Transition board layout from finalized placement to power delivery routing, prepare PCB files for fabrication release by week's end, implement Ethernet transmission and power sequencing firmware, and migrate core platform code into the target IDE environment.
+
+### Current Status
+
+#### PCB Layout
+
+* Finalized component placement across all functional sheets.
+* Initiating power delivery network (PDN) routing, rail geometry, and plane pours.
+
+#### Firmware Design
+
+* Finalizing individual firmware module implementations and isolated interface tests.
+
+#### Friction Points & Risks
+
+* **PCB Layout Schedule Compression & Timeline Delays:** Tight delivery window to finish critical routing, complete design reviews, and submit files for board fabrication by week's end.
+* **Microchip Support Communication & Documentation Access:** Continued delays in direct technical escalations regarding unconfirmed switch registers and operational edge cases.
+
+---
+
+### Task Status: Actions on Prior Commitments
+
+* **Execute PCB component placement:** Completed ~99% of component placement across the board.
+* **Procure Bill of Materials (BOM):** Finalized and submitted all component purchasing orders.
+* **Verify Ethernet switch control:** Validated the baseline hardware initialization sequence and path-switching procedures.
+
+---
+
+### Planned Tasks: Upcoming Week Action Items
+
+#### Auska
+
+* Develop and validate firmware routines for raw Ethernet frame transmission.
+* Analyze and specify supply rail power sequencing timing constraints and ramp requirements.
+
+#### Madhawi
+
+* Coordinate and execute the final PCB layout design review before the end of the week.
+* Complete routing, pass DRC, generate fabrication packages, and submit the PCB order by week's end.
+
+#### Yichi
+
+* Refine and harden the optical failover state machine algorithm.
+* Migrate the firmware repository from VS Code into the native vendor IDE environment.
+* Complete hardware pin matching and peripheral alternate function mappings.
+* Refactor and clean up underlying platform abstraction code.
+
+#### Ethan
+
+* Track and synthesize incoming escalation responses from Microchip support.
+* Assist with active PCB layout routing and power delivery planes.
+* Draft the hardware bring-up and post-fabrication validation test plan.
+* Initiate Senior Design Expo project documentation and exhibit assets.
+
+## Current project snapshot — October 19, 2026
 
 | Workstream | Status | Immediate gate |
-|---|---|---|
+| --- | --- | --- |
 | Requirements and architecture | Complete | Maintain interface consistency |
-| Component/interface selection | Mostly complete | Freeze MCU ordering code, main bucks, clock, and RJ45/magnetics |
-| Firmware architecture | Reviewed and accepted | Create code skeleton and module interfaces |
-| STM32 schematic | Mostly complete | Complete both SFP channels and review |
-| LAN96455F schematic | Approximately 50% | Reset, 25 MHz clock, HSIO, and power support |
-| PCB layout | Not started | Complete/review schematics |
-| Firmware implementation | Early development | Establish buildable skeleton and low-level drivers |
-| Bring-up and validation | Not started | Await fabricated hardware |
+| Component/interface selection | Complete | BOM fully ordered; track shipping/lead times |
+| Firmware architecture | Complete | Finalize individual module interfaces and target IDE migration |
+| STM32 schematic | Complete | Passives placement locked; align pinout with firmware config |
+| LAN96455F schematic | Complete | Verified strapped power sequencing, reset, and crystal nets |
+| PCB layout | In progress (placement done) | Route power delivery network, execute review, and release board order by end of week |
+| Firmware implementation | Active module development | Implement Ethernet frame transmission, verify switch registers, and harden failover logic |
+| Bring-up and validation | Planning phase | Draft bring-up checklist and validation test matrix awaiting fab arrival |
 
 ## Near-term review checklist
 
-- [ ] Every schematic interface has a firmware owner and matching module.
-- [ ] Every reset-sampled switch pin has a documented strap, domain, runtime role, and population.
-- [ ] Power budgets include downstream conversion, inrush, tolerance, and margin.
-- [ ] SFP DOM, LOS, TX fault, presence, and TX disable ownership are unambiguous.
-- [ ] Path control cannot produce mismatched active paths between boards.
-- [ ] Notes/screenshots are reconciled against native connectivity and ERC before release.
-- [ ] Throughput and failover targets remain labeled unverified until bench testing.
+* Complete power delivery network (PDN) routing, polygon pours, and thermal relief checks.
+* Run full PCB Design Rule Check (DRC) and Electrical Rule Check (ERC) with zero unresolved violations.
+* Conduct final layout peer review prior to panelization/Gerber export.
+* Generate fabrication and assembly packages (Gerbers, drill files, IPC-D-356, pick-and-place) and submit board order.
+* Verify supply rail ramp rates and timing constraints against Ethernet switch monotonic power sequencing specs.
+* Validate STM32 pin configurations and peripheral mappings match finalized layout netlists inside the vendor IDE.
+* Test optical failover state machine transition criteria and hysteresis limits using synthetic SFP data.
 
 ## Reference-document matrix
 
