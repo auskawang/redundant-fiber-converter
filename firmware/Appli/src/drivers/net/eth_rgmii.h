@@ -21,7 +21,7 @@ extern "C" {
  * @brief Initializes the pool and starts interrupts after MX_ETH1_Init.
  * @return 0 on success, negative error code on failure.
  */
-int eth_rgmii_init(void);
+int eth_start(void);
 
 /**
  * @brief Copies an eight-byte payload into a fixed Ethernet frame and submits it.

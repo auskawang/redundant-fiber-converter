@@ -43,6 +43,9 @@
 #include "optical_health.h"
 #include "diagnostics.h"
 
+/* Drivers */
+#include "eth_rgmii.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -222,7 +225,7 @@ static void MX_ETH1_Init(void)
   TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
   TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
   /* USER CODE BEGIN ETH1_Init 2 */
-
+  eth_start();
   /* USER CODE END ETH1_Init 2 */
 
 }
