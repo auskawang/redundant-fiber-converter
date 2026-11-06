@@ -4,9 +4,17 @@
 
 A capstone project combining a ten-layer Ethernet-to-fiber board with STM32 management and a LAN96455F Ethernet switch. The goal is to detect optical degradation and move traffic to a backup fiber path before the active link fails.
 
-```text
-Laptop A ── Ethernet ── Board A ══ primary / backup fiber ══ Board B ── Ethernet ── Laptop B
-```
+## System architecture
+
+### Two-board link
+
+[![Two-board system block diagram](team-docs/assets/design-notebook/figure-01-two-board-architecture.png)](team-docs/assets/design-notebook/figure-01-two-board-architecture.png)
+
+### Inside one board
+
+[![Single-board system block diagram](team-docs/assets/design-notebook/figure-02-single-board-architecture.png)](team-docs/assets/design-notebook/figure-02-single-board-architecture.png)
+
+*Architecture illustrations; see the schematic and BOM for current component selections. Click either diagram for full resolution.*
 
 **Hardware:** ordered from JLCPCB; DRC/DFM refinements ongoing.
 
