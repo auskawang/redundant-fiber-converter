@@ -1,0 +1,322 @@
+[
+  {
+    "source": "dfm/Fabrication/_SCH DWG NO__SCH.pdf",
+    "repository": "exports/schematic.pdf",
+    "sha256": "2eb525b166e611459f8b12820813dda5da7763b48e69d78ea898b4e24ff418b0",
+    "pages": 26
+  },
+  {
+    "source": "dfm/Fabrication/Fabrication/PCB Prints/_FAB DWG NO__FAB.PDF",
+    "repository": "exports/pcb-layer-prints.pdf",
+    "sha256": "6075fe15b1c198f21b904259a3e649d66352e99e00947186e118e715549e011d",
+    "pages": 11
+  },
+  {
+    "source": "dfm/Fabrication/Fabrication/Fabrication Drawing/_FAB DWG NO__FAB.PDF",
+    "repository": "exports/fabrication-drawings.pdf",
+    "sha256": "125b87fc1f4b3aeb5c3669a345acee7e1aee6321e04b2cb4fbc6f0908bf5f527",
+    "pages": 10
+  },
+  {
+    "source": "dfm/Fabrication/Fabrication/PCB 3D Print/_FAB DWG NO__FAB.PDF",
+    "repository": "exports/pcb-3d-view-1.pdf",
+    "sha256": "227f915334bc7d9513235d869492e3582419224dccf3266c9b6d518367fe3cd2",
+    "pages": 1
+  },
+  {
+    "source": "dfm/Fabrication/Fabrication/Copy of PCB 3D Print/_FAB DWG NO__FAB.PDF",
+    "repository": "exports/pcb-3d-view-2.pdf",
+    "sha256": "4d7d2e8dfc3d850c130a76ea2e0b87097d27a56c0dd2620b7070c35a65f3a186",
+    "pages": 1
+  },
+  {
+    "source": "dfm/jlcpcb_gerber_t.png",
+    "repository": "images/jlcpcb_gerber_t.png",
+    "sha256": "14f63436ec61af89578685e895bd1742ce4b22ea5d7da02b8b546afd177f924b",
+    "pdf_page": 51,
+    "pixels": [
+      981,
+      902
+    ]
+  },
+  {
+    "source": "dfm/jlcpcb_wireframe_t.png",
+    "repository": "images/jlcpcb_wireframe_t.png",
+    "sha256": "49c85cfa6bbcffc7d42958dfb0d0e668fee63f8aef4b93a9cbd9562f0878d89a",
+    "pdf_page": 52,
+    "pixels": [
+      983,
+      901
+    ]
+  },
+  {
+    "source": "dfm/board_info.png",
+    "repository": "images/board_info.png",
+    "sha256": "6c356aeb67225f70e55f6a54c486e86cc59e9d0ac019e6644ac9d1413f649555",
+    "pdf_page": 53,
+    "pixels": [
+      583,
+      276
+    ]
+  },
+  {
+    "source": "dfm/stackup_manager.png",
+    "repository": "images/stackup_manager.png",
+    "sha256": "282e51e6b9f9d4018b006ba1ee7497921addd7cddd25ebd12e6218669aac3335",
+    "pdf_page": 54,
+    "pixels": [
+      768,
+      502
+    ]
+  },
+  {
+    "source": "project_context/images/2026-10-27/windows-jlcpcb-final-profile-table-29f78356.png",
+    "repository": "images/jlcpcb-impedance-2026-10-27.png",
+    "sha256": "133dc03fa067e3eecd35d973950ccf60ca5736bdfb7fa363ee3ee4ba2d2d772e",
+    "pdf_page": 55,
+    "pixels": [
+      1461,
+      362
+    ]
+  },
+  {
+    "source": "dfm/eth_sw_layout_top.png",
+    "repository": "images/eth_sw_layout_top.png",
+    "sha256": "87d7d610688d58d0c7a83d97ac5ee5c40c09b102887662590ccf0686c6888f32",
+    "pdf_page": 56,
+    "pixels": [
+      1391,
+      902
+    ]
+  },
+  {
+    "source": "dfm/eth_sw_layout_bot.png",
+    "repository": "images/eth_sw_layout_bot.png",
+    "sha256": "61c75065f5ca292bcac6c473302a396596e445ceb00a01786a0173f2237aaa91",
+    "pdf_page": 57,
+    "pixels": [
+      1150,
+      830
+    ]
+  },
+  {
+    "source": "dfm/sfp_layout_top.png",
+    "repository": "images/sfp_layout_top.png",
+    "sha256": "ef2bbcb05e6f7338056597ef4220424cd4f503c53845be962026a1b0cfdae0c9",
+    "pdf_page": 58,
+    "pixels": [
+      1491,
+      758
+    ]
+  },
+  {
+    "source": "dfm/sfp_layout_bot.png",
+    "repository": "images/sfp_layout_bot.png",
+    "sha256": "7b89a84a69db7532d420062473b120bbe24b8baf0dcad97f1430a6fe99c6daae",
+    "pdf_page": 59,
+    "pixels": [
+      1380,
+      739
+    ]
+  },
+  {
+    "source": "dfm/stm_layout_top.png",
+    "repository": "images/stm_layout_top.png",
+    "sha256": "fbb99d26f94b299b89e162f2abd5245abb98a5144565e5a6f636abad3353657e",
+    "pdf_page": 60,
+    "pixels": [
+      1309,
+      832
+    ]
+  },
+  {
+    "source": "dfm/stm_layout_bot.png",
+    "repository": "images/stm_layout_bot.png",
+    "sha256": "e2ecb16ffce1f814cc3ea5eedf0ba3e5f80bed0ea236e7d30123b39905757959",
+    "pdf_page": 61,
+    "pixels": [
+      1228,
+      827
+    ]
+  },
+  {
+    "source": "dfm/1v15_buck_layout.png",
+    "repository": "images/1v15_buck_layout.png",
+    "sha256": "fec91eda7e1f1c7c5d49e3068aabd91ab79eae2a0a44f2dfcbd942515253cc8f",
+    "pdf_page": 62,
+    "pixels": [
+      812,
+      857
+    ]
+  },
+  {
+    "source": "dfm/rules_routing_se50.png",
+    "repository": "images/rules_routing_se50.png",
+    "sha256": "4ccef507e1fcf847712814d09f9954ce27ac6bb78dd12dff09fea9b4aefddbf1",
+    "pdf_page": 63,
+    "pixels": [
+      976,
+      580
+    ]
+  },
+  {
+    "source": "dfm/rules_routing_dp100.png",
+    "repository": "images/rules_routing_dp100.png",
+    "sha256": "5db64f3567de0cef3d9542a9f042b022242553a2055a6ee94c363cc55752cfa8",
+    "pdf_page": 64,
+    "pixels": [
+      976,
+      577
+    ]
+  },
+  {
+    "source": "dfm/rules_routing_dp90.png",
+    "repository": "images/rules_routing_dp90.png",
+    "sha256": "f0f1cd132738328705848893eca9b910986515272a55b248dfde6ddc539b8c51",
+    "pdf_page": 65,
+    "pixels": [
+      976,
+      579
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching.png",
+    "repository": "images/rules_length_matching.png",
+    "sha256": "d165a11bbb51ab1250756027a2781b991fe063f47df5c26706e3399cc3d3a0c6",
+    "pdf_page": 66,
+    "pixels": [
+      975,
+      577
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_qspi.png",
+    "repository": "images/rules_length_matching_qspi.png",
+    "sha256": "4a4cc0be0f39a8aebcaf30cebc603364543916caef6b17090766e93cbb1e395c",
+    "pdf_page": 67,
+    "pixels": [
+      976,
+      578
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_RGMII_RX.png",
+    "repository": "images/rules_length_matching_RGMII_RX.png",
+    "sha256": "46db4c4809b7f715f61cba5b255ddfb6aef0ea96846eff7ff344c5c770135b5b",
+    "pdf_page": 68,
+    "pixels": [
+      975,
+      576
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_RGMII_TX.png",
+    "repository": "images/rules_length_matching_RGMII_TX.png",
+    "sha256": "c056a1c35ef410c73c99e98e99f1d8a9497c880c9b9ddb6842da48b017289211",
+    "pdf_page": 69,
+    "pixels": [
+      975,
+      577
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_rj45.png",
+    "repository": "images/rules_length_matching_rj45.png",
+    "sha256": "4403ba1bd8484cf98db3fcf6df4b4fad2b786b2fc68a8f11825ee2651a60d68c",
+    "pdf_page": 70,
+    "pixels": [
+      975,
+      579
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_sfp.png",
+    "repository": "images/rules_length_matching_sfp.png",
+    "sha256": "72501337dd53f4067862e1ccaf0efb1dbdc314107d78d9a99f7ad99fc52e1639",
+    "pdf_page": 71,
+    "pixels": [
+      975,
+      578
+    ]
+  },
+  {
+    "source": "dfm/rules_length_matching_usb.png",
+    "repository": "images/rules_length_matching_usb.png",
+    "sha256": "9bd0b86c85ba0cdd6993fd384cf769f4b2368a5d9a1b14f5438a9507c30cd1b0",
+    "pdf_page": 72,
+    "pixels": [
+      975,
+      577
+    ]
+  },
+  {
+    "source": "dfm/xSignals_QSPI.png",
+    "repository": "images/xSignals_QSPI.png",
+    "sha256": "1f63e61815a76f7e108e4c96ebf8970ad0164531669f3368267c9b9dfe193f23",
+    "pdf_page": 73,
+    "pixels": [
+      1797,
+      908
+    ]
+  },
+  {
+    "source": "dfm/xSignals_RGMII_RX.png",
+    "repository": "images/xSignals_RGMII_RX.png",
+    "sha256": "b1ccd79895d3133147cddbe437801cee256ca5dc86bb008c2c999fa42fdd0538",
+    "pdf_page": 74,
+    "pixels": [
+      1797,
+      903
+    ]
+  },
+  {
+    "source": "dfm/xSignals_RGMII_TX.png",
+    "repository": "images/xSignals_RGMII_TX.png",
+    "sha256": "8c7a361458711c3dc201b285729048404123a74cf5776fd048b6299b994ec7f4",
+    "pdf_page": 75,
+    "pixels": [
+      1797,
+      906
+    ]
+  },
+  {
+    "source": "dfm/xSignals_RJ450.png",
+    "repository": "images/xSignals_RJ450.png",
+    "sha256": "a516253434538b1f1ec73a802f74260207778400d9726536c4d124e007ae4d5e",
+    "pdf_page": 76,
+    "pixels": [
+      1798,
+      906
+    ]
+  },
+  {
+    "source": "dfm/xSignals_RJ451.png",
+    "repository": "images/xSignals_RJ451.png",
+    "sha256": "9b8a94fa339fbbf358119b0f27312e165ef37082973126e7182fa6f4fe53236b",
+    "pdf_page": 77,
+    "pixels": [
+      1802,
+      905
+    ]
+  },
+  {
+    "source": "dfm/xSignals_SFP.png",
+    "repository": "images/xSignals_SFP.png",
+    "sha256": "5d9cff51f9ecca3a87480c9e65270f531c20f46ecd43a5991f5f2ff6d1736875",
+    "pdf_page": 78,
+    "pixels": [
+      1798,
+      905
+    ]
+  },
+  {
+    "source": "dfm/xSignals_USB.png",
+    "repository": "images/xSignals_USB.png",
+    "sha256": "1476b698a4a11a32e132155a2669aa5a4eb24253a88c69c5124aaa0a0733a30f",
+    "pdf_page": 79,
+    "pixels": [
+      1802,
+      905
+    ]
+  }
+]

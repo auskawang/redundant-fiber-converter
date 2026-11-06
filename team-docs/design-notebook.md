@@ -826,3 +826,9 @@ System integration and bring-up are collaborative team activities.
 | [Design decisions](../../project_context/DESIGN_DECISIONS.md) | Frozen/proposed decisions and open items | Shared technical context |
 | [LAN96455 control notes](../../project_context/LAN96455_CONTROL.md) | Boot, management, EEPROM, straps, reset, and GPIO analysis | Shared technical context |
 | [Personal engineering log](../../project_context/PERSONAL_ENGINEERING_LOG.md) | Detailed chronological evidence supporting this team summary | Shared technical context |
+
+### 2026-11-06 - Windows/Codex: schematic and PCB evidence package
+
+Packaged user-supplied dfm exports: 26 schematic pages, 11 PCB layer-print pages, 10 fabrication-drawing pages and two one-page 3D views. Added all 28 supplied PNG captures (layout, board information, stackup, JLCPCB previews, routing/length rules and xSignals), plus the original October 27 JLCPCB final impedance table. Combined package has 79 pages including cover; source PDF pages preserve their original size and graphics. Gallery and manifest preserve original files and SHA-256 provenance. No Altium source edits or new electrical validation performed. Board ordering remains user-reported; DRC/DFM closure is not asserted.
+
+[Gallery, originals and combined PDF](../docs/pcb/README.md). Historical calculator tolerance is not a fabrication guarantee.

@@ -24,3 +24,9 @@ The demo is a behavioral simulation; its thresholds and proposed handshake diffe
 3. File -> Import -> General -> Existing Projects into Workspace. Select the "Select root directory" option and input the root directory where the cloned repo is stored, check the box next to the name of the repo in the Projects results box, then click Finish. The project will appear in the Project Explorer.
 4. Select the project in Project Explorer on left hand side.
 5. Build, if error occurs try clean and build again
+
+### PCB design evidence
+
+[Browse schematic, PCB prints, layout gallery and routing rules](docs/pcb/README.md), or [download the combined PDF](docs/pcb/PHOTON_PCB_Design_Evidence.pdf). Collected November 6, 2026; includes the October 27 JLCPCB impedance calculator reference. Board ordered; DRC/DFM iteration ongoing.
+
+![JLCPCB board preview](docs/pcb/images/jlcpcb_gerber_t.png)
