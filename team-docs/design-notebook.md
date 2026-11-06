@@ -836,3 +836,7 @@ Packaged user-supplied dfm exports: 26 schematic pages, 11 PCB layer-print pages
 ### 2026-11-06 - Windows/Codex: showcase presentation refinement
 
 At Ethan's request, removed the ten-page black-and-white fabrication-drawing export from the published gallery and combined PDF; original dfm source remains untouched. Revised package is 69 pages, ordered 3D top/bottom, schematic, layer prints, then supporting captures. Added derived high-resolution 3D PNG previews and replaced the long screenshot wall with grouped links for stackup, rules, xSignals and JLCPCB viewers. Combined PDF download is last in the gallery. Repository landing page now leads the hardware section with the 3D top view. This supersedes the earlier 79-page package; no electrical/source PCB changes.
+
+### 2026-11-06 - Windows/Codex: consolidate demo branch and repository navigation
+
+Consolidated PCB showcase and virtual GUI/CLI work onto branch demo, preserving both histories. Promoted the full visual board tour to the root README with top/bottom 3D views, schematic/layer links, grouped supporting evidence and combined PDF, followed by a runnable GUI/CLI quick start. Reduced docs/pcb/README.md to an asset index; moved CubeIDE setup instructions to docs/FIRMWARE_SETUP.md and added tools/README.md. Retained existing firmware, simulator and asset paths so launch commands and links remain stable. No simulator logic, embedded source or native PCB changes.
