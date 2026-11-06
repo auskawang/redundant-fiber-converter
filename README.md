@@ -8,11 +8,11 @@ A capstone project combining a ten-layer Ethernet-to-fiber board with STM32 mana
 
 ### Two-board link
 
-[![Two-board system block diagram](team-docs/assets/design-notebook/figure-01-two-board-architecture.png)](team-docs/assets/design-notebook/figure-01-two-board-architecture.png)
+[![Two-board system block diagram](docs/architecture/two-board.png)](docs/architecture/two-board.png)
 
 ### Inside one board
 
-[![Single-board system block diagram](team-docs/assets/design-notebook/figure-02-single-board-architecture.png)](team-docs/assets/design-notebook/figure-02-single-board-architecture.png)
+[![Single-board system block diagram](docs/architecture/one-board.png)](docs/architecture/one-board.png)
 
 *Architecture illustrations; see the schematic and BOM for current component selections. Click either diagram for full resolution.*
 
