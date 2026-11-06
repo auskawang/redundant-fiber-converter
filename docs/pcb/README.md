@@ -1,104 +1,52 @@
-# PCB design gallery and review package
+# Inside the board
 
-Collected November 6, 2026. These are supplied design exports and screenshots; no native Altium changes were made while packaging them. Board ordering was reported November 5; DRC/DFM iterations remain ongoing.
+A ten-layer Ethernet-to-fiber converter with dual SFP paths, an Ethernet switch, STM32 management, and onboard power conversion. Explore the board from the assembled view down to the routing constraints.
 
-[Download the complete 79-page PDF](PHOTON_PCB_Design_Evidence.pdf) | [Source provenance and SHA-256 hashes](manifest.json)
+**Status:** board ordered from JLCPCB; DRC/DFM refinements ongoing. Design snapshot collected November 6, 2026.
 
-## Original exports
+## The assembled board
 
-- [Schematic](exports/schematic.pdf) (26 pages)
-- [PCB layer prints](exports/pcb-layer-prints.pdf) (11 pages)
-- [Fabrication drawings](exports/fabrication-drawings.pdf) (10 pages)
-- [PCB 3D print - view 1](exports/pcb-3d-view-1.pdf) (1 pages)
-- [PCB 3D print - view 2](exports/pcb-3d-view-2.pdf) (1 pages)
+### Top
+[![Top-side 3D board view](images/pcb-3d-top.png)](exports/pcb-3d-view-1.pdf)
 
-## Layout, rules and routing evidence
+### Bottom
+[![Bottom-side 3D board view](images/pcb-3d-bottom.png)](exports/pcb-3d-view-2.pdf)
 
-Images retain original resolution. Click an image to inspect small labels. Screenshots record displayed settings/results, not a complete verification of rule scope, source connectivity or hardware SI. The impedance calculator capture is historical (October 27); its +/-1% setting is not guaranteed fabrication tolerance.
+*Rendered from the supplied Altium 3D exports. Click either view for its original PDF.*
 
-### jlcpcb gerber t
-[![jlcpcb gerber t](images/jlcpcb_gerber_t.png)](images/jlcpcb_gerber_t.png)
+## Explore the design
 
-### jlcpcb wireframe t
-[![jlcpcb wireframe t](images/jlcpcb_wireframe_t.png)](images/jlcpcb_wireframe_t.png)
+| Document | What to look for |
+| --- | --- |
+| [Schematic — 26 pages](exports/schematic.pdf) | System architecture, power conversion, switch, MCU, SFP and copper Ethernet interfaces |
+| [PCB layers — 11 pages](exports/pcb-layer-prints.pdf) | Board overview, signal routing, reference copper and power distribution |
 
-### board info
-[![board info](images/board_info.png)](images/board_info.png)
+## Layout details
 
-### stackup manager
-[![stackup manager](images/stackup_manager.png)](images/stackup_manager.png)
+| Area | Top | Bottom |
+| --- | --- | --- |
+| Ethernet switch | [View](images/eth_sw_layout_top.png) | [View](images/eth_sw_layout_bot.png) |
+| SFP interfaces | [View](images/sfp_layout_top.png) | [View](images/sfp_layout_bot.png) |
+| STM32 | [View](images/stm_layout_top.png) | [View](images/stm_layout_bot.png) |
 
-### jlcpcb-impedance-2026-10-27
-[![jlcpcb-impedance-2026-10-27](images/jlcpcb-impedance-2026-10-27.png)](images/jlcpcb-impedance-2026-10-27.png)
+[1.15 V buck layout](images/1v15_buck_layout.png)
 
-### eth sw layout top
-[![eth sw layout top](images/eth_sw_layout_top.png)](images/eth_sw_layout_top.png)
+## Stackup, constraints and routing checks
 
-### eth sw layout bot
-[![eth sw layout bot](images/eth_sw_layout_bot.png)](images/eth_sw_layout_bot.png)
+| Evidence | Captures |
+| --- | --- |
+| Board and stackup | [Board statistics](images/board_info.png) · [Layer stack](images/stackup_manager.png) · [JLCPCB impedance calculator](images/jlcpcb-impedance-2026-10-27.png) |
+| Routing rules | [SE50](images/rules_routing_se50.png) · [DIFF100](images/rules_routing_dp100.png) · [DIFF90](images/rules_routing_dp90.png) |
+| Length rules | [Overview](images/rules_length_matching.png) · [QSPI](images/rules_length_matching_qspi.png) · [RGMII RX](images/rules_length_matching_RGMII_RX.png) · [RGMII TX](images/rules_length_matching_RGMII_TX.png) · [RJ45](images/rules_length_matching_rj45.png) · [SFP](images/rules_length_matching_sfp.png) · [USB](images/rules_length_matching_usb.png) |
+| xSignal results | [QSPI](images/xSignals_QSPI.png) · [RGMII RX](images/xSignals_RGMII_RX.png) · [RGMII TX](images/xSignals_RGMII_TX.png) · [RJ45 port 0](images/xSignals_RJ450.png) · [RJ45 port 1](images/xSignals_RJ451.png) · [SFP](images/xSignals_SFP.png) · [USB](images/xSignals_USB.png) |
+| JLCPCB DFM viewer | [Gerber preview](images/jlcpcb_gerber_t.png) · [Wireframe preview](images/jlcpcb_wireframe_t.png) |
 
-### sfp layout top
-[![sfp layout top](images/sfp_layout_top.png)](images/sfp_layout_top.png)
+The calculator capture is from October 27: 4-mil widths with 50-ohm single-ended and 96/92-ohm differential targets. Its ±1% calculator setting is not a manufacturing tolerance guarantee. Captures document displayed settings and results; they do not establish complete DRC/DFM closure or measured performance.
 
-### sfp layout bot
-[![sfp layout bot](images/sfp_layout_bot.png)](images/sfp_layout_bot.png)
+## Take the complete tour
 
-### stm layout top
-[![stm layout top](images/stm_layout_top.png)](images/stm_layout_top.png)
+**[Download the combined design PDF — 69 pages](PHOTON_PCB_Design_Evidence.pdf)**
 
-### stm layout bot
-[![stm layout bot](images/stm_layout_bot.png)](images/stm_layout_bot.png)
+Top and bottom 3D views, schematic, PCB layer prints, and all 29 supporting captures in one bookmarked document. The black-and-white fabrication drawings are omitted from this showcase. Original resolution and source PDF page sizes are retained; download the PDF for detailed zooming.
 
-### 1v15 buck layout
-[![1v15 buck layout](images/1v15_buck_layout.png)](images/1v15_buck_layout.png)
-
-### rules routing se50
-[![rules routing se50](images/rules_routing_se50.png)](images/rules_routing_se50.png)
-
-### rules routing dp100
-[![rules routing dp100](images/rules_routing_dp100.png)](images/rules_routing_dp100.png)
-
-### rules routing dp90
-[![rules routing dp90](images/rules_routing_dp90.png)](images/rules_routing_dp90.png)
-
-### rules length matching
-[![rules length matching](images/rules_length_matching.png)](images/rules_length_matching.png)
-
-### rules length matching qspi
-[![rules length matching qspi](images/rules_length_matching_qspi.png)](images/rules_length_matching_qspi.png)
-
-### rules length matching RGMII RX
-[![rules length matching RGMII RX](images/rules_length_matching_RGMII_RX.png)](images/rules_length_matching_RGMII_RX.png)
-
-### rules length matching RGMII TX
-[![rules length matching RGMII TX](images/rules_length_matching_RGMII_TX.png)](images/rules_length_matching_RGMII_TX.png)
-
-### rules length matching rj45
-[![rules length matching rj45](images/rules_length_matching_rj45.png)](images/rules_length_matching_rj45.png)
-
-### rules length matching sfp
-[![rules length matching sfp](images/rules_length_matching_sfp.png)](images/rules_length_matching_sfp.png)
-
-### rules length matching usb
-[![rules length matching usb](images/rules_length_matching_usb.png)](images/rules_length_matching_usb.png)
-
-### xSignals QSPI
-[![xSignals QSPI](images/xSignals_QSPI.png)](images/xSignals_QSPI.png)
-
-### xSignals RGMII RX
-[![xSignals RGMII RX](images/xSignals_RGMII_RX.png)](images/xSignals_RGMII_RX.png)
-
-### xSignals RGMII TX
-[![xSignals RGMII TX](images/xSignals_RGMII_TX.png)](images/xSignals_RGMII_TX.png)
-
-### xSignals RJ450
-[![xSignals RJ450](images/xSignals_RJ450.png)](images/xSignals_RJ450.png)
-
-### xSignals RJ451
-[![xSignals RJ451](images/xSignals_RJ451.png)](images/xSignals_RJ451.png)
-
-### xSignals SFP
-[![xSignals SFP](images/xSignals_SFP.png)](images/xSignals_SFP.png)
-
-### xSignals USB
-[![xSignals USB](images/xSignals_USB.png)](images/xSignals_USB.png)
+[Source manifest and SHA-256 hashes](manifest.json)

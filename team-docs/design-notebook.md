@@ -832,3 +832,7 @@ System integration and bring-up are collaborative team activities.
 Packaged user-supplied dfm exports: 26 schematic pages, 11 PCB layer-print pages, 10 fabrication-drawing pages and two one-page 3D views. Added all 28 supplied PNG captures (layout, board information, stackup, JLCPCB previews, routing/length rules and xSignals), plus the original October 27 JLCPCB final impedance table. Combined package has 79 pages including cover; source PDF pages preserve their original size and graphics. Gallery and manifest preserve original files and SHA-256 provenance. No Altium source edits or new electrical validation performed. Board ordering remains user-reported; DRC/DFM closure is not asserted.
 
 [Gallery, originals and combined PDF](../docs/pcb/README.md). Historical calculator tolerance is not a fabrication guarantee.
+
+### 2026-11-06 - Windows/Codex: showcase presentation refinement
+
+At Ethan's request, removed the ten-page black-and-white fabrication-drawing export from the published gallery and combined PDF; original dfm source remains untouched. Revised package is 69 pages, ordered 3D top/bottom, schematic, layer prints, then supporting captures. Added derived high-resolution 3D PNG previews and replaced the long screenshot wall with grouped links for stackup, rules, xSignals and JLCPCB viewers. Combined PDF download is last in the gallery. Repository landing page now leads the hardware section with the 3D top view. This supersedes the earlier 79-page package; no electrical/source PCB changes.
