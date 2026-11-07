@@ -19,12 +19,12 @@ extern "C" {
  * 1. Target Base Addresses
  * ========================================================================= */
 #define TARGET_DEVCPU_GCB_BASE              0x000000U
-#define TARGET_DEV_BASE                     0x010000U
+#define TARGET_DEV_BASE                     0x038000U
 #define TARGET_QS_BASE                      0x020000U
 #define TARGET_HSIO_BASE                    0x030000U
 #define TARGET_SYS_BASE                     0x040000U
 #define TARGET_ANA_BASE                     0x050000U
-#define TARGET_QSYS_BASE                    0x060000U
+#define TARGET_QSYS_BASE                    0x100000U
 #define TARGET_REW_BASE                     0x070000U
 
 /* =========================================================================
@@ -170,17 +170,54 @@ extern "C" {
 #define QSYS_RES_CFG_INGRESS(i)             (QSYS_RES_CFG_BASE + (((512U + (uint32_t)(i))) << 2))
 #define BUFFER_RESERVE_1700B                (1700U / 64U)
 
-#define QSYS_MISC_CFG                       (TARGET_QSYS_BASE + 0x0118U)
+#define QSYS_SW_PORT_MODE_BASE              (TARGET_QSYS_BASE + 0x3858U)
+#define QSYS_SW_PORT_MODE_PORT(p)           (QSYS_SW_PORT_MODE_BASE + ((uint32_t)(p) << 2))
+#define QSYS_SW_PORT_MODE_PORT_ENA          (1U << 19)
+#define QSYS_SW_PORT_MODE_SCH_NEXT_MASK     (7U << 15)
+#define QSYS_SW_PORT_MODE_SCH_NEXT_1        (1U << 15)
+#define QSYS_SW_PORT_MODE_INGRESS_DROP      (1U << 13)
+#define QSYS_SW_PORT_MODE_TX_PFC_MASK       (0xFFU << 5)
+
+#define QSYS_MISC_CFG                       (TARGET_QSYS_BASE + 0x38ECU)
 #define QSYS_MISC_CFG_DEV4_RGMII_ENA        0x00000001U
 
 /* =========================================================================
  * 9. DEV Component (Device / Port Clocks & Frame Length)
  * ========================================================================= */
 #define DEV_CLOCK_CFG_BASE                  (TARGET_DEV_BASE + 0x0000U)
-#define DEV_MAC_MAXLEN_CFG_BASE             (TARGET_DEV_BASE + 0x0020U)
+#define DEV_MAC_ENA_CFG_BASE                (TARGET_DEV_BASE + 0x0014U)
+#define DEV_MAC_MODE_CFG_BASE               (TARGET_DEV_BASE + 0x0018U)
+#define DEV_MAC_MAXLEN_CFG_BASE             (TARGET_DEV_BASE + 0x001CU)
+#define DEV_MAC_IFG_CFG_BASE                (TARGET_DEV_BASE + 0x0028U)
 
-#define DEV_CLOCK_CFG_PORT(p)               (DEV_CLOCK_CFG_BASE + (((uint32_t)(p)) << 6))
-#define DEV_MAC_MAXLEN_CFG_PORT(p)          (DEV_MAC_MAXLEN_CFG_BASE + (((uint32_t)(p)) << 6))
+/* Byte addresses: Linux mfd/lan9645x-spi.c uses 0x4000 per DEV target. */
+#define DEV_PORT_STRIDE                     0x4000U
+#define DEV_CLOCK_CFG_PORT(p)               (DEV_CLOCK_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
+#define DEV_MAC_ENA_CFG_PORT(p)             (DEV_MAC_ENA_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
+#define DEV_MAC_MODE_CFG_PORT(p)            (DEV_MAC_MODE_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
+#define DEV_MAC_MAXLEN_CFG_PORT(p)          (DEV_MAC_MAXLEN_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
+#define DEV_MAC_IFG_CFG_PORT(p)             (DEV_MAC_IFG_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
+
+#define DEV_CLOCK_CFG_MAC_TX_RST            (1U << 7)
+#define DEV_CLOCK_CFG_MAC_RX_RST            (1U << 6)
+#define DEV_CLOCK_CFG_PCS_TX_RST            (1U << 5)
+#define DEV_CLOCK_CFG_PCS_RX_RST            (1U << 4)
+#define DEV_CLOCK_CFG_PORT_RST              (1U << 3)
+#define DEV_CLOCK_CFG_PHY_RST               (1U << 2)
+#define DEV_CLOCK_CFG_RESET_MASK            0xFCU
+#define DEV_CLOCK_CFG_LINK_SPEED_MASK       0x3U
+#define DEV_CLOCK_CFG_LINK_SPEED_1000       0x1U
+#define DEV_CLOCK_CFG_PORT_MAC_RESET        (DEV_CLOCK_CFG_MAC_TX_RST | DEV_CLOCK_CFG_MAC_RX_RST | DEV_CLOCK_CFG_PORT_RST)
+#define DEV_MAC_ENA_CFG_RX_ENA              (1U << 4)
+#define DEV_MAC_ENA_CFG_TX_ENA              (1U << 0)
+#define DEV_MAC_MODE_CFG_GIGA_MODE_ENA      (1U << 4)
+#define DEV_MAC_MODE_CFG_FDX_ENA            (1U << 0)
+#define DEV_MAC_MAXLEN_CFG_MASK             0xFFFFU
+#define DEV_MAC_IFG_CFG_TX_IFG_MASK          (0x1FU << 8)
+#define DEV_MAC_IFG_CFG_RX_IFG2_MASK         (0xFU << 4)
+#define DEV_MAC_IFG_CFG_RX_IFG1_MASK         0xFU
+/* Gigabit values validated in Linux lan9645x_phylink_mac_link_up(). */
+#define DEV_MAC_IFG_CFG_1000                ((6U << 8) | (2U << 4) | 1U)
 
 #define DEV_CLOCK_CFG_PCS_RUN               0x00000000U
 #define MAC_MAXLEN_1518                     0x000005EEU
@@ -188,8 +225,23 @@ extern "C" {
 /* =========================================================================
  * 10. HSIO Component (High Speed I/O Configuration)
  * ========================================================================= */
-#define HSIO_HW_CFG                         (TARGET_HSIO_BASE + 0x0000U)
-#define HSIO_HW_CFG_RGMII_PORT4_ENA         ((1U << 4) | (1U << 0))
+/* Offsets/fields follow Linux lan9645x_regs.h (HSIO:HW_CFG group). */
+#define HSIO_HW_CFG                         (TARGET_HSIO_BASE + 0x0048U)
+#define HSIO_HW_CFG_RGMII_0_CFG             (1U << 10)
+#define HSIO_HW_CFG_GMII_ENA_PORT(p)        (1U << ((uint32_t)(p) + 1U))
+#define HSIO_HW_CFG_RGMII_PORT4_ENA         (HSIO_HW_CFG_RGMII_0_CFG | HSIO_HW_CFG_GMII_ENA_PORT(4))
+#define HSIO_RGMII_CFG_BASE                 (TARGET_HSIO_BASE + 0x0054U)
+#define HSIO_RGMII_CFG_INTERFACE(i)         (HSIO_RGMII_CFG_BASE + ((uint32_t)(i) << 2))
+#define HSIO_RGMII_CFG_TX_CLK_MASK          (7U << 2)
+#define HSIO_RGMII_CFG_TX_CLK_1000          (1U << 2)
+#define HSIO_RGMII_CFG_TX_RST               (1U << 1)
+#define HSIO_RGMII_CFG_RX_RST               (1U << 0)
+#define HSIO_DLL_CFG_BASE                   (TARGET_HSIO_BASE + 0x0064U)
+#define HSIO_DLL_CFG_CLOCK(i)               (HSIO_DLL_CFG_BASE + ((uint32_t)(i) << 2))
+#define HSIO_DLL_CFG_DLL_CLK_ENA            (1U << 20)
+#define HSIO_DLL_CFG_DELAY_ENA              (1U << 2)
+#define HSIO_DLL_CFG_DLL_ENA                (1U << 1)
+#define HSIO_DLL_CFG_DLL_RST                (1U << 0)
 
 #ifdef __cplusplus
 }

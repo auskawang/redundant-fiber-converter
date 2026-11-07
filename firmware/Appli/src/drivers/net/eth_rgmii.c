@@ -53,15 +53,6 @@ int eth_start(void)
     if (initialized) {
         return 0;
     }
-    //TODO: add MAC configuration
-  /**
-   * MACConf.DuplexMode = duplex;
-      MACConf.Speed = speed;
-      MACConf.DropTCPIPChecksumErrorPacket = DISABLE; //changed
-      MACConf.ForwardRxErrorPacket = ENABLE;   //FEP Bit
-      MACConf.ForwardRxUndersizedGoodPacket = ENABLE; //FUP Bit
-      MACConf.LoopbackMode= DISABLE;
-   */
     //HAL_ETH_Init sets gState to HAL_ETH_STATE_READY when done
     if (heth1.gState != HAL_ETH_STATE_READY) {
         return -1;
