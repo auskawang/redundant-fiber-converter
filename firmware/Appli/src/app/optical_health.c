@@ -30,7 +30,7 @@ void optical_health_process(void)
     }
     last_poll_tick = now;
 
-    if (!sfp_driver_is_present())
+    if (!sfp_driver_is_present(SFP_PORT_PRIMARY))
     {
         if (current_status != OPTICAL_STATUS_DISCONNECTED)
         {
@@ -41,7 +41,7 @@ void optical_health_process(void)
         return;
     }
 
-    if (sfp_driver_read_ddm(&latest_ddm) == 0)
+    if (sfp_driver_read_ddm(SFP_PORT_PRIMARY, &latest_ddm) == 0)
     {
         /* Evaluate RSSI */
         if (latest_ddm.rx_power_dbm_tenths < SFP_RSSI_MIN_DBM_MV)
