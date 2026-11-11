@@ -2,6 +2,14 @@
 /**
  * @file eth_rgmii.h
  * @brief STM32N6 Ethernet MAC and RGMII interface frame transmission and reception.
+ * @ingroup net_driver
+ */
+
+/**
+ * @defgroup net_driver Network Driver
+ * @brief STM32N6 RGMII Ethernet MAC interface and inter-board management
+ *        frame serialization over the active optical link.
+ * @{
  */
 
 #ifndef ETH_RGMII_H
@@ -43,4 +51,5 @@ int eth_rgmii_receive_frame(uint8_t *buffer, uint16_t *length);
 #endif
 
 #endif /* ETH_RGMII_H */
+/** @} */
 /* USER CODE END */

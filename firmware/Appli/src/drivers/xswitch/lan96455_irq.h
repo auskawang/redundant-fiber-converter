@@ -2,6 +2,7 @@
 /**
  * @file lan96455_irq.h
  * @brief LAN9646 / LAN96455 interrupt service routines and port change notifications.
+ * @ingroup switch_driver
  */
 
 #ifndef LAN96455_IRQ_H
