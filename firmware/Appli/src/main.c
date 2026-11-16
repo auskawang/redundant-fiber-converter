@@ -33,7 +33,6 @@
 #include "bxp_clock.h"
 #include "bxp_gpio.h"
 #include "bxp_spi.h"
-#include "bxp_i2c.h"
 
 /* Application Modules */
 #include "app_init.h"
@@ -139,8 +138,8 @@ int main(void)
     bxp_clock_init();
 
     /* 3. Initialize Board Support Package (GPIOs, SPI, I2C) */
-    bxp_gpio_init();
-    bxp_spi_init();
+    //bxp_gpio_init();
+    //bxp_spi_init();
 
     /* 4. Power Sequencing & Hardware Reset of Switch (Phase 1) */
     app_init_power_sequence();
@@ -172,7 +171,7 @@ int main(void)
         peer_comm_process();
 
         /* Evaluate SFP optical telemetry (RSSI, Temp, Bias) */
-        sfp_driver_process();
+        //sfp_driver_get_diagnostics();
         optical_health_process();
 
         /* Execute primary/backup failover state machine */

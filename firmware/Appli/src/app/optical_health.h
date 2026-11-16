@@ -35,9 +35,9 @@ void optical_health_process(void);
 
 /**
  * @brief Returns the latest optical telemetry reading.
- * @param[out] ddm Pointer to output ddm data struct.
+ * @param[out] status Pointer to an SFP status struct.
  */
-void optical_health_get_latest(sfp_ddm_data_t *ddm);
+void optical_health_get_latest(sfp_status_t *status);
 
 /**
  * @brief Returns current overall optical health status.
