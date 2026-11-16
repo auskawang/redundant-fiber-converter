@@ -2,6 +2,7 @@
 /**
  * @file lan96455_regs.h
  * @brief LAN96455 Ethernet switch register address definitions and bitmasks.
+ * @ingroup switch_driver
  *
  * Organized by hardware component / subsystem.
  */

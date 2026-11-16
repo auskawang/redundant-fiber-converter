@@ -2,6 +2,14 @@
 /**
  * @file lan96455_driver.h
  * @brief LAN9646 / LAN9645x SPI communication and core register access.
+ * @ingroup switch_driver
+ */
+
+/**
+ * @defgroup switch_driver Switch Driver
+ * @brief LAN96455F Ethernet switch initialization, SPI register access,
+ *        port forwarding configuration, and failover path control.
+ * @{
  */
 
 #ifndef LAN96455_DRIVER_H
@@ -68,4 +76,5 @@ int lan96455_verify_spi_comm(void);
 #endif
 
 #endif /* LAN96455_DRIVER_H */
+/** @} */
 /* USER CODE END */

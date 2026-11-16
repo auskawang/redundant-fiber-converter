@@ -9,6 +9,7 @@
 #include "app_init.h"
 #include "board_pins.h"
 #include "stm32n6xx_hal.h"
+#include "main.h"
 #include "diagnostics.h"
 
 void app_init_power_sequence(void)

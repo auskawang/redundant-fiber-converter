@@ -1,0 +1,90 @@
+# =============================================================================
+# Doxyfile — PHOTON Ethernet-to-Fiber Media Converter
+# Georgia Tech ECE Senior Design 2026
+#
+# Generate docs:  doxygen Doxyfile
+# Output:         docs/doxygen/html/index.html
+# =============================================================================
+
+#---------------------------------------------------------------------------
+# Project identity
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "PHOTON"
+PROJECT_BRIEF          = "Intelligent Redundant Ethernet-to-Fiber Media Converter"
+PROJECT_NUMBER         = "GT ECE SD 2026"
+OUTPUT_DIRECTORY       = docs/doxygen
+
+#---------------------------------------------------------------------------
+# Input — application source and headers only.
+# HAL drivers, CMSIS, FSBL, ExtMemLoader, and tests are excluded.
+#---------------------------------------------------------------------------
+INPUT                  = docs/mainpage.h \
+                         firmware/Appli/Inc \
+                         firmware/Appli/src/app \
+                         firmware/Appli/src/drivers \
+                         firmware/Appli/src/platform
+
+RECURSIVE              = YES
+FILE_PATTERNS          = *.c *.h
+
+# Exclude generated STM32CubeIDE HAL stubs inside Appli
+EXCLUDE_PATTERNS       = */Appli/Drivers/* \
+                         */Appli/Debug/* \
+                         */Appli/Startup/*
+
+#---------------------------------------------------------------------------
+# Extraction — only document items that have Doxygen /** */ comments.
+# Set EXTRACT_ALL = YES temporarily if you want to see everything while
+# you are still adding comments.
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = NO
+EXTRACT_STATIC         = NO
+EXTRACT_PRIVATE        = NO
+
+#---------------------------------------------------------------------------
+# Language & output tuning for a pure-C embedded project
+#---------------------------------------------------------------------------
+OPTIMIZE_OUTPUT_FOR_C  = YES
+TYPEDEF_HIDES_STRUCT   = YES
+
+#---------------------------------------------------------------------------
+# Output formats
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_COLORSTYLE        = LIGHT
+
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+
+#---------------------------------------------------------------------------
+# Call / caller graphs (requires Graphviz — install from graphviz.org)
+# Set to NO if Graphviz is not installed; docs will still build fine.
+#---------------------------------------------------------------------------
+HAVE_DOT               = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+DOT_IMAGE_FORMAT       = svg
+
+#---------------------------------------------------------------------------
+# Source browser — clicking a symbol opens the annotated source listing
+#---------------------------------------------------------------------------
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = NO
+
+#---------------------------------------------------------------------------
+# Warnings — treat undocumented parameters as warnings to help you find gaps
+#---------------------------------------------------------------------------
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+
+#---------------------------------------------------------------------------
+# Miscellaneous
+#---------------------------------------------------------------------------
+AUTOLINK_SUPPORT       = YES
+MARKDOWN_SUPPORT       = YES
+TAB_SIZE               = 4

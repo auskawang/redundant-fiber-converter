@@ -2,6 +2,7 @@
 /**
  * @file mgmt_frame.h
  * @brief Proprietary Layer-2 management frame formatting and serialization for peer sync.
+ * @ingroup net_driver
  */
 
 #ifndef MGMT_FRAME_H

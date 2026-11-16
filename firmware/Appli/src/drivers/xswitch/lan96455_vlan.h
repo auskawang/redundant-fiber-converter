@@ -2,6 +2,7 @@
 /**
  * @file lan96455_vlan.h
  * @brief Port forwarding masks, VLAN isolation, and failover path redirection.
+ * @ingroup switch_driver
  */
 
 #ifndef LAN96455_VLAN_H
