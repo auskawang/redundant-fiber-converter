@@ -37,9 +37,7 @@
 /* Application Modules */
 #include "app_init.h"
 #include "lan96455_driver.h"
-#include "path_manager.h"
-#include "peer_comm.h"
-#include "optical_health.h"
+#include "peer_app.h"
 #include "sfp_driver.h"
 #include "diagnostics.h"
 
@@ -52,6 +50,15 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#ifndef PEER_BOARD_ID
+#define PEER_BOARD_ID 0
+#endif
+#ifndef PEER_RGMII_READY
+#define PEER_RGMII_READY 0
+#endif
+#ifndef PEER_CALIBRATE_ON_BOOT
+#define PEER_CALIBRATE_ON_BOOT 0
+#endif
 
 /* USER CODE END PD */
 
@@ -86,6 +93,9 @@ I2C_HandleTypeDef hi2c2;
 I2C_HandleTypeDef hi2c4;
 
 /* USER CODE BEGIN PV */
+static PeerApp peer_app;
+static bool peer_enabled;
+static bool peer_uncertain_reported;
 
 /* USER CODE END PV */
 
@@ -101,6 +111,34 @@ static void SystemIsolation_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* Supply a strong definition in board code using a persistent counter
+ * or a hardware-generated nonzero nonce. */
+__weak uint32_t peer_board_boot_id(void)
+{
+    return 0;
+}
+
+static void process_peer_app(void)
+{
+    const PeerOpticalPins pins[FIBER_COUNT] = {
+        {
+            .present = sfp_is_port_present(SFP_PORT_PRIMARY),
+            .los = HAL_GPIO_ReadPin(SFP0_LOS_GPIO_Port, SFP0_LOS_Pin) == GPIO_PIN_SET,
+            .tx_fault = HAL_GPIO_ReadPin(SFP0_TX_FAULT_GPIO_Port, SFP0_TX_FAULT_Pin) == GPIO_PIN_SET
+        },
+        {
+            .present = sfp_is_port_present(SFP_PORT_BACKUP),
+            .los = HAL_GPIO_ReadPin(SFP1_LOS_GPIO_Port, SFP1_LOS_Pin) == GPIO_PIN_SET,
+            .tx_fault = HAL_GPIO_ReadPin(SFP1_TX_FAULT_GPIO_Port, SFP1_TX_FAULT_Pin) == GPIO_PIN_SET
+        }
+    };
+    peer_app_process(&peer_app, pins);
+    if (peer_app.peer.phase == PEER_UNCERTAIN && !peer_uncertain_reported)
+    {
+        peer_uncertain_reported = true;
+        diagnostics_log_event(DIAG_SEV_INFO, "PEER: Cutover unconfirmed; inspect both switches");
+    }
+}
 
 /* USER CODE END 0 */
 
@@ -133,7 +171,7 @@ int main(void)
   MX_I2C4_Init();
   SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
-    sfp_driver_init();
+    const int sfp_status = sfp_driver_init();
     /* 2. Configure system clock tree (STM32N6) */
     bxp_clock_init();
 
@@ -145,18 +183,32 @@ int main(void)
     app_init_power_sequence();
 
     /* 5. Initialize LAN96455 Managed Switch */
-    if (lan96455_init() == -1)
-    {
-        /* Leave blank for now */
-    }
+    const int switch_status = lan96455_init();
 
     /* 6. Initialize Diagnostics & Logging */
     diagnostics_init();
 
-    /* 6. Initialize State Machines & Communication */
-    peer_comm_init();
-    optical_health_init();
-    path_manager_init();
+    if (PEER_RGMII_READY && (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2) &&
+        sfp_status == SFP_OK && switch_status == 0)
+    {
+        uint8_t remote_mac[6];
+        memcpy(remote_mac, heth1.Init.MACAddr, sizeof(remote_mac));
+        remote_mac[5] = (uint8_t)(3 - PEER_BOARD_ID);
+        peer_enabled = peer_app_init(&peer_app, heth1.Init.MACAddr, remote_mac,
+                                     peer_board_boot_id(), PEER_CALIBRATE_ON_BOOT != 0,
+                                     HAL_GetTick());
+        if (peer_enabled)
+        {
+            /* CubeMX leaves SFP0 disabled. Both transmitters must remain
+             * enabled for local receive-power checks on both fibers. */
+            HAL_GPIO_WritePin(SFP0_TX_DISABLE_GPIO_Port, SFP0_TX_DISABLE_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(SFP1_TX_DISABLE_GPIO_Port, SFP1_TX_DISABLE_Pin, GPIO_PIN_RESET);
+        }
+    }
+    if (!peer_enabled)
+    {
+        diagnostics_log_event(DIAG_SEV_INFO, "PEER: Disabled; check board identity and drivers");
+    }
 
   /* USER CODE END 2 */
 
@@ -167,15 +219,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-        /* Process peer heartbeats and communication state */
-        peer_comm_process();
-
-        /* Evaluate SFP optical telemetry (RSSI, Temp, Bias) */
-        //sfp_driver_get_diagnostics();
-        optical_health_process();
-
-        /* Execute primary/backup failover state machine */
-        path_manager_process();
+        if (peer_enabled)
+        {
+            process_peer_app();
+        }
 
         /* Collect and report diagnostics */
         diagnostics_process();
@@ -217,6 +264,11 @@ static void MX_ETH1_Init(void)
   heth1.Init.RxBuffLen = 8;
 
   /* USER CODE BEGIN MACADDRESS */
+  if (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2)
+  {
+    MACAddr[0] = 0x02; /* Locally administered unicast MAC. */
+    MACAddr[5] = (uint8_t)PEER_BOARD_ID;
+  }
 
   /* USER CODE END MACADDRESS */
 
