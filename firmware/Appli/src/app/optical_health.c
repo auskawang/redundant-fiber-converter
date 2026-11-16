@@ -10,12 +10,13 @@
 #include "diagnostics.h"
 #include "stm32n6xx_hal.h"
 
-static sfp_ddm_data_t latest_ddm;
+static sfp_status_t latest_status;
 static optical_status_t current_status = OPTICAL_STATUS_OK;
 static uint32_t last_poll_tick = 0;
 
 void optical_health_init(void)
 {
+    latest_status = (sfp_status_t){0};
     last_poll_tick = HAL_GetTick();
     current_status = OPTICAL_STATUS_OK;
     diagnostics_log_event(DIAG_SEV_INFO, "OpticalHealth: Initialized");
@@ -30,8 +31,9 @@ void optical_health_process(void)
     }
     last_poll_tick = now;
 
-    if (!sfp_driver_is_present())
+    if (!sfp_is_port_present(SFP_PORT_PRIMARY))
     {
+        latest_status = (sfp_status_t){0};
         if (current_status != OPTICAL_STATUS_DISCONNECTED)
         {
             current_status = OPTICAL_STATUS_DISCONNECTED;
@@ -41,10 +43,12 @@ void optical_health_process(void)
         return;
     }
 
-    if (sfp_driver_read_ddm(&latest_ddm) == 0)
+    if (sfp_driver_get_diagnostics(SFP_PORT_PRIMARY, &latest_status) == SFP_OK &&
+        latest_status.valid)
     {
+        latest_status.module_present = true;
         /* Evaluate RSSI */
-        if (latest_ddm.rx_power_dbm_tenths < SFP_RSSI_MIN_DBM_MV)
+        if (latest_status.rx_power_dbm < (float)SFP_RSSI_MIN_DBM_MV / 10.0f)
         {
             if (current_status != OPTICAL_STATUS_WARN_LOW_POWER)
             {
@@ -54,7 +58,7 @@ void optical_health_process(void)
             }
         }
         /* Evaluate Temperature */
-        else if (latest_ddm.temperature_millicelsius > SFP_TEMP_MAX_MILLICELSIUS)
+        else if (latest_status.temperature_c > (float)SFP_TEMP_MAX_MILLICELSIUS / 1000.0f)
         {
             if (current_status != OPTICAL_STATUS_WARN_HIGH_TEMP)
             {
@@ -73,11 +77,11 @@ void optical_health_process(void)
     }
 }
 
-void optical_health_get_latest(sfp_ddm_data_t *ddm)
+void optical_health_get_latest(sfp_status_t *status)
 {
-    if (ddm != NULL)
+    if (status != NULL)
     {
-        *ddm = latest_ddm;
+        *status = latest_status;
     }
 }
 
