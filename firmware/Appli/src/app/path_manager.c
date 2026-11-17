@@ -6,7 +6,6 @@
 
 #include "path_manager.h"
 #include "lan96455_driver.h"
-#include "lan96455_vlan.h"
 #include "peer_comm.h"
 #include "diagnostics.h"
 
