@@ -24,7 +24,7 @@ bool peer_app_init(PeerApp *app, const uint8_t local_mac[6],
     app->next_sample = now;
     failover_init(&app->failover);
     return peer_stm32_init(&app->peer, &app->failover, local_mac, remote_mac, boot_id, now) &&
-           eth_rgmii_init() == 0;
+           eth_start() == 0;
 }
 
 void peer_app_process(PeerApp *app, const PeerOpticalPins pins[FIBER_COUNT])
