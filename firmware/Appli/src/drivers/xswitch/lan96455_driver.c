@@ -17,6 +17,7 @@
  * ========================================================================= */
 static inline int lan_wr(uint32_t reg, uint32_t val);
 static inline uint32_t lan_rd(uint32_t reg);
+static int lan_rmw(uint32_t reg, uint32_t mask, uint32_t value);
 
 static int lan96455_core_reset(void);
 static int lan96455_mac_table_init(void);
@@ -26,6 +27,7 @@ static int lan96455_setup_port_queues(void);
 static int lan96455_general_init(void);
 static int lan96455_init_unicast_flood_groups(void);
 static int lan96455_init_physical_ports(void);
+static int lan96455_configure_port4_rgmii(void);
 
 int lan96455_read_reg(uint32_t reg_addr, uint32_t *value)
 {
@@ -51,6 +53,17 @@ static inline uint32_t lan_rd(uint32_t reg)
     uint32_t val = 0;
     lan96455_read_reg(reg, &val);
     return val;
+}
+
+/* Foreground-only: blocking SPI; callers must serialize register access. */
+static int lan_rmw(uint32_t reg, uint32_t mask, uint32_t value)
+{
+    uint32_t current;
+    if (lan96455_read_reg(reg, &current) != 0)
+    {
+        return -1;
+    }
+    return lan_wr(reg, (current & ~mask) | (value & mask));
 }
 
 int lan96455_verify_spi_comm(void)
@@ -339,16 +352,14 @@ static int lan96455_init_physical_ports(void)
     {
         int port = active_ports[p];
 
-        /* 1. Release PCS Tx and Rx resets */
-        if (lan_wr(DEV_CLOCK_CFG_PORT(port), DEV_CLOCK_CFG_PCS_RUN) != 0)
+        if (port == PORT_STM32_RGMII)
         {
-            return -1;
+            if (lan96455_configure_port4_rgmii() != 0) return -1;
         }
-
-        /* 2. Set MTU frame length to standard 1518 bytes */
-        if (lan_wr(DEV_MAC_MAXLEN_CFG_PORT(port), MAC_MAXLEN_1518) != 0)
+        else
         {
-            return -1;
+            if (lan_wr(DEV_CLOCK_CFG_PORT(port), DEV_CLOCK_CFG_PCS_RUN) != 0) return -1;
+            if (lan_wr(DEV_MAC_MAXLEN_CFG_PORT(port), MAC_MAXLEN_1518) != 0) return -1;
         }
 
         /* 3. Drop frames with invalid multicast source MAC */
@@ -363,18 +374,6 @@ static int lan96455_init_physical_ports(void)
             return -1;
         }
 
-        /* 5. Port 4 Specific: Enable RGMII interface connected to STM32 MAC */
-        if (port == PORT_STM32_RGMII)
-        {
-            if (lan_wr(HSIO_HW_CFG, HSIO_HW_CFG_RGMII_PORT4_ENA) != 0)
-            {
-                return -1;
-            }
-            if (lan_wr(QSYS_MISC_CFG, QSYS_MISC_CFG_DEV4_RGMII_ENA) != 0)
-            {
-                return -1;
-            }
-        }
     }
 
     return 0;
@@ -480,6 +479,83 @@ int lan96455_init(void)
         return -1;
     }
 
+    /* Admit Port 4 traffic only after its MAC and forwarding masks are ready. */
+    if (lan_rmw(QSYS_SW_PORT_MODE_PORT(PORT_STM32_RGMII),
+                QSYS_SW_PORT_MODE_PORT_ENA | QSYS_SW_PORT_MODE_SCH_NEXT_MASK |
+                QSYS_SW_PORT_MODE_INGRESS_DROP | QSYS_SW_PORT_MODE_TX_PFC_MASK,
+                QSYS_SW_PORT_MODE_PORT_ENA | QSYS_SW_PORT_MODE_SCH_NEXT_1 |
+                QSYS_SW_PORT_MODE_INGRESS_DROP) != 0)
+    {
+        return -1;
+    }
+
     return 0;
+}
+
+/* Startup only, foreground context. Fixed 1 Gbps/full duplex, no internal delay.
+ * The board/STM32 must supply the required RGMII clock-to-data timing.
+ * Do not use this helper to reconfigure an active port without draining traffic.
+ * On error, stop initialization; the QSYS port remains disabled.
+ */
+static int lan96455_configure_port4_rgmii(void)
+{
+    const uint32_t port = PORT_STM32_RGMII;
+    uint32_t clock_base;
+
+    if (lan_rmw(QSYS_SW_PORT_MODE_PORT(port), QSYS_SW_PORT_MODE_PORT_ENA, 0) != 0)
+        return -1;
+
+    if (lan96455_read_reg(DEV_CLOCK_CFG_PORT(port), &clock_base) != 0)
+        return -1;
+    clock_base = (clock_base & ~(DEV_CLOCK_CFG_RESET_MASK |
+                                 DEV_CLOCK_CFG_LINK_SPEED_MASK)) |
+                 DEV_CLOCK_CFG_LINK_SPEED_1000;
+
+    /* Both CLOCK_CFG writes retain exactly the same non-reset fields. */
+    if (lan_wr(DEV_CLOCK_CFG_PORT(port), clock_base | DEV_CLOCK_CFG_PORT_MAC_RESET) != 0)
+        return -1;
+
+    /* Assign RGMII 0 to Port 4 and preserve other ports' GMII enables. */
+    if (lan_rmw(HSIO_HW_CFG, HSIO_HW_CFG_RGMII_PORT4_ENA,
+                HSIO_HW_CFG_RGMII_PORT4_ENA) != 0)
+        return -1;
+    if (lan_rmw(QSYS_MISC_CFG, QSYS_MISC_CFG_DEV4_RGMII_ENA,
+                QSYS_MISC_CFG_DEV4_RGMII_ENA) != 0)
+        return -1;
+
+    /* Linux's no-MAC-delay DLL settings: select clock, release DLL reset,
+     * disable tuning/delayed output. RGMII 0 uses DLL 0 (RX) and DLL 1 (TX). */
+    for (uint32_t clock = 0; clock < 2U; clock++)
+    {
+        if (lan_rmw(HSIO_DLL_CFG_CLOCK(clock),
+                    HSIO_DLL_CFG_DLL_CLK_ENA | HSIO_DLL_CFG_DLL_RST |
+                    HSIO_DLL_CFG_DLL_ENA | HSIO_DLL_CFG_DELAY_ENA,
+                    HSIO_DLL_CFG_DLL_CLK_ENA) != 0)
+            return -1;
+    }
+
+    if (lan_rmw(HSIO_RGMII_CFG_INTERFACE(0),
+                HSIO_RGMII_CFG_TX_CLK_MASK | HSIO_RGMII_CFG_RX_RST |
+                HSIO_RGMII_CFG_TX_RST, HSIO_RGMII_CFG_TX_CLK_1000) != 0)
+        return -1;
+
+    if (lan_rmw(DEV_MAC_MODE_CFG_PORT(port),
+                DEV_MAC_MODE_CFG_GIGA_MODE_ENA | DEV_MAC_MODE_CFG_FDX_ENA,
+                DEV_MAC_MODE_CFG_GIGA_MODE_ENA | DEV_MAC_MODE_CFG_FDX_ENA) != 0)
+        return -1;
+    if (lan_rmw(DEV_MAC_IFG_CFG_PORT(port),
+                DEV_MAC_IFG_CFG_TX_IFG_MASK | DEV_MAC_IFG_CFG_RX_IFG1_MASK |
+                DEV_MAC_IFG_CFG_RX_IFG2_MASK, DEV_MAC_IFG_CFG_1000) != 0)
+        return -1;
+    if (lan_rmw(DEV_MAC_MAXLEN_CFG_PORT(port), DEV_MAC_MAXLEN_CFG_MASK,
+                MAC_MAXLEN_1518) != 0)
+        return -1;
+    if (lan_rmw(DEV_MAC_ENA_CFG_PORT(port),
+                DEV_MAC_ENA_CFG_RX_ENA | DEV_MAC_ENA_CFG_TX_ENA,
+                DEV_MAC_ENA_CFG_RX_ENA | DEV_MAC_ENA_CFG_TX_ENA) != 0)
+        return -1;
+
+    /* Release MAC/queue (and unused PCS/PHY) resets at the selected speed. */
+    return lan_wr(DEV_CLOCK_CFG_PORT(port), clock_base);
 }
 /* USER CODE END */

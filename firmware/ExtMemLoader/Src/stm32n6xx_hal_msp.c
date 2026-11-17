@@ -116,14 +116,15 @@ void HAL_XSPI_MspInit(XSPI_HandleTypeDef* hxspi)
 
     __HAL_RCC_GPION_CLK_ENABLE();
     /**XSPI2 GPIO Configuration
+    PN1     ------> XSPIM_P2_NCS1
     PN3     ------> XSPIM_P2_IO1
     PN2     ------> XSPIM_P2_IO0
     PN5     ------> XSPIM_P2_IO3
     PN6     ------> XSPIM_P2_CLK
     PN4     ------> XSPIM_P2_IO2
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_6
-                          |GPIO_PIN_4;
+    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_2|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -156,14 +157,15 @@ void HAL_XSPI_MspDeInit(XSPI_HandleTypeDef* hxspi)
     __HAL_RCC_XSPI2_CLK_DISABLE();
 
     /**XSPI2 GPIO Configuration
+    PN1     ------> XSPIM_P2_NCS1
     PN3     ------> XSPIM_P2_IO1
     PN2     ------> XSPIM_P2_IO0
     PN5     ------> XSPIM_P2_IO3
     PN6     ------> XSPIM_P2_CLK
     PN4     ------> XSPIM_P2_IO2
     */
-    HAL_GPIO_DeInit(GPION, GPIO_PIN_3|GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_6
-                          |GPIO_PIN_4);
+    HAL_GPIO_DeInit(GPION, GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_2|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_4);
 
     /* USER CODE BEGIN XSPI2_MspDeInit 1 */
 

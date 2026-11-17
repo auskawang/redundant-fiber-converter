@@ -41,6 +41,9 @@
 #include "sfp_driver.h"
 #include "diagnostics.h"
 
+/* Drivers */
+#include "eth_rgmii.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -261,7 +264,7 @@ static void MX_ETH1_Init(void)
     heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
     heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
   }
-  heth1.Init.RxBuffLen = 8;
+  heth1.Init.RxBuffLen = 64;
 
   /* USER CODE BEGIN MACADDRESS */
   if (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2)
@@ -282,7 +285,7 @@ static void MX_ETH1_Init(void)
   TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
   TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
   /* USER CODE BEGIN ETH1_Init 2 */
-
+  eth_start();
   /* USER CODE END ETH1_Init 2 */
 
 }
