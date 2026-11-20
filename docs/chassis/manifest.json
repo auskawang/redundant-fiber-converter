@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-19",
+  "source": "User-supplied Onshape screenshots",
+  "images": [
+    {
+      "file": "images/dimensioned-base.png",
+      "source_attachment": "codex-clipboard-0f2b15c2-b75d-47e3-9135-adda5738dfd4.png",
+      "sha256": "58fdc1a51e7c2e53b0faf9968ee404d44e68bc4eb250f9c540a0b2b2fc9c3069"
+    },
+    {
+      "file": "images/top.png",
+      "source_attachment": "codex-clipboard-f20a6620-84e7-4ede-9c2f-2637e8f953c6.png",
+      "sha256": "6640c6f5f74cf414808d89ad4edc505730ab834e65214026c8749c9e716ab113"
+    },
+    {
+      "file": "images/side-solid.png",
+      "source_attachment": "codex-clipboard-b073d08b-c4e0-47a4-936a-3310699a6a54.png",
+      "sha256": "47cc202570b99835cac33174edc196c7b5c1621f05f9bd17b2177f1bdb7dfef6"
+    },
+    {
+      "file": "images/side-opening-left.png",
+      "source_attachment": "codex-clipboard-4e43d5af-5d4d-4e98-82f0-b2de4ac91630.png",
+      "sha256": "6ec5b7d6595d72bdc81fa6e04c72f5acdb9857d6f3cd43be3ad528096279f4a9"
+    },
+    {
+      "file": "images/side-recess.png",
+      "source_attachment": "codex-clipboard-d4e22641-61d8-490c-bbab-6ef12c6ecb0f.png",
+      "sha256": "cb5f84ab86b31459b357f7eb429b38bea77db27d648d66102383511debcc3981"
+    },
+    {
+      "file": "images/side-opening-right.png",
+      "source_attachment": "codex-clipboard-60b9fb03-70cb-4ac4-9e18-4d9b47cc94bc.png",
+      "sha256": "200172189ad3eaaa8504d886b823b333db66882e8262cde3418c0e609133513b"
+    },
+    {
+      "file": "images/bottom.png",
+      "source_attachment": "codex-clipboard-9ce3f3d1-1475-43de-a432-c32ceaf133a1.png",
+      "sha256": "c481c14e46a641a5456c129db684e96407a2342f11b0a05717b060f60b999c0d"
+    }
+  ]
+}

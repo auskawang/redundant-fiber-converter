@@ -69,6 +69,8 @@ Top and bottom 3D views, schematic, PCB layer prints, and all 29 supporting capt
 
 [Source manifest and SHA-256 hashes](docs/pcb/manifest.json)
 
+[Chassis CAD gallery — dimensioned sketch and enclosure views](docs/chassis/README.md)
+
 ## Run the virtual demo
 
 The **PHOTON console** models both boards in one shared session. Watch SFP optical telemetry and traffic, introduce attenuation or a fiber fault, and follow the detection and coordinated switching sequence.
