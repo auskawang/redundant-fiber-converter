@@ -1,7 +1,8 @@
 /* USER CODE BEGIN */
 /**
  * @file lan96455_driver.h
- * @brief LAN9646 / LAN9645x SPI communication and core register access.
+ * @brief LAN96455F initialization, forwarding path selection, and SPI diagnostics.
+ * @note These operations block. Call them from foreground or task context.
  * @ingroup switch_driver
  */
 
@@ -31,43 +32,24 @@ typedef enum {
 } lan96455_path_mode_t;
 
 /**
- * @brief Complete single-function startup initialization for the Ethernet switch.
+ * @brief Initialize the switch and enable forwarding through the primary SFP.
+ * @pre SPI4 and the STM32 Ethernet MAC address have been initialized.
  * @return 0 on success, negative error code (-1) on failure or timeout.
  */
 int lan96455_init(void);
 
 /**
- * @brief Flushes internal packet queues and allows in-flight frames to drain.
- * @return 0 on success, negative error code (-1) on failure.
- */
-int lan96455_flush_queues(void);
-
-/**
- * @brief Configures port forwarding connections based on the selected path mode.
+ * @brief Route copper and STM32 traffic through the selected SFP.
+ * @note A failed register write can leave the path partially updated.
  * @param mode Path selection (LAN96455_PATH_PRIMARY or LAN96455_PATH_FALLBACK).
  * @return 0 on success, negative error code (-1) on failure.
  */
 int lan96455_set_port_connections(lan96455_path_mode_t mode);
 
 /**
- * @brief Reads a 32-bit register from the switch via SPI with operational padding bytes.
- * @param reg_addr 32-bit register address.
- * @param[out] value Pointer to read output.
- * @return 0 on success, negative error code on failure.
- */
-int lan96455_read_reg(uint32_t reg_addr, uint32_t *value);
-
-/**
- * @brief Writes a 32-bit register to the switch via SPI.
- * @param reg_addr 32-bit register address.
- * @param value Value to write.
- * @return 0 on success, negative error code on failure.
- */
-int lan96455_write_reg(uint32_t reg_addr, uint32_t value);
-
-/**
- * @brief Verifies bidirectional SPI communication with the switch via write-and-readback.
- * @return 0 on success, negative error code on failure.
+ * @brief Configure little-endian register data and verify the read-padding field.
+ * @note Zero padding is expected, so an all-zero readback passes this check.
+ * @return 0 on a match, -1 on transfer failure, or -2 on a padding mismatch.
  */
 int lan96455_verify_spi_comm(void);
 
