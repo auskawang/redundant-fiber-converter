@@ -33,7 +33,6 @@
 /* Platform Adaptation */
 #include "bxp_clock.h"
 #include "bxp_gpio.h"
-#include "bxp_spi.h"
 
 /* Application Modules */
 #include "app_init.h"
@@ -207,7 +206,6 @@ int main(void)
 
     /* 3. Initialize Board Support Package (GPIOs, SPI, I2C) */
     //bxp_gpio_init();
-    //bxp_spi_init();
 
     /* 4. Power Sequencing & Hardware Reset of Switch (Phase 1) */
     app_init_power_sequence();

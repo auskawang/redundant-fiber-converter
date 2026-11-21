@@ -19,106 +19,106 @@ extern "C" {
 /* =========================================================================
  * 1. Target Base Addresses
  * ========================================================================= */
-#define TARGET_DEVCPU_GCB_BASE              0x000000U
+#define TARGET_ORG_BASE              0x000000U
 #define TARGET_DEV_BASE                     0x038000U
-#define TARGET_QS_BASE                      0x020000U
+#define TARGET_QS_BASE                      0x008000U
 #define TARGET_HSIO_BASE                    0x030000U
-#define TARGET_SYS_BASE                     0x040000U
-#define TARGET_ANA_BASE                     0x050000U
+#define TARGET_SYS_BASE                     0x02C000U
+#define TARGET_ANA_BASE                     0x140000U
 #define TARGET_QSYS_BASE                    0x100000U
-#define TARGET_REW_BASE                     0x070000U
+#define TARGET_REW_BASE                     0x018000U
 
 /* =========================================================================
  * 2. Port Definitions & Bitmasks
  * ========================================================================= */
 #define PORT_PC                             0
-#define PORT_STM32_RGMII                    4
+#define PORT_PC_SECONDARY                   1
+#define PORT_STM32_RGMII                    7
 #define PORT_SFP_PRIMARY                    5
 #define PORT_SFP_BACKUP                     6
 
-#define PORT_MASK_PC                        (1U << PORT_PC)
+#define PORT_MASK_COPPER                        ((1U << PORT_PC) | (1U << PORT_PC_SECONDARY))
 #define PORT_MASK_STM32                     (1U << PORT_STM32_RGMII)
 #define PORT_MASK_SFP_PRIMARY               (1U << PORT_SFP_PRIMARY)
 #define PORT_MASK_SFP_BACKUP                (1U << PORT_SFP_BACKUP)
 
-#define ALL_PORTS_MASK                      0x1FFU  /* Ports 0 through 8 */
-#define ALL_PHYS_PORTS_MASK                 0x1FFU
 
 /* =========================================================================
  * 3. DEVCPU_GCB Component (General Configuration Block / Interface Control)
  * ========================================================================= */
-#define DEVCPU_GCB_IF_CTRL                  (TARGET_DEVCPU_GCB_BASE + 0x0000U)
-#define DEVCPU_GCB_IF_CFGSTAT               (TARGET_DEVCPU_GCB_BASE + 0x0004U)
+#define DEVCPU_GCB_IF_CTRL                  (TARGET_ORG_BASE + 0x001CU)
+#define DEVCPU_GCB_IF_CFGSTAT               (TARGET_ORG_BASE + 0x0020U)
 
 #define DEVCPU_GCB_IF_CTRL_LITTLE_ENDIAN    0x00000000U
-#define DEVCPU_GCB_IF_CFGSTAT_DUMMY_BYTES   0x00000001U
-#define LAN9645X_SPI_DEFAULT_PADDING        15U         /**< Power-up / post-reset default dummy bytes */
-#define LAN9645X_SPI_OPERATIONAL_PADDING    2U          /**< Operational dummy bytes at target SPI clock */
+#define DEVCPU_GCB_IF_CFGSTAT_DUMMY_BYTES   0U
 
 /* =========================================================================
  * 4. SYS Component (System, Core Reset, Memory BIST, Buffer Watermarks, Aging)
  * ========================================================================= */
-#define SYS_RESET_CFG                       (TARGET_SYS_BASE + 0x0114U)
-#define SYS_RAM_INIT                        (TARGET_SYS_BASE + 0x0274U)
-#define SYS_FRM_AGING                       (TARGET_SYS_BASE + 0x0174U)
-#define SYS_ATOP_BASE                       (TARGET_SYS_BASE + 0x0180U)
+#define SYS_RESET_CFG                       (TARGET_SYS_BASE + 0x1040U)
+#define SYS_RAM_INIT                        (TARGET_SYS_BASE + 0x118CU)
+#define SYS_FRM_AGING                       (TARGET_SYS_BASE + 0x10C0U)
+#define SYS_ATOP_BASE                       (TARGET_SYS_BASE + 0x1124U)
 #define SYS_ATOP_PORT(p)                    (SYS_ATOP_BASE + ((uint32_t)(p) << 2))
 
-#define SYS_ATOP_PORT0                      SYS_ATOP_PORT(0)
-#define SYS_ATOP_PORT4                      SYS_ATOP_PORT(4)
-#define SYS_ATOP_PORT5                      SYS_ATOP_PORT(5)
-#define SYS_ATOP_PORT6                      SYS_ATOP_PORT(6)
+#define SYS_ATOP_TOT_CFG                    (TARGET_SYS_BASE + 0x114CU)
 
-#define SYS_ATOP_TOT_CFG                    (TARGET_SYS_BASE + 0x01ACU)
-
-#define SYS_RESET_CFG_CORE_DIS              0x00000000U
-#define SYS_RESET_CFG_CORE_ENA              0x00000001U
-#define SYS_RAM_INIT_START                  0x00000001U
-#define SYS_RAM_INIT_BUSY                   0x00000001U
-#define SYS_FRM_AGING_2SEC                  0x00000002U
-
-#define TAIL_DROP_PER_PORT                  (1700U / 64U)
-#define TAIL_DROP_TOTAL_BUF                 (128U * 1024U / 64U)
+#define SYS_RESET_CFG_CORE_ENA_POS          0U
+#define SYS_RESET_CFG_CORE_DIS              (0U << SYS_RESET_CFG_CORE_ENA_POS)
+#define SYS_RESET_CFG_CORE_ENA              (1U << SYS_RESET_CFG_CORE_ENA_POS)
+#define SYS_RAM_INIT_RAM_INIT_POS           1U
+#define SYS_RAM_INIT_START                  (1U << SYS_RAM_INIT_RAM_INIT_POS)
+#define SYS_RAM_INIT_BUSY                   (1U << SYS_RAM_INIT_RAM_INIT_POS)
+#define SYS_FRM_AGING_2SEC                  ((1U << 20) | (2000000000U / 6182U))
 
 /* =========================================================================
  * 5. ANA Component (Analyzer, MAC/VLAN Table, Port Drops, Aging, PGID Routing)
  * ========================================================================= */
-#define ANA_MACACCESS                       (TARGET_ANA_BASE + 0x061CU)
-#define ANA_MACACCESS_CMD_IDLE              0x00000000U
-#define ANA_MACACCESS_CMD_INIT              0x00000005U
-#define ANA_MACACCESS_CMD_MASK              0x0000000FU
+#define ANA_MACACCESS                       (TARGET_ANA_BASE + 0x5CB4U)
+#define ANA_MACACCESS_CMD_POS               0U
+#define ANA_MACACCESS_CMD_IDLE              (0U << ANA_MACACCESS_CMD_POS)
+#define ANA_MACACCESS_CMD_INIT              (5U << ANA_MACACCESS_CMD_POS)
+#define ANA_MACACCESS_CMD_MASK              (0xFU << ANA_MACACCESS_CMD_POS)
 
-#define ANA_VLANACCESS                      (TARGET_ANA_BASE + 0x0670U)
-#define ANA_VLANMASK                        (TARGET_ANA_BASE + 0x02A8U)
-#define ANA_VLANACCESS_CMD_INIT             0x00000000U
-#define ANA_VLANACCESS_CMD_MASK             0x00000003U
+#define ANA_VLANACCESS                      (TARGET_ANA_BASE + 0x5CC0U)
+#define ANA_VLANMASK                        (TARGET_ANA_BASE + 0x6A08U)
+#define ANA_VLANMASK_PORT_MASK_POS          0U
+#define ANA_VLANMASK_FILTER_NONE            (0U << ANA_VLANMASK_PORT_MASK_POS)
+#define ANA_VLANACCESS_CMD_POS              0U
+#define ANA_VLANACCESS_CMD_INIT             (3U << ANA_VLANACCESS_CMD_POS)
+#define ANA_VLANACCESS_CMD_MASK             (0x3U << ANA_VLANACCESS_CMD_POS)
 
-#define ANA_AUTOAGE                         (TARGET_ANA_BASE + 0x0280U)
-#define ANA_ADVLEARN                        (TARGET_ANA_BASE + 0x02A4U)
-#define ANA_AUTOAGE_PERIOD_1SEC             0x00000001U
-#define ANA_ADVLEARN_VLAN_CHK_DIS           0x00000001U
-
-#define ANA_DROP_CFG_BASE                   (TARGET_ANA_BASE + 0x0260U)
-#define ANA_DROP_CFG_PORT(p)                (ANA_DROP_CFG_BASE + ((uint32_t)(p) << 2))
+#define ANA_VLAN_CFG_PORT(p)                (TARGET_ANA_BASE + 0x6000U + (uint32_t)(p) * 0x100U)
+#define ANA_DROP_CFG_BASE                   (TARGET_ANA_BASE + 0x6004U)
+#define ANA_DROP_CFG_PORT(p)                (ANA_DROP_CFG_BASE + (uint32_t)(p) * 0x100U)
 #define ANA_DROP_CFG_DROP_MC_SMAC           0x00000001U
 
-#define ANA_PORT_CFG_BASE                   (TARGET_ANA_BASE + 0x0700U)
-#define ANA_PORT_CFG_PORT(p)                (ANA_PORT_CFG_BASE + ((uint32_t)(p) << 2))
-#define ANA_PORT_CFG_VAL(port)              ((1U << 4) | (0U << 3) | (((uint32_t)(port)) & 0x7U))
+#define ANA_PORT_CFG_BASE                   (TARGET_ANA_BASE + 0x6070U)
+#define ANA_PORT_CFG_PORT(p)                (ANA_PORT_CFG_BASE + (uint32_t)(p) * 0x100U)
+#define ANA_PORT_CFG_VAL(port)              ((1U << 4) | ((uint32_t)(port) & 0xFU))
 
 #define ANA_PGID_BASE                       (TARGET_ANA_BASE + 0x6C00U)
-#define PGID_ENTRIES_COUNT                  92U
+#define PGID_ENTRIES_COUNT                  89U
 #define ANA_PGID_ENTRY(i)                   (ANA_PGID_BASE + (((uint32_t)(i)) << 3))
 #define ANA_PGID_CFG_ENTRY(i)               (ANA_PGID_BASE + (((uint32_t)(i)) << 3) + 4U)
 #define ANA_PGID_CFG_OBEY_VLAN_DIS          0x00000000U
 
 /* PGID Index Constants */
-#define PGID_MC_INDEX                       64U
-#define PGID_MCIPV4_INDEX                   65U
-#define PGID_MCIPV6_INDEX                   66U
+#define PGID_MC_INDEX                       61U
+#define PGID_MCIPV4_INDEX                   62U
+#define PGID_MCIPV6_INDEX                   63U
 #define PGID_SRC_BASE_INDEX                 80U
-#define PGID_UC_INDEX                       82U
-#define PGID_BC_INDEX                       83U
+#define PGID_UC_INDEX                       59U
+#define PGID_BC_INDEX                       60U
+
+#define ANA_FLOODING(prio)                  (TARGET_ANA_BASE + 0x6A44U + 4U * (prio))
+#define ANA_FLOODING_IPMC                   (TARGET_ANA_BASE + 0x6A64U)
+#define ANA_FLOOD_GROUPS                    ((PGID_UC_INDEX << 12) | (PGID_BC_INDEX << 6) | PGID_MC_INDEX)
+#define ANA_IPMC_GROUPS                     ((PGID_MC_INDEX << 18) | (PGID_MCIPV4_INDEX << 12) | (PGID_MC_INDEX << 6) | PGID_MCIPV6_INDEX)
+#define ANA_PGID_SRC(port)                  ANA_PGID_ENTRY(PGID_SRC_BASE_INDEX + (port))
+#define ANA_MACHDATA                        (TARGET_ANA_BASE + 0x5CACU)
+#define ANA_MACLDATA                        (TARGET_ANA_BASE + 0x5CB0U)
+#define ANA_MAC_LEARN_LOCKED(port)          ((1U << 12) | (1U << 10) | ((port) << 4) | 1U)
 
 /* Flooding PGID Registers */
 #define ANA_PGID_MC                         (ANA_PGID_BASE + (PGID_MC_INDEX << 3))
@@ -127,48 +127,32 @@ extern "C" {
 #define ANA_PGID_UC                         (ANA_PGID_BASE + (PGID_UC_INDEX << 3))
 #define ANA_PGID_BC                         (ANA_PGID_BASE + (PGID_BC_INDEX << 3))
 
-/* Ingress Source Port Mask Registers (PGID_SRC: 80-88) */
-#define ANA_PGID_SRC_PORT0                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 0U) << 3))
-#define ANA_PGID_SRC_PORT4                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 4U) << 3))
-#define ANA_PGID_SRC_PORT5                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 5U) << 3))
-#define ANA_PGID_SRC_PORT6                  (ANA_PGID_BASE + ((PGID_SRC_BASE_INDEX + 6U) << 3))
-
 /* =========================================================================
  * 6. REW Component (Rewriter & Tagging Configuration)
  * ========================================================================= */
-#define REW_PORT_VLAN_CFG_BASE              (TARGET_REW_BASE + 0x0000U)
-#define REW_TAG_CFG_BASE                    (TARGET_REW_BASE + 0x0004U)
+#define REW_PORT_VLAN_CFG_BASE              (TARGET_REW_BASE + 0x1000U)
+#define REW_TAG_CFG_BASE                    (TARGET_REW_BASE + 0x1004U)
 
-#define REW_PORT_VLAN_CFG(p)                (REW_PORT_VLAN_CFG_BASE + (((uint32_t)(p)) << 4))
-#define REW_TAG_CFG(p)                      (REW_TAG_CFG_BASE + (((uint32_t)(p)) << 4))
-
-#define REW_PORT_VLAN_CFG_PORT0             REW_PORT_VLAN_CFG(0)
-#define REW_PORT_VLAN_CFG_PORT4             REW_PORT_VLAN_CFG(4)
-#define REW_PORT_VLAN_CFG_PORT5             REW_PORT_VLAN_CFG(5)
-#define REW_PORT_VLAN_CFG_PORT6             REW_PORT_VLAN_CFG(6)
-
-#define REW_TAG_CFG_PORT0                   REW_TAG_CFG(0)
-#define REW_TAG_CFG_PORT4                   REW_TAG_CFG(4)
-#define REW_TAG_CFG_PORT5                   REW_TAG_CFG(5)
-#define REW_TAG_CFG_PORT6                   REW_TAG_CFG(6)
+#define REW_PORT_VLAN_CFG(p)                (REW_PORT_VLAN_CFG_BASE + 0x80U * (uint32_t)(p))
+#define REW_TAG_CFG(p)                      (REW_TAG_CFG_BASE + 0x80U * (uint32_t)(p))
 
 #define REW_TAG_CFG_DISABLED                0x00000000U
 
 /* =========================================================================
  * 7. QS Component (Queue System / Buffer Flushing)
  * ========================================================================= */
-#define QS_XTR_FLUSH                        (TARGET_QS_BASE + 0x003CU)
+#define QS_XTR_FLUSH                        (TARGET_QS_BASE + 0x0018U)
 #define QS_XTR_FLUSH_ALL                    0x00000003U
 #define QS_XTR_FLUSH_NORMAL                 0x00000000U
 
 /* =========================================================================
  * 8. QSYS Component (Queue System Resource Configuration & Misc Setup)
  * ========================================================================= */
-#define QSYS_RES_CFG_BASE                   (TARGET_QSYS_BASE + 0x0000U)
-#define QSYS_Q_RSRV_COUNT                   215U
+#define QSYS_RES_CFG_BASE                   (TARGET_QSYS_BASE + 0x4000U)
+#define QSYS_Q_RSRV_LAST                   95U
 
-#define QSYS_RES_CFG_EGRESS(i)              (QSYS_RES_CFG_BASE + (((uint32_t)(i)) << 2))
-#define QSYS_RES_CFG_INGRESS(i)             (QSYS_RES_CFG_BASE + (((512U + (uint32_t)(i))) << 2))
+#define QSYS_RES_CFG_EGRESS(i)              (QSYS_RES_CFG_BASE + 8U * (uint32_t)(i))
+#define QSYS_RES_CFG_INGRESS(i)             QSYS_RES_CFG_EGRESS(512U + (i))
 #define BUFFER_RESERVE_1700B                (1700U / 64U)
 
 #define QSYS_SW_PORT_MODE_BASE              (TARGET_QSYS_BASE + 0x3858U)
@@ -188,10 +172,19 @@ extern "C" {
 #define DEV_CLOCK_CFG_BASE                  (TARGET_DEV_BASE + 0x0000U)
 #define DEV_MAC_ENA_CFG_BASE                (TARGET_DEV_BASE + 0x0014U)
 #define DEV_MAC_MODE_CFG_BASE               (TARGET_DEV_BASE + 0x0018U)
+#define DEV_MAC_TAGS_CFG(p)                 (TARGET_DEV_BASE + DEV_PORT_STRIDE * (p) + 0x0020U)
+#define DEV_MAC_TAGS_CFG_TAG_ID_POS         16U
+#define DEV_MAC_TAGS_CFG_TAG_ID_MASK        (0xFFFFU << DEV_MAC_TAGS_CFG_TAG_ID_POS)
+#define DEV_MAC_TAGS_CFG_LENGTH_FLAGS       ((1U << 2) | (1U << 1) | (1U << 0))
 #define DEV_MAC_MAXLEN_CFG_BASE             (TARGET_DEV_BASE + 0x001CU)
 #define DEV_MAC_IFG_CFG_BASE                (TARGET_DEV_BASE + 0x0028U)
 
-/* Byte addresses: Linux mfd/lan9645x-spi.c uses 0x4000 per DEV target. */
+#define CHIP_TOP_CUPHY_PORT_CFG(p)          (0x010000U + 0x0020U + 4U * (p))
+#define DEV_PCS1G_CFG(p)                    (TARGET_DEV_BASE + DEV_PORT_STRIDE * (p) + 0x0040U)
+#define DEV_PCS1G_MODE_CFG(p)               (DEV_PCS1G_CFG(p) + 4U)
+#define DEV_PCS1G_SD_CFG(p)                 (DEV_PCS1G_CFG(p) + 8U)
+#define DEV_PCS1G_ANEG_CFG(p)               (DEV_PCS1G_CFG(p) + 12U)
+#define HSIO_HW_CFG_QSGMII_ENA              (1U << 0)
 #define DEV_PORT_STRIDE                     0x4000U
 #define DEV_CLOCK_CFG_PORT(p)               (DEV_CLOCK_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
 #define DEV_MAC_ENA_CFG_PORT(p)             (DEV_MAC_ENA_CFG_BASE + ((uint32_t)(p) * DEV_PORT_STRIDE))
@@ -220,17 +213,66 @@ extern "C" {
 /* Gigabit values validated in Linux lan9645x_phylink_mac_link_up(). */
 #define DEV_MAC_IFG_CFG_1000                ((6U << 8) | (2U << 4) | 1U)
 
-#define DEV_CLOCK_CFG_PCS_RUN               0x00000000U
 #define MAC_MAXLEN_1518                     0x000005EEU
 
 /* =========================================================================
  * 10. HSIO Component (High Speed I/O Configuration)
  * ========================================================================= */
+#define CHIP_TOP_STRAPPING                  (0x010000U + 0x0118U)
+#define HSIO_SD_CFG(lane)                   (TARGET_HSIO_BASE + 0x0008U + 0x20U * (lane))
+#define HSIO_MPLL_CFG(lane)                 (TARGET_HSIO_BASE + 0x0010U + 0x20U * (lane))
+#define HSIO_SD_STAT(lane)                  (TARGET_HSIO_BASE + 0x0014U + 0x20U * (lane))
+#define HSIO_SD_CFG_PHY_RESET_POS                        27U
+#define HSIO_SD_CFG_PHY_RESET                            (1U << HSIO_SD_CFG_PHY_RESET_POS)
+#define HSIO_SD_CFG_TX_RESET_POS                         18U
+#define HSIO_SD_CFG_TX_RESET                             (1U << HSIO_SD_CFG_TX_RESET_POS)
+#define HSIO_SD_CFG_TX_RATE_POS                          16U
+#define HSIO_SD_CFG_TX_RATE                              (3U << HSIO_SD_CFG_TX_RATE_POS)
+#define HSIO_SD_CFG_TX_INVERT_POS                        15U
+#define HSIO_SD_CFG_TX_INVERT                            (1U << HSIO_SD_CFG_TX_INVERT_POS)
+#define HSIO_SD_CFG_TX_EN_POS                            14U
+#define HSIO_SD_CFG_TX_EN                                (1U << HSIO_SD_CFG_TX_EN_POS)
+#define HSIO_SD_CFG_TX_DATA_EN_POS                       12U
+#define HSIO_SD_CFG_TX_DATA_EN                           (1U << HSIO_SD_CFG_TX_DATA_EN_POS)
+#define HSIO_SD_CFG_TX_CM_EN_POS                         11U
+#define HSIO_SD_CFG_TX_CM_EN                             (1U << HSIO_SD_CFG_TX_CM_EN_POS)
+#define HSIO_SD_CFG_LANE_10BIT_SEL_POS                   10U
+#define HSIO_SD_CFG_LANE_10BIT_SEL                       (1U << HSIO_SD_CFG_LANE_10BIT_SEL_POS)
+#define HSIO_SD_CFG_RX_TERM_EN_POS                       9U
+#define HSIO_SD_CFG_RX_TERM_EN                           (1U << HSIO_SD_CFG_RX_TERM_EN_POS)
+#define HSIO_SD_CFG_RX_RESET_POS                         8U
+#define HSIO_SD_CFG_RX_RESET                             (1U << HSIO_SD_CFG_RX_RESET_POS)
+#define HSIO_SD_CFG_RX_RATE_POS                          6U
+#define HSIO_SD_CFG_RX_RATE                              (3U << HSIO_SD_CFG_RX_RATE_POS)
+#define HSIO_SD_CFG_RX_PLL_EN_POS                        5U
+#define HSIO_SD_CFG_RX_PLL_EN                            (1U << HSIO_SD_CFG_RX_PLL_EN_POS)
+#define HSIO_SD_CFG_RX_INVERT_POS                        3U
+#define HSIO_SD_CFG_RX_INVERT                            (1U << HSIO_SD_CFG_RX_INVERT_POS)
+#define HSIO_SD_CFG_RX_DATA_EN_POS                       2U
+#define HSIO_SD_CFG_RX_DATA_EN                           (1U << HSIO_SD_CFG_RX_DATA_EN_POS)
+#define HSIO_SD_CFG_LANE_LOOPBK_EN_POS                   0U
+#define HSIO_SD_CFG_LANE_LOOPBK_EN                       (1U << HSIO_SD_CFG_LANE_LOOPBK_EN_POS)
+#define HSIO_MPLL_CFG_REF_SSP_EN_POS                     18U
+#define HSIO_MPLL_CFG_REF_SSP_EN                         (1U << HSIO_MPLL_CFG_REF_SSP_EN_POS)
+#define HSIO_MPLL_CFG_REF_CLKDIV2_POS                    17U
+#define HSIO_MPLL_CFG_REF_CLKDIV2                        (1U << HSIO_MPLL_CFG_REF_CLKDIV2_POS)
+#define HSIO_MPLL_CFG_MPLL_EN_POS                        16U
+#define HSIO_MPLL_CFG_MPLL_EN                            (1U << HSIO_MPLL_CFG_MPLL_EN_POS)
+#define HSIO_MPLL_CFG_MPLL_MULTIPLIER_POS                0U
+#define HSIO_MPLL_CFG_MPLL_MULTIPLIER                    (127U << HSIO_MPLL_CFG_MPLL_MULTIPLIER_POS)
+#define HSIO_SD_STAT_MPLL_STATE_POS                      6U
+#define HSIO_SD_STAT_MPLL_STATE                          (1U << HSIO_SD_STAT_MPLL_STATE_POS)
+#define HSIO_SD_STAT_TX_STATE_POS                        5U
+#define HSIO_SD_STAT_TX_STATE                            (1U << HSIO_SD_STAT_TX_STATE_POS)
+#define HSIO_SD_STAT_TX_CM_STATE_POS                     2U
+#define HSIO_SD_STAT_TX_CM_STATE                         (1U << HSIO_SD_STAT_TX_CM_STATE_POS)
+#define HSIO_SD_STAT_RX_PLL_STATE_POS                    0U
+#define HSIO_SD_STAT_RX_PLL_STATE                        (1U << HSIO_SD_STAT_RX_PLL_STATE_POS)
+
 /* Offsets/fields follow Linux lan9645x_regs.h (HSIO:HW_CFG group). */
 #define HSIO_HW_CFG                         (TARGET_HSIO_BASE + 0x0048U)
 #define HSIO_HW_CFG_RGMII_0_CFG             (1U << 10)
 #define HSIO_HW_CFG_GMII_ENA_PORT(p)        (1U << ((uint32_t)(p) + 1U))
-#define HSIO_HW_CFG_RGMII_PORT4_ENA         (HSIO_HW_CFG_RGMII_0_CFG | HSIO_HW_CFG_GMII_ENA_PORT(4))
 #define HSIO_RGMII_CFG_BASE                 (TARGET_HSIO_BASE + 0x0054U)
 #define HSIO_RGMII_CFG_INTERFACE(i)         (HSIO_RGMII_CFG_BASE + ((uint32_t)(i) << 2))
 #define HSIO_RGMII_CFG_TX_CLK_MASK          (7U << 2)
