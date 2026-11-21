@@ -7,7 +7,7 @@
  */
 
 /**
- * @defgroup switch_driver Switch Driver
+ * @defgroup switch_driver ETH_SW
  * @brief LAN96455F Ethernet switch initialization, SPI register access,
  *        port forwarding configuration, and failover path control.
  * @{

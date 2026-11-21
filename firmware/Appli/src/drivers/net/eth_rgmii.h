@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup net_driver Network Driver
+ * @defgroup net_driver ETH RGMII
  * @brief STM32N6 RGMII Ethernet MAC interface and inter-board management
  *        frame serialization over the active optical link.
  * @{

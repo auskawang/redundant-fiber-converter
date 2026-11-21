@@ -1,0 +1,19 @@
+.driver-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 1rem;
+}
+.driver-modules a {
+    display: grid;
+    align-content: start;
+    gap: .5rem;
+    padding: 1rem;
+    border: 1px solid #8699aa;
+    border-radius: .5rem;
+    text-decoration: none;
+}
+.driver-modules a:hover, .driver-modules a:focus-visible {
+    background: #edf4fa;
+    border-color: #346890;
+}
+.driver-modules span { color: #344454; }

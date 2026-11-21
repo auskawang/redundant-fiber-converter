@@ -1,7 +1,12 @@
 /**
  * @mainpage PHOTON Firmware API Reference
+ *
  * @section modules_sec Driver Modules
- * - @ref sfp_driver — SFF-8472 DDM telemetry & GPIO control for the SFP cages
- * - @ref switch_driver — LAN96455F initialization, SPI register access, and failover path control
- * - @ref net_driver — STM32N6 RGMII MAC interface and inter-board management frame handling
+ * @htmlonly
+ * <div class="driver-modules">
+ * <a href="group__net__driver.html"><strong>ETH RGMII</strong><span>Sends and receives STM32 management frames.</span></a>
+ * <a href="group__sfp__driver.html"><strong>SFP</strong><span>Reads optical telemetry and monitors the SFP cages.</span></a>
+ * <a href="group__switch__driver.html"><strong>ETH_SW</strong><span>Initializes the LAN96455F switch and selects the active fiber.</span></a>
+ * </div>
+ * @endhtmlonly
  */

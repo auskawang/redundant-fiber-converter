@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup sfp_driver SFP Driver
+ * @defgroup sfp_driver SFP
  * @brief SFF-8472 DDM telemetry acquisition for the
  *        Coherent FTLF8519P3BNL optical transceivers.
  * @{

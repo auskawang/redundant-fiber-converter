@@ -88,3 +88,4 @@ WARN_NO_PARAMDOC       = YES
 AUTOLINK_SUPPORT       = YES
 MARKDOWN_SUPPORT       = YES
 TAB_SIZE               = 4
+HTML_EXTRA_STYLESHEET = docs/driver-modules.css
