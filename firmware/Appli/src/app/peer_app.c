@@ -8,7 +8,6 @@
 #include <string.h>
 
 enum { SAMPLE_INTERVAL_MS = 50, SAMPLE_MAX_AGE_MS = 250, RX_BUDGET = 8 };
-_Static_assert(sizeof(((PeerApp *)0)->rx_frame) >= ETH_MAX_FRAME_SIZE, "RX buffer too small");
 _Static_assert(SFP_PORT_PRIMARY == 0 && SFP_PORT_BACKUP == 1 && SFP_PORT_COUNT == FIBER_COUNT,
                "SFP port mapping must match failover paths");
 
@@ -24,7 +23,7 @@ bool peer_app_init(PeerApp *app, const uint8_t local_mac[6],
     app->next_sample = now;
     failover_init(&app->failover);
     return peer_stm32_init(&app->peer, &app->failover, local_mac, remote_mac, boot_id, now) &&
-           eth_start() == 0;
+           eth_start(remote_mac) == 0;
 }
 
 void peer_app_process(PeerApp *app, const PeerOpticalPins pins[FIBER_COUNT])
@@ -69,12 +68,11 @@ void peer_app_process(PeerApp *app, const PeerOpticalPins pins[FIBER_COUNT])
     }
 
     for (unsigned n = 0; n < RX_BUDGET; ++n) {
+        uint8_t payload[ETH_PAYLOAD_SIZE];
         uint16_t length = 0;
-        if (eth_rgmii_receive_frame(app->rx_frame, &length) != 0) {
+        if (eth_rgmii_receive_frame(payload, &length) != 0) {
             break;
         }
-        if (length <= sizeof(app->rx_frame)) {
-            peer_comm_receive(&app->peer, app->rx_frame, length, HAL_GetTick());
-        }
+        peer_comm_receive(&app->peer, payload, length, HAL_GetTick());
     }
 }

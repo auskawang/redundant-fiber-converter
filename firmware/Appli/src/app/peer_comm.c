@@ -1,15 +1,18 @@
 #include "peer_comm.h"
+#include "eth_rgmii.h"
 
 #include <string.h>
 
 enum {
-    FRAME_SIZE = 60,
+    COMMAND_FRAGMENT = 0xC0,
     REQUEST = 1, READY, COMMIT, DONE,
     RETRY_MS = 25,
     PREPARE_MS = 1000,
     SWITCH_DELAY_MS = 300,
     VERIFY_MS = 1500
 };
+
+_Static_assert(2 + PEER_FRAGMENT_BYTES == ETH_PAYLOAD_SIZE, "Peer fragment size");
 
 static bool due(uint32_t now, uint32_t deadline)
 {
@@ -68,22 +71,34 @@ static bool standby_ready(const PeerComm *p, uint8_t target)
            s->good_ms[target] >= RECOVERY_CONFIRM_MS;
 }
 
-static int send_message(PeerComm *p, uint8_t type, uint32_t delay)
+static int send_message(PeerComm *p, uint8_t type, uint32_t delay, uint32_t now)
 {
-    uint8_t frame[FRAME_SIZE] = {0};
-    memcpy(frame, p->config.remote_mac, 6);
-    memcpy(frame + 6, p->config.local_mac, 6);
-    frame[12] = 0x88;
-    frame[13] = 0xb5;
-    memcpy(frame + 14, "PFC1", 4);
-    frame[18] = type;
-    frame[19] = p->target;
-    put32(frame + 20, p->origin);
-    put32(frame + 24, p->request);
-    put32(frame + 28, p->responder_boot);
-    put32(frame + 32, p->token);
-    put32(frame + 36, delay);
-    return p->config.transmit(p->config.context, frame, sizeof(frame));
+    /* Four ordered payloads: marker/index, attempt sequence, six command bytes.
+     * A fresh sequence on each retry prevents combining incomplete attempts. */
+    uint8_t command[PEER_FRAGMENT_COUNT * PEER_FRAGMENT_BYTES] = {type, p->target};
+    put32(command + 2, p->origin);
+    put32(command + 6, p->request);
+    put32(command + 10, p->responder_boot);
+    put32(command + 14, p->token);
+    put32(command + 18, delay);
+    if (p->tx_type != type || due(now, p->tx_expires)) {
+        ++p->tx_sequence;
+        p->tx_type = type;
+        p->tx_next_fragment = 0;
+        p->tx_expires = now + RETRY_MS;
+    }
+    while (p->tx_next_fragment < PEER_FRAGMENT_COUNT) {
+        unsigned i = p->tx_next_fragment;
+        uint8_t payload[ETH_PAYLOAD_SIZE] = {COMMAND_FRAGMENT + i, p->tx_sequence};
+        memcpy(payload + 2, command + i * PEER_FRAGMENT_BYTES, PEER_FRAGMENT_BYTES);
+        int status = p->config.transmit(p->config.context, payload, sizeof(payload));
+        if (status != 0) {
+            return status;
+        }
+        ++p->tx_next_fragment;
+    }
+    p->tx_type = 0;
+    return 0;
 }
 
 static void cancel(PeerComm *p)
@@ -92,6 +107,7 @@ static void cancel(PeerComm *p)
     if (s->pending) {
         failover_ack(s, s->target, 0);
     }
+    p->tx_type = 0;
     p->phase = PEER_IDLE;
 }
 
@@ -105,6 +121,16 @@ static void apply_path(PeerComm *p, uint32_t now)
     p->phase = p->apply_failed ? PEER_UNCERTAIN : PEER_VERIFYING;
     p->deadline = now + VERIFY_MS;
     p->next_tx = now;
+}
+
+/* A READY may arrive while REQUEST fragments still occupy the TX ring. */
+static void try_first_commit(PeerComm *p, uint32_t now)
+{
+    if (send_message(p, COMMIT, SWITCH_DELAY_MS, now) == 0) {
+        p->phase = PEER_COMMITTING;
+        p->deadline = now + SWITCH_DELAY_MS;
+        p->next_tx = now + RETRY_MS;
+    }
 }
 
 void peer_comm_tick(PeerComm *p, const FiberInput fibers[FIBER_COUNT], uint32_t now)
@@ -121,6 +147,7 @@ void peer_comm_tick(PeerComm *p, const FiberInput fibers[FIBER_COUNT], uint32_t 
             return;
         }
         p->phase = PEER_REQUESTING;
+        p->tx_type = 0;
         p->target = s->target;
         p->origin = p->config.boot_id;
         p->request = next_id(p);
@@ -158,20 +185,32 @@ void peer_comm_tick(PeerComm *p, const FiberInput fibers[FIBER_COUNT], uint32_t 
             cancel(p);
             return;
         }
-        send_message(p, REQUEST, 0);
+        if (p->token) {
+            try_first_commit(p, now);
+            return;
+        }
+        if (send_message(p, REQUEST, 0, now) != 0) {
+            return;
+        }
         break;
     case PEER_PREPARED:
         if (!standby_ready(p, p->target)) {
             cancel(p);
             return;
         }
-        send_message(p, READY, 0);
+        if (send_message(p, READY, 0, now) != 0) {
+            return;
+        }
         break;
     case PEER_COMMITTING:
-        send_message(p, COMMIT, p->deadline - now);
+        if (send_message(p, COMMIT, p->deadline - now, now) != 0) {
+            return;
+        }
         break;
     case PEER_VERIFYING:
-        send_message(p, DONE, 0);
+        if (send_message(p, DONE, 0, now) != 0) {
+            return;
+        }
         break;
     default:
         return;
@@ -181,20 +220,31 @@ void peer_comm_tick(PeerComm *p, const FiberInput fibers[FIBER_COUNT], uint32_t 
 
 bool peer_comm_receive(PeerComm *p, const uint8_t *frame, uint16_t length, uint32_t now)
 {
-    if (!p || !frame || length < FRAME_SIZE ||
-        memcmp(frame, p->config.local_mac, 6) ||
-        memcmp(frame + 6, p->config.remote_mac, 6) ||
-        frame[12] != 0x88 || frame[13] != 0xb5 || memcmp(frame + 14, "PFC1", 4)) {
+    if (!p || !frame || length != ETH_PAYLOAD_SIZE || frame[0] < COMMAND_FRAGMENT ||
+        frame[0] >= COMMAND_FRAGMENT + PEER_FRAGMENT_COUNT) {
         return false;
     }
-
-    uint8_t type = frame[18];
-    uint8_t target = frame[19];
-    uint32_t origin = get32(frame + 20);
-    uint32_t request = get32(frame + 24);
-    uint32_t responder_boot = get32(frame + 28);
-    uint32_t token = get32(frame + 32);
-    uint32_t delay = get32(frame + 36);
+    unsigned index = frame[0] - COMMAND_FRAGMENT;
+    if (index == 0) {
+        p->rx_sequence = frame[1];
+        p->rx_next_fragment = 0;
+        p->rx_expires = now + RETRY_MS;
+    } else if (frame[1] != p->rx_sequence || index != p->rx_next_fragment ||
+               due(now, p->rx_expires)) {
+        return false;
+    }
+    memcpy(p->rx_command + index * PEER_FRAGMENT_BYTES, frame + 2, PEER_FRAGMENT_BYTES);
+    if (++p->rx_next_fragment < PEER_FRAGMENT_COUNT) {
+        return true;
+    }
+    p->rx_next_fragment = 0;
+    uint8_t type = p->rx_command[0];
+    uint8_t target = p->rx_command[1];
+    uint32_t origin = get32(p->rx_command + 2);
+    uint32_t request = get32(p->rx_command + 6);
+    uint32_t responder_boot = get32(p->rx_command + 10);
+    uint32_t token = get32(p->rx_command + 14);
+    uint32_t delay = get32(p->rx_command + 18);
 
     if (target >= FIBER_COUNT || !origin || !request || type < REQUEST || type > DONE ||
         (type == REQUEST && (token || responder_boot)) ||
@@ -208,6 +258,7 @@ bool peer_comm_receive(PeerComm *p, const uint8_t *frame, uint16_t length, uint3
                       memcmp(p->config.remote_mac, p->config.local_mac, 6) < 0;
         if ((p->phase == PEER_IDLE || yields) && !p->failover->hold_ms &&
             standby_ready(p, target)) {
+            p->tx_type = 0;
             p->phase = PEER_PREPARED;
             p->target = target;
             p->origin = origin;
@@ -229,14 +280,13 @@ bool peer_comm_receive(PeerComm *p, const uint8_t *frame, uint16_t length, uint3
     if (type == READY && p->phase == PEER_REQUESTING &&
         p->failover->health[p->failover->active] == LINK_FAILED &&
         standby_ready(p, target)) {
+        if (p->responder_boot != responder_boot || p->token != token) {
+            p->tx_type = 0;
+        }
         p->responder_boot = responder_boot;
         p->token = token;
-        /* Schedule locally only after the transport accepts a commit frame. */
-        if (send_message(p, COMMIT, SWITCH_DELAY_MS) == 0) {
-            p->phase = PEER_COMMITTING;
-            p->deadline = now + SWITCH_DELAY_MS;
-            p->next_tx = now + RETRY_MS;
-        }
+        p->next_tx = now;
+        try_first_commit(p, now);
         return true;
     }
 

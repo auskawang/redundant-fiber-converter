@@ -31,6 +31,8 @@ typedef struct {
     void *context;
 } PeerConfig;
 
+enum { PEER_FRAGMENT_BYTES = 6, PEER_FRAGMENT_COUNT = 4 };
+
 typedef struct {
     PeerConfig config;
     FailoverState *failover;
@@ -46,6 +48,14 @@ typedef struct {
     uint32_t deadline;
     uint32_t next_tx;
     uint32_t last_tick;
+    uint8_t tx_sequence;
+    uint8_t tx_type;
+    uint8_t tx_next_fragment;
+    uint32_t tx_expires;
+    uint8_t rx_sequence;
+    uint8_t rx_next_fragment;
+    uint32_t rx_expires;
+    uint8_t rx_command[PEER_FRAGMENT_COUNT * PEER_FRAGMENT_BYTES];
 } PeerComm;
 
 /* Call after switch and failover initialization. Single main-loop owner. */

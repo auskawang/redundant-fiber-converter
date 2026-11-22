@@ -27,10 +27,10 @@ int mgmt_frame_send_peer_heartbeat(const peer_msg_t *msg);
 
 /**
  * @brief Parses an incoming Layer-2 management frame.
- * @param frame Raw Ethernet frame.
+ * @param frame Eight-byte heartbeat fragment or a legacy full Ethernet frame.
  * @param length Frame length.
  * @param[out] msg Extracted peer message.
- * @return 0 on success, negative if frame is invalid or not a management frame.
+ * @return 0 for a complete message, 1 for a first fragment, negative on invalid input.
  */
 int mgmt_frame_parse(const uint8_t *frame, uint16_t length, peer_msg_t *msg);
 

@@ -132,6 +132,55 @@ static void SystemIsolation_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* Bounds of the complete ETH_DMA linker region, end exclusive. */
+extern uint8_t __eth_dma_start[], __eth_dma_end[];
+
+static void configure_eth_dma_memory(void)
+{
+    const uint32_t start = (uint32_t)__eth_dma_start;
+    const uint32_t last = (uint32_t)__eth_dma_end - 1U;
+
+    __HAL_RCC_AXISRAM1_MEM_CLK_ENABLE();
+    __HAL_RCC_RIFSC_CLK_ENABLE();
+    __HAL_RCC_RISAF_CLK_ENABLE();
+    RIMC_MasterConfig_t master = {
+        .MasterCID = RIF_CID_1, .SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_NPRIV
+    };
+    HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &master);
+
+    /* CPU and ETH1 share CID 1. ETH1 issues nonprivileged transactions. */
+    RISAF_BaseRegionConfig_t region = {
+        .Filtering = RISAF_FILTER_ENABLE, .Secure = RIF_ATTRIBUTE_SEC,
+        .ReadWhitelist = RIF_CID_1, .WriteWhitelist = RIF_CID_1,
+        .PrivWhitelist = 0,
+        .StartAddress = start - SRAM1_AXI_BASE_S,
+        .EndAddress = last - SRAM1_AXI_BASE_S
+    };
+    HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_7, &region);
+
+    /* A locked isolation controller can ignore writes. Catch that before
+     * handing the descriptors to DMA. Both HAL structs contain only uint32_t fields. */
+    RIMC_MasterConfig_t active_master = {0};
+    RISAF_BaseRegionConfig_t active_region = {0};
+    HAL_RIF_RIMC_GetConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &active_master);
+    HAL_RIF_RISAF_GetConfigBaseRegion(RISAF2, RISAF_REGION_7, &active_region);
+    if (memcmp(&active_master, &master, sizeof(master)) != 0 ||
+        memcmp(&active_region, &region, sizeof(region)) != 0) {
+        Error_Handler();
+    }
+
+    /* The secure application owns MPU region and attribute 0. Configure
+     * them before HAL_ETH_Init touches the rings. */
+    if (SCB->CCR & SCB_CCR_DC_Msk) {
+        SCB_CleanInvalidateDCache_by_Addr(__eth_dma_start, last - start + 1U);
+    }
+    ARM_MPU_Disable();
+    ARM_MPU_SetMemAttr(0, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
+    ARM_MPU_SetRegion(0, ARM_MPU_RBAR(start, ARM_MPU_SH_OUTER, 0, 0, 1),
+                      ARM_MPU_RLAR(last, 0));
+    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+}
+
 /* Supply a strong definition in board code using a persistent counter
  * or a hardware-generated nonzero nonce. */
 __weak uint32_t peer_board_boot_id(void)
@@ -182,6 +231,7 @@ int main(void)
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
+  configure_eth_dma_memory();
 
   /* USER CODE END SysInit */
 
@@ -247,6 +297,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+        eth_rgmii_poll();
         if (peer_enabled)
         {
             process_peer_app();
@@ -522,7 +573,7 @@ static void MX_ETH1_Init(void)
     heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
     heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
   }
-  heth1.Init.RxBuffLen = 1536;
+  heth1.Init.RxBuffLen = ETH_DMA_SLOT_SIZE;
 
   /* USER CODE BEGIN MACADDRESS */
   if (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2)
@@ -538,12 +589,11 @@ static void MX_ETH1_Init(void)
     Error_Handler();
   }
 
-  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
+  memset(&TxConfig, 0 , sizeof(TxConfig));
   TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
   TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
   TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
   /* USER CODE BEGIN ETH1_Init 2 */
-  eth_start();
   /* USER CODE END ETH1_Init 2 */
 
 }
@@ -754,12 +804,6 @@ static void MX_I2C4_Init(void)
 
   /* set all required IPs as secure privileged */
   __HAL_RCC_RIFSC_CLK_ENABLE();
-
-  /*RIMC configuration*/
-  RIMC_MasterConfig_t RIMC_master = {0};
-  RIMC_master.MasterCID = RIF_CID_1;
-  RIMC_master.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_NPRIV;
-  HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &RIMC_master);
 
   /*RISUP configuration*/
   HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ADC12 , RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_NPRIV);

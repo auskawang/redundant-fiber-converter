@@ -22,14 +22,17 @@
 extern "C" {
 #endif
 
-#define ETH_MAX_FRAME_SIZE      64U
+#define ETH_DMA_SLOT_SIZE       1536U
 #define ETH_PAYLOAD_SIZE        8U
 
 /**
- * @brief Initializes the pool and starts interrupts after MX_ETH1_Init.
+ * @brief Initializes the RX and TX pools and starts interrupts after MX_ETH1_Init.
  * @return 0 on success, negative error code on failure.
  */
-int eth_start(void);
+int eth_start(const uint8_t remote_mac[6]);
+
+/** Service DMA completions and descriptor refills once per foreground iteration. */
+void eth_rgmii_poll(void);
 
 /**
  * @brief Copies an eight-byte payload into a fixed Ethernet frame and submits it.
@@ -40,7 +43,7 @@ int eth_start(void);
 int eth_rgmii_send_frame(const uint8_t *payload, uint16_t length);
 
 /**
- * @brief Services RX notifications and copies one queued eight-byte payload.
+ * @brief Copies one queued eight-byte payload.
  * Call repeatedly from foreground until -2 (empty), never from an ISR.
  * Init/send/receive require a single foreground caller (no task reentrancy).
  * @param[out] buffer Destination with space for at least ETH_PAYLOAD_SIZE bytes.

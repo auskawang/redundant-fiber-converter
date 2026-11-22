@@ -44,7 +44,11 @@ _sstack = _estack - _Min_Stack_Size;
 MEMORY
 {
   ROM    (xrw)    : ORIGIN = 0x70100400,   LENGTH = 511K
-  RAM    (xrw)    : ORIGIN = 0x34000000,   LENGTH = 2048K
+  /* Keep startup data at its existing base. The heap and stack share the
+     contiguous RAM above the fixed AXISRAM1 Ethernet allocation. */
+  RAM_DATA (xrw)  : ORIGIN = 0x34000000, LENGTH = 400K
+  ETH_DMA  (rw)   : ORIGIN = 0x34064000, LENGTH = 32K
+  RAM      (xrw)  : ORIGIN = 0x3406C000, LENGTH = 1616K
 }
 
 /* Sections */
@@ -145,7 +149,7 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
 
-  } >RAM AT> ROM
+  } >RAM_DATA AT> ROM
 
   .noncacheable :
   {
@@ -154,7 +158,7 @@ SECTIONS
     KEEP(*(.noncacheable))
     . = ALIGN(8);
     __enoncacheable = .;  /* create symbol for end of section */
-  } > RAM
+  } > RAM_DATA
 
   .gnu.sgstubs :
   {
@@ -179,7 +183,21 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-  } >RAM
+  } >RAM_DATA
+
+  /* The HAL initializes the rings and DMA writes RX payloads before use. */
+  .eth_dma (NOLOAD) :
+  {
+    . = ALIGN(32);
+    KEEP(*(.RxDecripSection))
+    . = ALIGN(32);
+    KEEP(*(.TxDecripSection))
+    . = ALIGN(32);
+    KEEP(*(.eth_dma_buffers))
+    . = ALIGN(32);
+  } >ETH_DMA
+  __eth_dma_start = ORIGIN(ETH_DMA);
+  __eth_dma_end = ORIGIN(ETH_DMA) + LENGTH(ETH_DMA);
 
   /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
   ._user_heap_stack :

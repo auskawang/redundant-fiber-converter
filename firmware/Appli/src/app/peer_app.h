@@ -17,7 +17,6 @@ typedef struct {
     uint32_t next_sample;
     uint8_t next_port;
     bool calibrate;
-    uint8_t rx_frame[1518];
 } PeerApp;
 
 bool peer_app_init(PeerApp *app, const uint8_t local_mac[6],
