@@ -47,11 +47,38 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef struct {
+    float vsns_1v8_v;
+    float vsns_3v3_v;
+    float vsns_1v15_v;
+    float vsns_5v_usb_v;
+    float vsns_12v_efuse_v;
+    float vsns_1v15_eth_sw_v;
+    float vdd_al_phy_v;
+    float vdd_al_sd_v;
+    float vdd_pll_v;
+    float vsns_3v3_eth_sw_ls_v;
+    float vdd_ah_phy_v;
+    float sfp1_temp_c;
+    float sfp0_temp_c;
+    float eth_3v3_serdes_v;
+} adc_bringup_snapshot_t;
 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Nominal VREF+ (sheet 15) and 12-bit, right-aligned ADC output. */
+#define ADC_REFERENCE_V            1.8f
+#define ADC_FULL_SCALE_COUNTS      4095.0f
+/* Divider gains are ADC input volts per rail volt (sheets 7-11 and 18). */
+#define ADC_GAIN_5V_USB_12V_EFUSE  0.091f
+#define ADC_GAIN_3V3               0.357f
+#define ADC_GAIN_1V8               0.500f
+#define ADC_GAIN_1V15              0.909f
+/* TMP235 cage PCB sensor transfer function (sheet 25). */
+#define TMP235_ZERO_C_V            0.500f
+#define TMP235_V_PER_C             0.010f
 #ifndef PEER_BOARD_ID
 #define PEER_BOARD_ID 0
 #endif
@@ -106,6 +133,8 @@ UART_HandleTypeDef huart7;
 PCD_HandleTypeDef hpcd_USB_OTG_HS1;
 
 /* USER CODE BEGIN PV */
+static volatile adc_bringup_snapshot_t adc_bringup;
+static volatile HAL_StatusTypeDef adc_bringup_status = HAL_BUSY;
 static PeerApp peer_app;
 static bool peer_enabled;
 static bool peer_uncertain_reported;
@@ -132,6 +161,61 @@ static void SystemIsolation_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+static HAL_StatusTypeDef adc_read_bringup(volatile adc_bringup_snapshot_t *out)
+{
+    float adc1_v[11], adc2_v[3];
+    const struct {
+        ADC_HandleTypeDef *adc;
+        float *pin_v;
+        size_t count;
+    } scans[] = {
+        { &hadc1, adc1_v, sizeof(adc1_v) / sizeof(adc1_v[0]) },
+        { &hadc2, adc2_v, sizeof(adc2_v) / sizeof(adc2_v[0]) },
+    };
+
+    if (out == NULL) return HAL_ERROR;
+
+    for (size_t i = 0; i < sizeof(scans) / sizeof(scans[0]); ++i) {
+        ADC_HandleTypeDef *adc = scans[i].adc;
+        HAL_StatusTypeDef status = HAL_ADC_Start(adc);
+        if (status != HAL_OK) return status;
+
+        for (size_t rank = 0; rank < scans[i].count; ++rank) {
+            status = HAL_ADC_PollForConversion(adc, 10U);
+            if (status != HAL_OK) break;
+            scans[i].pin_v[rank] = HAL_ADC_GetValue(adc) *
+                                   (ADC_REFERENCE_V / ADC_FULL_SCALE_COUNTS);
+            if (__HAL_ADC_GET_FLAG(adc, ADC_FLAG_OVR)) {
+                status = HAL_ERROR;
+                break;
+            }
+        }
+
+        HAL_StatusTypeDef stop_status = HAL_ADC_Stop(adc);
+        if (status != HAL_OK) return status;
+        if (stop_status != HAL_OK) return stop_status;
+    }
+
+    /* CubeMX regular conversion ranks, indexed from zero. */
+    *out = (adc_bringup_snapshot_t) {
+        .vsns_1v8_v          = adc1_v[0]  / ADC_GAIN_1V8,
+        .vsns_3v3_v          = adc1_v[1]  / ADC_GAIN_3V3,
+        .vsns_1v15_v         = adc1_v[2]  / ADC_GAIN_1V15,
+        .vsns_5v_usb_v       = adc1_v[3]  / ADC_GAIN_5V_USB_12V_EFUSE,
+        .vsns_12v_efuse_v    = adc1_v[4]  / ADC_GAIN_5V_USB_12V_EFUSE,
+        .vsns_1v15_eth_sw_v  = adc1_v[5]  / ADC_GAIN_1V15,
+        .vdd_al_phy_v        = adc1_v[6]  / ADC_GAIN_1V15,
+        .vdd_al_sd_v         = adc1_v[7]  / ADC_GAIN_1V15,
+        .vdd_pll_v           = adc1_v[8]  / ADC_GAIN_1V15,
+        .vsns_3v3_eth_sw_ls_v = adc1_v[9] / ADC_GAIN_3V3,
+        .vdd_ah_phy_v        = adc1_v[10] / ADC_GAIN_3V3,
+        .sfp1_temp_c         = (adc2_v[0] - TMP235_ZERO_C_V) / TMP235_V_PER_C,
+        .sfp0_temp_c         = (adc2_v[1] - TMP235_ZERO_C_V) / TMP235_V_PER_C,
+        .eth_3v3_serdes_v    = adc2_v[2]  / ADC_GAIN_3V3,
+    };
+    return HAL_OK;
+}
 
 /* Supply a strong definition in board code using a persistent counter
  * or a hardware-generated nonzero nonce. */
@@ -210,6 +294,7 @@ int main(void)
   SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
     const int sfp_status = sfp_driver_init();
+    adc_bringup_status = adc_read_bringup(&adc_bringup);
     const int switch_status = lan96455_init();
 
     //diagnostics_init();
