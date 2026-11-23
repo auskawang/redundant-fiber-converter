@@ -72,15 +72,15 @@
 
 /* Private variables ---------------------------------------------------------*/
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
-#pragma location=0x34100000
+#pragma location=0x34064000
 ETH_DMADescTypeDef  DMARxDscrTab[ETH_DMA_RX_CH_CNT][ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-#pragma location=0x341000C0
+#pragma location=0x340640C0
 ETH_DMADescTypeDef  DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 
 #elif defined ( __CC_ARM )  /* MDK ARM Compiler */
 
-__attribute__((at(0x34100000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_DMA_RX_CH_CNT][ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-__attribute__((at(0x341000C0))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
+__attribute__((at(0x34064000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_DMA_RX_CH_CNT][ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
+__attribute__((at(0x340640C0))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 
 #elif defined ( __GNUC__ ) /* GNU Compiler */
 
@@ -114,6 +114,7 @@ static bool peer_uncertain_reported;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ETH1_Init(void);
 static void MX_I2C2_Init(void);
@@ -132,54 +133,6 @@ static void SystemIsolation_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/* Bounds of the complete ETH_DMA linker region, end exclusive. */
-extern uint8_t __eth_dma_start[], __eth_dma_end[];
-
-static void configure_eth_dma_memory(void)
-{
-    const uint32_t start = (uint32_t)__eth_dma_start;
-    const uint32_t last = (uint32_t)__eth_dma_end - 1U;
-
-    __HAL_RCC_AXISRAM1_MEM_CLK_ENABLE();
-    __HAL_RCC_RIFSC_CLK_ENABLE();
-    __HAL_RCC_RISAF_CLK_ENABLE();
-    RIMC_MasterConfig_t master = {
-        .MasterCID = RIF_CID_1, .SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_NPRIV
-    };
-    HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &master);
-
-    /* CPU and ETH1 share CID 1. ETH1 issues nonprivileged transactions. */
-    RISAF_BaseRegionConfig_t region = {
-        .Filtering = RISAF_FILTER_ENABLE, .Secure = RIF_ATTRIBUTE_SEC,
-        .ReadWhitelist = RIF_CID_1, .WriteWhitelist = RIF_CID_1,
-        .PrivWhitelist = 0,
-        .StartAddress = start - SRAM1_AXI_BASE_S,
-        .EndAddress = last - SRAM1_AXI_BASE_S
-    };
-    HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_7, &region);
-
-    /* A locked isolation controller can ignore writes. Catch that before
-     * handing the descriptors to DMA. Both HAL structs contain only uint32_t fields. */
-    RIMC_MasterConfig_t active_master = {0};
-    RISAF_BaseRegionConfig_t active_region = {0};
-    HAL_RIF_RIMC_GetConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &active_master);
-    HAL_RIF_RISAF_GetConfigBaseRegion(RISAF2, RISAF_REGION_7, &active_region);
-    if (memcmp(&active_master, &master, sizeof(master)) != 0 ||
-        memcmp(&active_region, &region, sizeof(region)) != 0) {
-        Error_Handler();
-    }
-
-    /* The secure application owns MPU region and attribute 0. Configure
-     * them before HAL_ETH_Init touches the rings. */
-    if (SCB->CCR & SCB_CCR_DC_Msk) {
-        SCB_CleanInvalidateDCache_by_Addr(__eth_dma_start, last - start + 1U);
-    }
-    ARM_MPU_Disable();
-    ARM_MPU_SetMemAttr(0, ARM_MPU_ATTR(ARM_MPU_ATTR_NON_CACHEABLE, ARM_MPU_ATTR_NON_CACHEABLE));
-    ARM_MPU_SetRegion(0, ARM_MPU_RBAR(start, ARM_MPU_SH_OUTER, 0, 0, 1),
-                      ARM_MPU_RLAR(last, 0));
-    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
-}
 
 /* Supply a strong definition in board code using a persistent counter
  * or a hardware-generated nonzero nonce. */
@@ -223,6 +176,9 @@ int main(void)
 
   /* USER CODE END 1 */
 
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
+
   /* MCU Configuration--------------------------------------------------------*/
   HAL_Init();
 
@@ -231,7 +187,6 @@ int main(void)
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
-  configure_eth_dma_memory();
 
   /* USER CODE END SysInit */
 
@@ -573,7 +528,7 @@ static void MX_ETH1_Init(void)
     heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
     heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
   }
-  heth1.Init.RxBuffLen = ETH_DMA_SLOT_SIZE;
+  heth1.Init.RxBuffLen = 1536;
 
   /* USER CODE BEGIN MACADDRESS */
   if (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2)
@@ -589,7 +544,7 @@ static void MX_ETH1_Init(void)
     Error_Handler();
   }
 
-  memset(&TxConfig, 0 , sizeof(TxConfig));
+  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
   TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
   TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
   TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
@@ -805,8 +760,99 @@ static void MX_I2C4_Init(void)
   /* set all required IPs as secure privileged */
   __HAL_RCC_RIFSC_CLK_ENABLE();
 
+  /*RIMC configuration*/
+  RIMC_MasterConfig_t RIMC_master = {0};
+  RIMC_master.MasterCID = RIF_CID_1;
+  RIMC_master.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV;
+  HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &RIMC_master);
+
   /*RISUP configuration*/
+  HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ETH1 , RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
   HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ADC12 , RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_NPRIV);
+
+  /* RISAF Config */
+  RISAF_BaseRegionConfig_t risaf_base_config;
+  __HAL_RCC_RISAF_CLK_ENABLE();
+
+  /* set up base region configuration for CPUAXI_RAM1*/
+  /* region1 is secure */
+  risaf_base_config.EndAddress = 0xfffff;
+  risaf_base_config.Filtering = RISAF_FILTER_ENABLE;
+  risaf_base_config.ReadWhitelist = 2;
+  risaf_base_config.WriteWhitelist = 2;
+  risaf_base_config.Secure = RIF_ATTRIBUTE_SEC;
+  risaf_base_config.PrivWhitelist = RIF_CID_NONE;
+  risaf_base_config.StartAddress = 0x00000000;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF3, RISAF_REGION_1, &risaf_base_config);
+
+  /* set up base region configuration for CPUAXI_RAM0*/
+  /* region1 is secure */
+  risaf_base_config.EndAddress = 0xfffff;
+  risaf_base_config.StartAddress = 0x00080000;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_1, &risaf_base_config);
+
+  /* region2 is secure */
+  risaf_base_config.EndAddress = 0x19fff;
+  risaf_base_config.StartAddress = 0x00000000;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_2, &risaf_base_config);
+
+  /* region3 is secure */
+  risaf_base_config.EndAddress = 0x6afff;
+  risaf_base_config.StartAddress = 0x00064000;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_3, &risaf_base_config);
+
+  /* region4 is non-secure */
+  risaf_base_config.EndAddress = 0x6a1ff;
+  risaf_base_config.Filtering = RISAF_FILTER_DISABLE;
+  risaf_base_config.Secure = RIF_ATTRIBUTE_NSEC;
+  risaf_base_config.StartAddress = 0x00064180;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_4, &risaf_base_config);
+
+  /* region5 is non-secure */
+  risaf_base_config.EndAddress = 0x6405f;
+  risaf_base_config.StartAddress = 0x00064000;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_5, &risaf_base_config);
+
+  /* region6 is non-secure */
+  risaf_base_config.EndAddress = 0x640bf;
+  risaf_base_config.StartAddress = 0x00064060;
+  HAL_RIF_RISAF_ConfigBaseRegion(RISAF2, RISAF_REGION_6, &risaf_base_config);
+
+  RISAF_SubRegionConfig_t risaf_sub_config;
+
+  /* set up Sub region configuration for CPUAXI_RAM1*/
+  risaf_sub_config.EndAddress = 0xfffff;
+  risaf_sub_config.Filtering = RISAF_FILTER_DISABLE;
+  risaf_sub_config.SecPriv = RIF_ATTRIBUTE_SEC|RIF_ATTRIBUTE_NPRIV;
+  risaf_sub_config.ReadWrite = RISAF_READ_ENABLE|RISAF_WRITE_ENABLE;
+  risaf_sub_config.StartAddress = 0x00000000;
+  risaf_sub_config.Lock = RIF_LOCK_DISABLE;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF3, RISAF_REGION_1, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  /* set up Sub region configuration for CPUAXI_RAM0*/
+  risaf_sub_config.EndAddress = 0xfffff;
+  risaf_sub_config.StartAddress = 0x00080000;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_1, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  risaf_sub_config.EndAddress = 0x19fff;
+  risaf_sub_config.StartAddress = 0x00000000;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_2, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  risaf_sub_config.EndAddress = 0x6afff;
+  risaf_sub_config.StartAddress = 0x00064000;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_3, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  risaf_sub_config.EndAddress = 0x6a1ff;
+  risaf_sub_config.StartAddress = 0x00064180;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_4, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  risaf_sub_config.EndAddress = 0x6405f;
+  risaf_sub_config.StartAddress = 0x00064000;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_5, RISAF_SUBREGION_A, &risaf_sub_config);
+
+  risaf_sub_config.EndAddress = 0x640bf;
+  risaf_sub_config.StartAddress = 0x00064060;
+  HAL_RIF_RISAF_ConfigSubRegion(RISAF2, RISAF_REGION_6, RISAF_SUBREGION_A, &risaf_sub_config);
 
   /* RIF-Aware IPs Config */
 
@@ -1176,6 +1222,55 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+ /* MPU Configuration */
+
+void MPU_Config(void)
+{
+  MPU_Region_InitTypeDef MPU_InitStruct = {0};
+  MPU_Attributes_InitTypeDef MPU_AttributesInit = {0};
+  uint32_t primask_bit = __get_PRIMASK();
+  __disable_irq();
+
+  /* Disables the MPU */
+  HAL_MPU_Disable();
+
+  /** Initializes and configures the Region 0 and the memory to be protected
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress = 0x34064000;
+  MPU_InitStruct.LimitAddress = 0x340640BF;
+  MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_ALL_RW;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  MPU_InitStruct.DisablePrivExec = MPU_PRIV_INSTRUCTION_ACCESS_ENABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_OUTER_SHAREABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region 1 and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress = 0x340640C0;
+  MPU_InitStruct.LimitAddress = 0x3406A1FF;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Attribute 0 and the memory to be protected
+  */
+  MPU_AttributesInit.Number = MPU_ATTRIBUTES_NUMBER0;
+  MPU_AttributesInit.Attributes = INNER_OUTER(MPU_NOT_CACHEABLE);
+
+  HAL_MPU_ConfigMemoryAttributes(&MPU_AttributesInit);
+  /* Enables the MPU */
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
+  /* Exit critical section to lock the system and avoid any issue around MPU mechanism */
+  __set_PRIMASK(primask_bit);
+
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
