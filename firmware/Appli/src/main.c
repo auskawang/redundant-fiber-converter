@@ -28,7 +28,6 @@
 
 #include "stm32n6xx_hal.h"
 #include "app_config.h"
-#include "board_pins.h"
 
 /* Platform Adaptation */
 #include "bxp_clock.h"
@@ -183,7 +182,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  app_init_power_sequence();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
@@ -192,6 +191,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+
+  /* USER CODE BEGIN Init */
+  app_init_power_sequence();
+  /* USER CODE END Init */
+
   MX_ETH1_Init();
   MX_I2C2_Init();
   MX_I2C4_Init();
@@ -206,42 +210,31 @@ int main(void)
   SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
     const int sfp_status = sfp_driver_init();
-    /* 2. Configure system clock tree (STM32N6) */
-    bxp_clock_init();
-
-    /* 3. Initialize Board Support Package (GPIOs, SPI, I2C) */
-    //bxp_gpio_init();
-
-    /* 4. Power Sequencing & Hardware Reset of Switch (Phase 1) */
-    app_init_power_sequence();
-
-    /* 5. Initialize LAN96455 Managed Switch */
     const int switch_status = lan96455_init();
 
-    /* 6. Initialize Diagnostics & Logging */
-    diagnostics_init();
+    //diagnostics_init();
 
-    if (PEER_RGMII_READY && (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2) &&
-        sfp_status == SFP_OK && switch_status == 0)
-    {
-        uint8_t remote_mac[6];
-        memcpy(remote_mac, heth1.Init.MACAddr, sizeof(remote_mac));
-        remote_mac[5] = (uint8_t)(3 - PEER_BOARD_ID);
-        peer_enabled = peer_app_init(&peer_app, heth1.Init.MACAddr, remote_mac,
-                                     peer_board_boot_id(), PEER_CALIBRATE_ON_BOOT != 0,
-                                     HAL_GetTick());
-        if (peer_enabled)
-        {
-            /* CubeMX leaves SFP0 disabled. Both transmitters must remain
-             * enabled for local receive-power checks on both fibers. */
-            HAL_GPIO_WritePin(SFP0_TX_DISABLE_GPIO_Port, SFP0_TX_DISABLE_Pin, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(SFP1_TX_DISABLE_GPIO_Port, SFP1_TX_DISABLE_Pin, GPIO_PIN_RESET);
-        }
-    }
-    if (!peer_enabled)
-    {
-        diagnostics_log_event(DIAG_SEV_INFO, "PEER: Disabled; check board identity and drivers");
-    }
+    // if (PEER_RGMII_READY && (PEER_BOARD_ID == 1 || PEER_BOARD_ID == 2) &&
+    //     sfp_status == SFP_OK && switch_status == 0)
+    // {
+    //     uint8_t remote_mac[6];
+    //     memcpy(remote_mac, heth1.Init.MACAddr, sizeof(remote_mac));
+    //     remote_mac[5] = (uint8_t)(3 - PEER_BOARD_ID);
+    //     peer_enabled = peer_app_init(&peer_app, heth1.Init.MACAddr, remote_mac,
+    //                                  peer_board_boot_id(), PEER_CALIBRATE_ON_BOOT != 0,
+    //                                  HAL_GetTick());
+    //     if (peer_enabled)
+    //     {
+    //         /* CubeMX leaves SFP0 disabled. Both transmitters must remain
+    //          * enabled for local receive-power checks on both fibers. */
+    //         HAL_GPIO_WritePin(SFP0_TX_DISABLE_GPIO_Port, SFP0_TX_DISABLE_Pin, GPIO_PIN_RESET);
+    //         HAL_GPIO_WritePin(SFP1_TX_DISABLE_GPIO_Port, SFP1_TX_DISABLE_Pin, GPIO_PIN_RESET);
+    //     }
+    // }
+    // if (!peer_enabled)
+    // {
+    //     diagnostics_log_event(DIAG_SEV_INFO, "PEER: Disabled; check board identity and drivers");
+    // }
 
   /* USER CODE END 2 */
 
