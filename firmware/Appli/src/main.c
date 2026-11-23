@@ -133,8 +133,6 @@ UART_HandleTypeDef huart7;
 PCD_HandleTypeDef hpcd_USB_OTG_HS1;
 
 /* USER CODE BEGIN PV */
-static volatile adc_bringup_snapshot_t adc_bringup;
-static volatile HAL_StatusTypeDef adc_bringup_status = HAL_BUSY;
 static PeerApp peer_app;
 static bool peer_enabled;
 static bool peer_uncertain_reported;
@@ -162,7 +160,14 @@ static void SystemIsolation_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static HAL_StatusTypeDef adc_read_bringup(volatile adc_bringup_snapshot_t *out)
+/**
+ * @brief Sample both ADC scans once and publish volts and cage PCB degrees C.
+ * @pre Initialize GPIO, ADC1 and ADC2. Only powered rails/sensors give meaningful
+ *      operating values.
+ * @return HAL_OK if both scans completed without overrun, otherwise a HAL error.
+ * @note Compare named rail voltages against a meter to verify routing and gain.
+ */
+static HAL_StatusTypeDef bringup_test_adc_voltages(volatile adc_bringup_snapshot_t *out)
 {
     float adc1_v[11], adc2_v[3];
     const struct {
@@ -217,6 +222,96 @@ static HAL_StatusTypeDef adc_read_bringup(volatile adc_bringup_snapshot_t *out)
     return HAL_OK;
 }
 
+/**
+ * @brief blinks the onboard led 3 times
+ * @pre Initialize the HAL tick and the STM_LED output.
+ */
+static void bringup_test_led(void)
+{
+    for (unsigned blink = 0; blink < 3; ++blink) {
+        HAL_GPIO_TogglePin(STM_LED_GPIO_Port, STM_LED_Pin);
+        HAL_Delay(500);
+        HAL_GPIO_TogglePin(STM_LED_GPIO_Port, STM_LED_Pin);
+        HAL_Delay(500);
+    }
+}
+
+/**
+ * @brief Run the switch power sequence once and sample both status inputs.
+ * @pre Initialize GPIO with both enables low and reset asserted. Leave switch
+ *      peripherals unconfigured. Arm the scope on the switched 3.3 V rail.
+ * @return True if power-good is high and the fault input is inactive at the end.
+ * @note Probe both rails and switch-side ETH_SW_RESET_N to verify physical
+ *       ramp order and reset timing. The sequencer waits indefinitely for PG.
+ */
+static bool bringup_test_switch_power_reset(void)
+{
+    app_init_power_sequence();
+    return HAL_GPIO_ReadPin(BUCK_1V15_PG_GPIO_Port, BUCK_1V15_PG_Pin) == GPIO_PIN_SET &&
+           HAL_GPIO_ReadPin(ETH_SW_LS_FLT_GPIO_Port, ETH_SW_LS_FLT_Pin) == GPIO_PIN_SET;
+}
+
+/**
+ * @brief attempt to modify the switch registers over SPI
+ * @pre Complete switch power/reset recovery, then initialize SPI4.
+ */
+static int bringup_test_switch_spi(void)
+{
+    return lan96455_verify_spi_comm();
+}
+
+/**
+ * @brief checks that the presence GPIO status pin says that a sfp is inserted
+ * @pre Initialize GPIO and power the selected cage.
+ */
+static bool bringup_test_sfp_presence(sfp_port_t port)
+{
+    return sfp_is_port_present(port);
+}
+
+/**
+ * @brief reads the diagnostics of an sfp module
+ * @pre Power the selected cage, insert an internally
+ *      calibrated DDM module, and initialize I2C2 (SFP0) or I2C4 (SFP1).
+ */
+static HAL_StatusTypeDef bringup_test_sfp_diagnostics(sfp_port_t port, char part_number[17],
+                                                     float *module_supply_v)
+{
+    I2C_HandleTypeDef *bus = port == SFP_PORT_PRIMARY ? &hi2c2 : &hi2c4;
+    if ((unsigned)port >= SFP_PORT_COUNT || part_number == NULL || module_supply_v == NULL)
+        return HAL_ERROR;
+    uint8_t vendor_pn[16];
+    uint8_t diagnostic_type;
+    uint8_t status_byte;
+    sfp_status_t telemetry;
+    const uint32_t start = HAL_GetTick();
+
+    /* A2h byte 110 bit 0 is Data_Ready_Bar. Other bits can stay high. */
+    for (;;) {
+        if (!sfp_is_port_present(port)) return HAL_ERROR;
+        if (HAL_I2C_Mem_Read(bus, SFP_I2C_ADDR_A0, 92, I2C_MEMADD_SIZE_8BIT,
+                             &diagnostic_type, 1, 50U) == HAL_OK) {
+            if ((diagnostic_type & 0x60U) != 0x60U) return HAL_ERROR;
+            if (HAL_I2C_Mem_Read(bus, SFP_I2C_ADDR_A2, 110, I2C_MEMADD_SIZE_8BIT,
+                                 &status_byte, 1, 50U) == HAL_OK && !(status_byte & 1U))
+                break;
+        }
+        if (HAL_GetTick() - start >= 1000U) return HAL_TIMEOUT;
+        HAL_Delay(10);
+    }
+
+    if (HAL_I2C_Mem_Read(bus, SFP_I2C_ADDR_A0, 40, I2C_MEMADD_SIZE_8BIT,
+                         vendor_pn, sizeof(vendor_pn), 100U) != HAL_OK ||
+        sfp_driver_get_diagnostics(port, &telemetry) != SFP_OK ||
+        !sfp_is_port_present(port))
+        return HAL_ERROR;
+
+    memcpy(part_number, vendor_pn, sizeof(vendor_pn));
+    part_number[sizeof(vendor_pn)] = '\0';
+    *module_supply_v = telemetry.supply_voltage_v;
+    return HAL_OK;
+}
+
 /* Supply a strong definition in board code using a persistent counter
  * or a hardware-generated nonzero nonce. */
 __weak uint32_t peer_board_boot_id(void)
@@ -266,7 +361,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  app_init_power_sequence();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
@@ -294,7 +388,6 @@ int main(void)
   SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
     const int sfp_status = sfp_driver_init();
-    adc_bringup_status = adc_read_bringup(&adc_bringup);
     const int switch_status = lan96455_init();
 
     //diagnostics_init();
