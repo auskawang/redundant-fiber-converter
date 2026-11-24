@@ -1,0 +1,452 @@
+{
+  "repository": "https://github.com/microchip-ung/linux",
+  "branch": "bsp-6.18-2026",
+  "commit": "6ffda6116249fa9e9e892206d5df337821345c76",
+  "retrieved": "2026-10-12",
+  "files": [
+    {
+      "path": "upstream/COPYING",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/COPYING",
+      "bytes": 496,
+      "sha256": "fb5a425bd3b3cd6071a3a9aff9909a859e7c1158d54d32e07658398cd67eb6a0"
+    },
+    {
+      "path": "upstream/Documentation/devicetree/bindings/net/dsa/microchip,lan9645x-switch.yaml",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/Documentation/devicetree/bindings/net/dsa/microchip,lan9645x-switch.yaml",
+      "bytes": 8878,
+      "sha256": "3e88d752c9690367fa42085b12cbb53e05f0e070452630e786ea4a3a16e0ad1c"
+    },
+    {
+      "path": "upstream/LICENSES/exceptions/Linux-syscall-note",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/LICENSES/exceptions/Linux-syscall-note",
+      "bytes": 1258,
+      "sha256": "8e378ab93586eb55135d3bc119cce787f7324f48394777d00c34fa3d0be3303f"
+    },
+    {
+      "path": "upstream/LICENSES/preferred/GPL-2.0",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/LICENSES/preferred/GPL-2.0",
+      "bytes": 18600,
+      "sha256": "8780e78a1a737e127f25a65f6d95269bffd36158dc261114de7859b490bfc5aa"
+    },
+    {
+      "path": "upstream/arch/arm/boot/dts/microchip/lan9645x-port-delay-evb.dtsi",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/arch/arm/boot/dts/microchip/lan9645x-port-delay-evb.dtsi",
+      "bytes": 967,
+      "sha256": "b36fcbd3bacc4811fabf590f0b90682de853b20f008e5a03d69a59b409bacd6b"
+    },
+    {
+      "path": "upstream/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb-rev-b.dts",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb-rev-b.dts",
+      "bytes": 13626,
+      "sha256": "1154e949dbc870c6ed63c702f80674da00e30e88facdd635ed73d26d622c6175"
+    },
+    {
+      "path": "upstream/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb-rev-c.dts",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb-rev-c.dts",
+      "bytes": 13582,
+      "sha256": "a0e0587131e9184bd8aa4e966e5ce9a00ed71b64379c5f4bf72574b1f7ba5b0d"
+    },
+    {
+      "path": "upstream/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb.dts",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x-evb.dts",
+      "bytes": 13506,
+      "sha256": "656af74dc774654651a9ff995d4dc680009489a73fae73ce75a0a5346d8fecf8"
+    },
+    {
+      "path": "upstream/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x.dts",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/arch/arm/boot/dts/microchip/lan966x-pcb8385-lan9645x.dts",
+      "bytes": 16668,
+      "sha256": "f3f1d00937af7cfe01653666fe7c3a40c86c9b202c1dc4cef3562f90a151ac45"
+    },
+    {
+      "path": "upstream/drivers/irqchip/irq-lan9645x-oic.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/irqchip/irq-lan9645x-oic.c",
+      "bytes": 11870,
+      "sha256": "34949ea4ad38813ba4183f98d7126da0e0cc718159ffca1eb1b1d0c903628286"
+    },
+    {
+      "path": "upstream/drivers/mfd/lan9645x-spi.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/mfd/lan9645x-spi.c",
+      "bytes": 16951,
+      "sha256": "6b48c0ad1a486ce130769e1d502e016f9d02baac78ffeec6e4e8b6732352f72d"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/Kconfig",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/Kconfig",
+      "bytes": 400,
+      "sha256": "fc0838a3f46f5027b00a93e4f54deb160276bfdcfe6e366c04e194684e735370"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/Makefile",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/Makefile",
+      "bytes": 1214,
+      "sha256": "5456d1aa5a204db994df3925eabd89493326dc2ca9a048c2a30d0011f933a06e"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_afi.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_afi.c",
+      "bytes": 20775,
+      "sha256": "0db90bba4c18640f3da396b1e2724599e15a862980d0c6edbcd2c1814e2a178c"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_bum.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_bum.c",
+      "bytes": 11458,
+      "sha256": "b774f8194a8eeb1a8c81e5be4ae261e4045a452af8eb3fc74da52f498631db74"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_cbs.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_cbs.c",
+      "bytes": 1800,
+      "sha256": "0d93acbaa8b6c97b2b6227ab85e90a9f08d7c8223f408b8a51e86633ee5d3567"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_cut_thru.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_cut_thru.c",
+      "bytes": 1991,
+      "sha256": "953a304a6dbfbed23a77f85bd46c8e548b8d531f576d0dce9dced503bd43a8ab"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_dcb.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_dcb.c",
+      "bytes": 6027,
+      "sha256": "8b7aa02cfbdea7644f5c0664c16f3e2961d6d89bd6809382f0860a9923c0a9a5"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_eee.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_eee.c",
+      "bytes": 762,
+      "sha256": "6e7de6567bbf2925d83174e8569845768f576d9630faf4841019bdd4e86f4138"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_ets.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_ets.c",
+      "bytes": 2192,
+      "sha256": "8b8413d70bf55167cf182b76349d3ea2647291355052582068c98dfcb2fc72c0"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_fp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_fp.c",
+      "bytes": 13131,
+      "sha256": "384190e8e9b9902106b382759c23e46390954c9af216da92d7445018c7c506d5"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_hsr_prp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_hsr_prp.c",
+      "bytes": 55299,
+      "sha256": "f38c464fcbfd51f616922fa6e987237d679e1d4b40f014a992895543e033d808"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_lag.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_lag.c",
+      "bytes": 5708,
+      "sha256": "41483c953bc5da80db06f4a1968b348ddffaf3566adcb0ff128343baa10fbb97"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c",
+      "bytes": 14284,
+      "sha256": "f077485417db454a15896851e036a64863194b19b9a0b720daf7a27173ca01f1"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c",
+      "bytes": 75815,
+      "sha256": "17b1c1f1fa11e01c48239f1c65732a6d0a399acac36f265da8f6ec3ef953e88a"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h",
+      "bytes": 47590,
+      "sha256": "e70f01250d2bea6fa47a97cf86fc043d2c7c931603740d235bc761b5a0597a24"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_manual_inj.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_manual_inj.c",
+      "bytes": 2892,
+      "sha256": "70969a4d5d8d0422fd8331c0dcfdcf4f2ffb00ba98b8c6a5cf845a4eddda3cc9"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c",
+      "bytes": 12543,
+      "sha256": "e413bfd62a4e36585b39bd87325ca7100fd3543b7aab6c645ffd88cb0d7e33f6"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mirror.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mirror.c",
+      "bytes": 1740,
+      "sha256": "0bb5d6488d4fee1f8e43f51e674764be14ed8f2463ddf56787d546c50cc3280f"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mqprio.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mqprio.c",
+      "bytes": 1171,
+      "sha256": "d5140d01f4d4303ed5cf2244af53ad340461c4099ef1ed36d4d315c48f5686da"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mrp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mrp.c",
+      "bytes": 35667,
+      "sha256": "474fef130e05492acc3f187b1102276c9896f2d3af4dacc1da6e8fcb7f9db0c5"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_mrp.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_mrp.h",
+      "bytes": 2356,
+      "sha256": "119104b40254a38676f965989d6b2f4bc2e8d6b6a0386bb89a560dd95012cc08"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_fp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_fp.c",
+      "bytes": 7039,
+      "sha256": "5bfdfe97d76bf43123d9049e61831d862eab9af39badf51eed64a5363b69ad86"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_fp.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_fp.h",
+      "bytes": 435,
+      "sha256": "8efc035a5d53e56016ddef1ade1c48bdcd5202819499662389570e19018f04b1"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer.c",
+      "bytes": 20714,
+      "sha256": "53046f022259344b918498a956a12a0cadbc02e8533955e648174d416948ae79"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer.h",
+      "bytes": 4331,
+      "sha256": "45605dc46dfc6aad7a88c32509a25a60e06f0c646748d346ea8e9b792c9cfd8f"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer_impl.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_frer_impl.c",
+      "bytes": 24447,
+      "sha256": "9b2c6756e45f627b0e7ffeec8141755c5ed3e954eaffbb7854377e524098bd61"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_qos.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_qos.c",
+      "bytes": 11448,
+      "sha256": "1f1f867ca3148b8cfe9c1f5ae7a7c92861475d6460d3432f24c046bb7784f83f"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_qos.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_netlink_qos.h",
+      "bytes": 446,
+      "sha256": "446b370eed3003b2e2a3333facdf8563620e334e4b0153d8aef88c6e2b362a03"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c",
+      "bytes": 3090,
+      "sha256": "f67259a2ec5fbbea5c2998f3b9bc4fe65c90c8e18085e3f6848d8100e15c76d2"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c",
+      "bytes": 24042,
+      "sha256": "8156c4ec8de41e67285bedeec8728c351fdea0a4d98dcb0032eacb55a720e602"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_police.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_police.c",
+      "bytes": 2900,
+      "sha256": "90f597627502b9c0b04085024e87162ee66feab5dbf80887acb052bf5d6ce830"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_psfp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_psfp.c",
+      "bytes": 11821,
+      "sha256": "1b589ad91ccda080f96116baa207ad202aa80ee5aa5adab8e96cfee335666c52"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp.c",
+      "bytes": 37632,
+      "sha256": "85cabf6373fa10d3e40a606a5eafdbc9911c01da7c95f44612f39ad98f9945a3"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp_hsr.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp_hsr.c",
+      "bytes": 16286,
+      "sha256": "ca4f15cf1ef420f7d00fd5591da9ce44cb88c732b31028889cf76f8e907f3d99"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp_logs.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_ptp_logs.c",
+      "bytes": 7934,
+      "sha256": "8da657b513691d7410acdc1bcae789de7f680650fbbaca30c93a93c909f616b8"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_qos.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_qos.c",
+      "bytes": 8041,
+      "sha256": "04926b773796a402be70e175aa5d87fb36eeb6589f1694206d3d3a5dbbc283ff"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_regs.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_regs.h",
+      "bytes": 636153,
+      "sha256": "65804494d7aca8d7035e9419eac7ecdbd1f5d77cfdb3b12d74e44db0a3657876"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c",
+      "bytes": 30978,
+      "sha256": "839dfb3b501d30a11a4318352fd0faa3be4d0330aaa973e8a8373b475085722a"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.h",
+      "bytes": 10591,
+      "sha256": "d359d00e79fa9eaf2b35d578d03f940d4a4c30136168bd1507d325b071a2ce25"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_stream.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_stream.c",
+      "bytes": 5787,
+      "sha256": "4bf01b64d7b0fa5668aed46e89ddaee15e41276a307ae24684c0b27f63fd855d"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_taprio.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_taprio.c",
+      "bytes": 24109,
+      "sha256": "44abdfeef66ddea57bfdaee110a2edb86bf03b4b10641d3985d35c4b037caa89"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_tbf.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_tbf.c",
+      "bytes": 2117,
+      "sha256": "6e6b7f24ecb1430df67c45a6e998b1fe4e064be5589fc8b9f8fd7be24ad7f3f0"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_tc_flower.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_tc_flower.c",
+      "bytes": 73339,
+      "sha256": "54af74699350ea79153a2a9975cff84d4894843107abc1447cce63e2ab1f5252"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_tc_matchall.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_tc_matchall.c",
+      "bytes": 1784,
+      "sha256": "8485c06d7f2ac25e48e414ac7f422673c6411d96d144c7c6502646a465ea03d4"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_ag_api.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_ag_api.c",
+      "bytes": 72201,
+      "sha256": "88e632eea7fbe6d2ddfad3b42d8073b15be4f846b89516f8c0300cd2791a9a65"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_ag_api.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_ag_api.h",
+      "bytes": 523,
+      "sha256": "5825d87c7a5effd09f978870ddd79a157a80992d25a369476d4723658d9b2604"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_debugfs.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_debugfs.c",
+      "bytes": 6625,
+      "sha256": "203a33075d44383e56cf8b329d87b2bd6ed5dfa4094a638c05120ca0bb3885f0"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_impl.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_impl.c",
+      "bytes": 35978,
+      "sha256": "3ac21439bdd97f09a85e8715848e7ba0ea9ce25ed0a9f5800de93d711603b94e"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_utils.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_utils.c",
+      "bytes": 7845,
+      "sha256": "99743550e71c62e4a113c257665413cdacfe099a822229773c3edf353d49f452"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_utils.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vcap_utils.h",
+      "bytes": 1898,
+      "sha256": "6b9c66f470d4fbd83d364e16939fffc8133da53df8424aff830bb572a4650125"
+    },
+    {
+      "path": "upstream/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c",
+      "bytes": 11593,
+      "sha256": "e46d5196f7c50a7831db5f272aac3690f0f7d8643c0f51c2676da8214772d068"
+    },
+    {
+      "path": "upstream/drivers/net/ethernet/microchip/lan966x/lan966x_main.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/ethernet/microchip/lan966x/lan966x_main.h",
+      "bytes": 29172,
+      "sha256": "06ad899a0c98b4b168cba559a165e374ede3ce3e46a056e4ecff3e5edb10d0a0"
+    },
+    {
+      "path": "upstream/drivers/net/mdio/mdio-mscc-miim.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/mdio/mdio-mscc-miim.c",
+      "bytes": 13815,
+      "sha256": "6d89638a800bbb99cc655c2a61f5a6fca95a01d758d71d557ae4429a82800581"
+    },
+    {
+      "path": "upstream/drivers/net/phy/micrel.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/net/phy/micrel.c",
+      "bytes": 216062,
+      "sha256": "79957895ee0b5c437d0b962a527a31d4acf8e7cf73da6ffee2c1f3da8ee2a6c5"
+    },
+    {
+      "path": "upstream/drivers/phy/microchip/lan9645x_serdes.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/phy/microchip/lan9645x_serdes.c",
+      "bytes": 17522,
+      "sha256": "dcbfe7086d7452014a546f13c0ba2f7961683002cbb4e916bf9ef320323886ba"
+    },
+    {
+      "path": "upstream/drivers/phy/microchip/lan9645x_serdes_regs.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/phy/microchip/lan9645x_serdes_regs.h",
+      "bytes": 5216,
+      "sha256": "dec55289dc16bb0f0b60c15748ee5d8645194f49c70a0eae9238be806621ab96"
+    },
+    {
+      "path": "upstream/include/linux/bitfield.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/include/linux/bitfield.h",
+      "bytes": 7221,
+      "sha256": "1a9d50f457f977b5cbbb1187d88a087050de9fa0d9e3da05d8d0ebcb35e0f2da"
+    },
+    {
+      "path": "upstream/include/linux/bits.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/include/linux/bits.h",
+      "bytes": 2898,
+      "sha256": "fec9de74956535b6664b36ef4e1b0399af0cdc63e50002dbe83c09e1c066825f"
+    },
+    {
+      "path": "upstream/include/linux/dsa/lan9645x.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/include/linux/dsa/lan9645x.h",
+      "bytes": 7713,
+      "sha256": "a36b1374e32a4e136526f7108b31aa61992f9a9d57b32e8818737d6a7c27bccb"
+    },
+    {
+      "path": "upstream/net/dsa/tag_lan9645x.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/net/dsa/tag_lan9645x.c",
+      "bytes": 12101,
+      "sha256": "4370878b4510b0c1b3093764ecadcca1a7943861e8a3de0f37015a1fbb9e3293"
+    },
+    {
+      "path": "upstream/drivers/pinctrl/pinctrl-ocelot.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/pinctrl/pinctrl-ocelot.c",
+      "bytes": 80095,
+      "sha256": "c92cce34dad8f630a89b85d7f02f33a2a30b53467b2b18d579455862b76c282f"
+    },
+    {
+      "path": "upstream/drivers/pinctrl/pinctrl-microchip-sgpio.c",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/drivers/pinctrl/pinctrl-microchip-sgpio.c",
+      "bytes": 27277,
+      "sha256": "44bf6b6749865bc879726de497ed4660f1f825301dd48bc82fa36265d26f86ae"
+    },
+    {
+      "path": "upstream/include/dt-bindings/phy/phy-lan9645x-serdes.h",
+      "url": "https://raw.githubusercontent.com/microchip-ung/linux/6ffda6116249fa9e9e892206d5df337821345c76/include/dt-bindings/phy/phy-lan9645x-serdes.h",
+      "bytes": 199,
+      "sha256": "2cae520d126f489324a53af87c2f08e547084f59fb1714feabff8ae86c6f0d46"
+    }
+  ]
+}
